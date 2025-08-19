@@ -9,7 +9,8 @@ def register():
     if request.method == "POST":
         username = request.form["username"]
         email = request.form["email"]
-        password = request.form["password"]
+        password_hash = request.form["password"]
+        role = ["role"]
 
         conn = get_db_connection()
         cursor = conn.cursor()
@@ -23,9 +24,9 @@ def register():
             return redirect(url_for("register.register"))
 
         # insert new user with hashed password
-        hashed_password = generate_password_hash(password)
-        cursor.execute("INSERT INTO users (username, email, password) VALUES (%s, %s, %s)",
-                       (username, email, hashed_password))
+        hashed_password = generate_password_hash(password_hash)
+        cursor.execute("INSERT INTO users (username, email, password_hash, role) VALUES (%s, %s, %s, %s)",
+                       (username, email, hashed_password, role == 1))
         conn.commit()
         cursor.close()
         conn.close()

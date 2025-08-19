@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Blueprint, session
+from flask import Flask, render_template, Blueprint, session, redirect
 from backend.routes.home import home_bp
 from backend.routes.login import login_bp
 from backend.routes.register import register_bp
@@ -14,6 +14,9 @@ app.register_blueprint(register_bp)
 @app.context_processor
 def inject_user():
     return {"user": session.get("user")}
+@app.route('/admin')
+def admin():
+    return redirect('/admin')
 
 @app.route("/")
 def home():

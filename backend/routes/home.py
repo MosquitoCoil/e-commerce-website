@@ -1,9 +1,14 @@
 from flask import Blueprint, render_template, session
 from database.database import get_db_connection
 
-home_bp = Blueprint("home",__name__,template_folder='/frontend/templates')
+home_bp = Blueprint(
+    "home",
+    __name__,
+    template_folder="../../frontend/templates",
+    static_folder="../../static"                 
+)
 
-@home_bp.route("/home")
+@home_bp.route("/")
 def home():
     products = [
         {
