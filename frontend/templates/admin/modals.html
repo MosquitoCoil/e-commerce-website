@@ -1,0 +1,57 @@
+<!-- Add User Modal -->
+<div class="modal fade" id="addUser" tabindex="-1" aria-labelledby="addUserLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-header">
+            <h5 class="modal-title" id="addUserLabel">Add User</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <h1>Add User</h1>
+        </div>
+    </div>
+</div>
+
+<!-- Edit User Modal -->
+<div class="modal fade" id="editUser" tabindex="-1" aria-labelledby="editUserLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-header">
+            <h5 class="modal-title" id="editUserLabel">Edit User</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+        </div>
+    </div>
+</div>
+
+<!-- Delete User Modal -->
+<div class="modal fade" id="deleteUSer" tabindex="-1" aria-labelledby="deleteUSerLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-header">
+            <h5 class="modal-title" id="deleteUSerLabel">Delete User</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+        </div>
+    </div>
+</div>
+{% block extra_script %}
+<script>
+    const addUser = new URLSearchParams(window.location.search);
+    if (addUser.get("addUser") === "1") {
+        const loginModal = new bootstrap.Modal(document.getElementById('addUser'));
+        addUser.show();
+    }
+    const editUser = new URLSearchParams(window.location.search);
+    if (editUser.get("editUser") === "1") {
+        const editUser = new bootstrap.Modal(document.getElementById('editUser'));
+        editUser.show();
+    }
+    const deleteUser = new URLSearchParams(window.location.search);
+    if (deleteUser.get("deleteUser") === "1") {
+        const editUser = new bootstrap.Modal(document.getElementById('deleteUser'));
+        deleteUser.show();
+    }
+</script>
+{% endblock %}

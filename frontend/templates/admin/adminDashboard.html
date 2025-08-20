@@ -1,0 +1,55 @@
+{% extends "adminBase.html" %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="mb-4">Welcome to Admin Dashboard</h1>
+
+    <div class="row g-4">
+        <!-- Card: Products -->
+        <div class="col-md-3">
+            <div class="card text-bg-primary shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Products</h5>
+                    <p class="card-text">Manage all products in the store.</p>
+                    <a href="/admin/products" class="btn btn-light btn-sm">Go</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card: Orders -->
+        <div class="col-md-3">
+            <div class="card text-bg-success shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Orders</h5>
+                    <p class="card-text">View and manage customer orders.</p>
+                    <a href="/admin/orders" class="btn btn-light btn-sm">Go</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card: Users -->
+        <div class="col-md-3">
+            <div class="card text-bg-warning shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Users</h5>
+                    <p class="card-text">Manage registered users.</p>
+                    <a href="/admin/users" class="btn btn-light btn-sm">Go</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card: Reports -->
+        <div class="col-md-3">
+            <div class="card text-bg-danger shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Reports</h5>
+                    <p class="card-text">View sales & performance reports.</p>
+                    <a href="/admin/reports" class="btn btn-light btn-sm">Go</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

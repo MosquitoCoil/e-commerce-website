@@ -1,0 +1,78 @@
+{% extends "admin/adminBase.html" %}
+
+{% block title %} Manage Users {% endblock %}
+
+{% block content %}
+<h2 class="mb-4">List of Registered User</h2>
+
+<!-- Add User button -->
+<button class="btn btn-dark mb-3" data-bs-toggle="modal" data-bs-target="#addUser">
+    <i class="bi bi-person-plus"></i> Add User
+</button>
+
+<!-- Table -->
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>No.</th>
+            <th>Firstname</th>
+            <th>Lastname</th>
+            <th>Username</th>
+            <th>Time Created</th>
+            <th>Role</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for u in users %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ u.firstname }}</td>
+            <td>{{ u.lastname }}</td>
+            <td>{{ u.username }}</td>
+            <td>{{ u.created_at }}</td>
+            <td>{{ u.is_admin }}</td>
+            {% endfor %}
+    </tbody>
+</table>
+
+<!-- Add User Modal -->
+<div class="modal fade" id="addUser" tabindex="-1" aria-labelledby="addUserLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addUserLabel">Add User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{{ url_for('addUser.addUser') }}">
+                    <div class="mb-3">
+                        <label for="firstname" class="form-label">Firstname</label>
+                        <input type="text" class="form-control" id="firstname" name="firstname" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="lastname" class="form-label">Lastname</label>
+                        <input type="text" class="form-control" id="lastname" name="lastname" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Email / Username</label>
+                        <input type="email" class="form-control" id="username" name="username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="is_admin" class="form-label">User Type</label>
+                        <select class="form-select" id="is_admin" name="is_admin">
+                            <option value="0" selected>User</option>
+                            <option value="1">Admin</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">Add User</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
