@@ -11,12 +11,13 @@
         {% for product in products %}
         <div class="col-md-4">
             <div class="card h-100 shadow-sm">
-                <img src="{{ url_for('static', filename=product.image) }}" class="card-img-top"
+                <img src="{{ url_for('static', filename='uploads/' ~ product.image) }}" class="card-img-top"
                     alt="{{ product.name }}">
                 <div class="card-body">
                     <h5 class="card-title">{{ product.name }}</h5>
                     <p class="card-text">{{ product.description }}</p>
                     <h6 class="text-primary">${{ "%.2f"|format(product.price) }}</h6>
+                    <p class="text-muted">Stock: {{ product.stock }}</p>
                 </div>
                 <div class="card-footer text-center">
                     <a href="#" class="btn btn-sm btn-primary">Add to Cart</a>

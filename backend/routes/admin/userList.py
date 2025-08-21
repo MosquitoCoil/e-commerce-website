@@ -7,7 +7,7 @@ userList_bp = Blueprint(
     "userList", __name__, template_folder="../../../frontend/templates/admin"
 )
 
-@userList_bp.route("/admin/users")
+@userList_bp.route("/users")
 @admin_required
 def userList():
 

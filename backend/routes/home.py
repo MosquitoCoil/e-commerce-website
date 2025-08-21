@@ -1,33 +1,15 @@
-from flask import Blueprint, render_template, session
+from flask import Blueprint, render_template
+from werkzeug.utils import secure_filename
 from database.database import get_db_connection
 
-home_bp = Blueprint(
-    "home",
-    __name__,
-    template_folder="../../frontend/templates",
-    static_folder="../../static"                 
-)
+home_bp = Blueprint('products', __name__, template_folder="../../frontend/templates/admin")
 
-@home_bp.route("/")
+@home_bp.route('/')
 def home():
-    products = [
-        {
-            "name": "Classic T-Shirt",
-            "description": "Soft cotton T-shirt available in multiple colors. Perfect for everyday wear.",
-            "price": 15.99,
-            "image": "images/product1.jpg"
-        },
-        {
-            "name": "Stylish Sneakers",
-            "description": "Comfortable sneakers with modern design, great for casual outings.",
-            "price": 45.00,
-            "image": "images/product2.jpg"
-        },
-        {
-            "name": "Leather Wallet",
-            "description": "Durable leather wallet with multiple compartments for cards and cash.",
-            "price": 25.50,
-            "image": "images/product3.jpg"
-        }
-    ]
-    return render_template("home.html", user=session.get("user"), products=products)
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM products")
+    products = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return render_template('home.html', products=products)
