@@ -3,7 +3,9 @@ from database.database import get_db_connection
 from werkzeug.security import generate_password_hash
 import mysql.connector
 
-register_bp = Blueprint("register", __name__, template_folder="../../Frontend/templates")
+register_bp = Blueprint(
+    "register", __name__, template_folder="../../Frontend/templates"
+)
 
 
 # register
@@ -32,5 +34,5 @@ def register():
             flash(f"Error: {err}")
         finally:
             conn.close()
-        return redirect(url_for("home.home"))
+        return redirect(url_for("products.home"))
     return render_template("register.html")

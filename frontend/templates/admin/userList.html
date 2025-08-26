@@ -186,17 +186,6 @@
 <script src="{{ url_for('static', filename='datatables/js/datatables.min.js') }}"></script>
 
 <script>
-    // Auto-hide flash messages after 3s
-    window.addEventListener("DOMContentLoaded", function () {
-        const flashMessages = document.querySelectorAll(".alert");
-        flashMessages.forEach((msg) => {
-            setTimeout(() => {
-                msg.classList.remove("show");
-                setTimeout(() => msg.remove(), 500);
-            }, 3000);
-        });
-    });
-
     // Init DataTable
     $(document).ready(function () {
         $('#userTable').DataTable({

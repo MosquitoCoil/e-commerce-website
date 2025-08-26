@@ -8,10 +8,10 @@ from backend.routes.admin.addUser import addUser_bp
 from backend.routes.admin.editUser import editUser_bp
 from backend.routes.admin.deleteUser import deleteUser_bp
 from backend.routes.admin.addProducts import addProducts_bp
+from backend.routes.admin.editProducts import editProduct_bp
 
 
-
-app = Flask(__name__, template_folder='./frontend/templates')
+app = Flask(__name__, template_folder="./frontend/templates")
 app.secret_key = "supersecret"
 
 # Register blueprints
@@ -23,10 +23,10 @@ app.register_blueprint(userList_bp)
 app.register_blueprint(addUser_bp)
 app.register_blueprint(editUser_bp)
 app.register_blueprint(deleteUser_bp)
-app.config['UPLOAD_FOLDER'] = 'static/uploads'
-app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024  # 2MB
+app.config["UPLOAD_FOLDER"] = "static/uploads"
+app.config["MAX_CONTENT_LENGTH"] = 2 * 1024 * 1024  # 2MB
 app.register_blueprint(addProducts_bp)
-
+app.register_blueprint(editProduct_bp)
 
 
 def inject_user():
@@ -36,13 +36,12 @@ def inject_user():
         user = {
             "username": session.get("username"),
             "firstname": session.get("firstname"),
-            "is_admin": session.get("is_admin")
+            "is_admin": session.get("is_admin"),
         }
     return dict(user=user)
 
+
 app.context_processor(inject_user)
-
-
 
 
 if __name__ == "__main__":
