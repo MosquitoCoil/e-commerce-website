@@ -7,7 +7,7 @@ from flask import (
     current_app,
 )
 import os
-from ....utils.decorators import admin_required
+from ....utils.decorators import role_required
 from werkzeug.utils import secure_filename
 from database.database import get_db_connection
 
@@ -23,7 +23,7 @@ def allowed_file(filename):
 
 
 @addProduct_bp.route("/add-product", methods=["GET", "POST"])
-@admin_required 
+@role_required('admin') 
 def addProduct():
     upload_folder = current_app.config.get("UPLOAD_FOLDER", "static/uploads")
     os.makedirs(upload_folder, exist_ok=True)

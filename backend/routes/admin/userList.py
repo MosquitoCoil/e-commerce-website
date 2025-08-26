@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template
-from ...utils.decorators import admin_required
+from ...utils.decorators import role_required
 from database.database import get_db_connection
 
 
@@ -8,7 +8,7 @@ userList_bp = Blueprint(
 )
 
 @userList_bp.route("/users")
-@admin_required
+@role_required('admin')
 def userList():
 
     conn = get_db_connection()

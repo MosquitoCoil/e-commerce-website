@@ -18,9 +18,11 @@ content %}
           <p class="fw-bold mb-2">₱{{ "%.2f"|format(product.price) }}</p>
 
           <!-- Add to Cart Button -->
-          <a href="#" class="btn btn-dark btn-sm rounded-1 w-100">
-            <i class="bi bi-cart-plus"></i> Add to Cart
-          </a>
+          <form action="{{ url_for('addToCart.addToCart', product_id=product.id) }}" method="POST">
+            <button type="submit" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#cartModal">
+              <i class="bi bi-cart-plus"></i> Add to Cart
+            </button>
+          </form>
         </div>
       </div>
     </div>

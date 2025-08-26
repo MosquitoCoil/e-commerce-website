@@ -1,11 +1,11 @@
 from flask import Blueprint, redirect, url_for, flash
-from ....utils.decorators import admin_required
+from ....utils.decorators import role_required
 from database.database import get_db_connection
 
 deleteUser_bp = Blueprint('deleteUser', __name__)
 
 @deleteUser_bp.route('/delete-user/<int:user_id>', methods=['POST'])
-@admin_required
+@role_required('admin')
 def deleteUser(user_id):
 
     try:

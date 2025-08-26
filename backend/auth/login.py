@@ -32,7 +32,7 @@ def login():
             if user["is_admin"] == "admin":
                 return redirect("/admin/dashboard")
             else:
-                return redirect("/dashboard")
+                return redirect("/client/home")
         else:
             flash(f"Access denied. Incorrect username or password.", "error")
             return redirect("/")

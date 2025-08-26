@@ -1,11 +1,11 @@
 from flask import Blueprint, render_template
-from ...utils.decorators import admin_required
+from ...utils.decorators import role_required
 from database.database import get_db_connection
 
 productList_bp = Blueprint('productList', __name__, template_folder='../../../frontend/templates/admin')
 
 @productList_bp.route("/products")
-@admin_required
+@role_required('admin')
 def productList():
 
     conn = get_db_connection()

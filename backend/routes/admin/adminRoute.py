@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template
-from ...utils.decorators import admin_required
+from ...utils.decorators import role_required
 
 
 
@@ -8,6 +8,6 @@ admin_bp = Blueprint('admin',__name__,template_folder='../../../frontend/templat
 
 
 @admin_bp.route('/admin/dashboard')
-@admin_required
+@role_required('admin')
 def admin():
     return render_template('adminDashboard.html')

@@ -1,11 +1,11 @@
 from flask import Blueprint, redirect, url_for, flash
-from ....utils.decorators import admin_required
+from ....utils.decorators import role_required
 from database.database import get_db_connection
 
 deleteProduct_bp = Blueprint('deleteProduct', __name__)
 
 @deleteProduct_bp.route('/delete-product/<int:product_id>', methods=['POST'])
-@admin_required
+@role_required('admin')
 def deleteProduct(product_id):
 
     try:

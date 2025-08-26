@@ -1,6 +1,6 @@
 from flask import Blueprint, request, redirect, flash, url_for, current_app
 from database.database import get_db_connection
-from ....utils.decorators import admin_required
+from ....utils.decorators import role_required
 import os
 from werkzeug.utils import secure_filename
 
@@ -16,7 +16,7 @@ def allowed_file(filename):
 
 
 @editProduct_bp.route("/edit-product/<int:product_id>", methods=["GET", "POST"])
-@admin_required
+@role_required('admin')
 def editProduct(product_id):
     name = request.form.get("name")
     description = request.form.get("description")

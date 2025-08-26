@@ -1,6 +1,6 @@
 from flask import Blueprint, redirect, request, flash, url_for
 from database.database import get_db_connection
-from ....utils.decorators import admin_required
+from ....utils.decorators import role_required
 from werkzeug.security import generate_password_hash
 
 editUser_bp = Blueprint(
@@ -9,7 +9,7 @@ editUser_bp = Blueprint(
 
 # edit users
 @editUser_bp.route("/edit-user/<int:user_id>", methods=["POST"])
-@admin_required
+@role_required('admin')
 def editUser(user_id):
     firstname = request.form.get('firstname')
     lastname = request.form.get('lastname')

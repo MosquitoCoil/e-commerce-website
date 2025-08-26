@@ -1,18 +1,19 @@
 from flask import Blueprint, render_template
-from werkzeug.utils import secure_filename
+from ..utils.decorators import role_required
 from database.database import get_db_connection
 
-home_bp = Blueprint(
-    "home", __name__, template_folder="../../frontend/templates/admin"
+authHome_bp = Blueprint(
+    "authHome", __name__, template_folder="../../frontend/templates/client"
 )
 
 
-@home_bp.route("/")
-def home():
+@authHome_bp.route("/client/home")
+@role_required('user')
+def authHome():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
     cursor.execute("SELECT * FROM products")
     products = cursor.fetchall()
     cursor.close()
     conn.close()
-    return render_template("home.html", products=products)
+    return render_template("clientHome.html", products=products)

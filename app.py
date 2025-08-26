@@ -2,6 +2,7 @@ from flask import Flask, session
 from backend.routes.home import home_bp
 from backend.auth.login import login_bp
 from backend.auth.register import register_bp
+# Admin Side
 from backend.routes.admin.adminRoute import admin_bp
 from backend.routes.admin.userList import userList_bp
 from backend.routes.admin.productList import productList_bp
@@ -11,7 +12,11 @@ from backend.routes.admin.users.deleteUser import deleteUser_bp
 from backend.routes.admin.products.addProduct import addProduct_bp
 from backend.routes.admin.products.editProducts import editProduct_bp
 from backend.routes.admin.products.deleteProduct import deleteProduct_bp
-
+# Client Side
+from backend.routes.client.clientRoute import client_bp
+from backend.routes.addToCart import addToCart_bp
+# Auth Page
+from backend.routes.authHome import authHome_bp
 
 
 app = Flask(__name__, template_folder="./frontend/templates")
@@ -21,6 +26,7 @@ app.secret_key = "supersecret"
 app.register_blueprint(home_bp)
 app.register_blueprint(login_bp)
 app.register_blueprint(register_bp)
+# Admin Side
 app.register_blueprint(admin_bp)
 app.register_blueprint(userList_bp)
 app.register_blueprint(productList_bp)
@@ -32,6 +38,12 @@ app.config["MAX_CONTENT_LENGTH"] = 2 * 1024 * 1024  # 2MB
 app.register_blueprint(addProduct_bp)
 app.register_blueprint(editProduct_bp)
 app.register_blueprint(deleteProduct_bp)
+# Client Side
+app.register_blueprint(client_bp)
+app.register_blueprint(addToCart_bp)
+# Auth Page
+app.register_blueprint(authHome_bp)
+
 
 
 
