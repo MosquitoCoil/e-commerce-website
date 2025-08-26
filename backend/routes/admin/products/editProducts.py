@@ -1,11 +1,11 @@
 from flask import Blueprint, request, redirect, flash, url_for, current_app
 from database.database import get_db_connection
-from ...utils.decorators import admin_required
+from ....utils.decorators import admin_required
 import os
 from werkzeug.utils import secure_filename
 
 editProduct_bp = Blueprint(
-    "editProduct", __name__, template_folder="../../../frontend/templates/admin"
+    "editProduct", __name__, template_folder="../../../../frontend/templates/admin"
 )
 
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}

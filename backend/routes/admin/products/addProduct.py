@@ -1,6 +1,5 @@
 from flask import (
     Blueprint,
-    render_template,
     request,
     redirect,
     url_for,
@@ -8,12 +7,12 @@ from flask import (
     current_app,
 )
 import os
-from ...utils.decorators import admin_required
+from ....utils.decorators import admin_required
 from werkzeug.utils import secure_filename
 from database.database import get_db_connection
 
-addProducts_bp = Blueprint(
-    "addProducts", __name__, template_folder="../../../frontend/templates/admin"
+addProduct_bp = Blueprint(
+    "addProduct", __name__, template_folder="../../../../frontend/templates/admin"
 )
 
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
@@ -23,9 +22,9 @@ def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-@addProducts_bp.route("/products", methods=["GET", "POST"])
-@admin_required
-def addProducts():
+@addProduct_bp.route("/add-product", methods=["GET", "POST"])
+@admin_required 
+def addProduct():
     upload_folder = current_app.config.get("UPLOAD_FOLDER", "static/uploads")
     os.makedirs(upload_folder, exist_ok=True)
 
@@ -50,12 +49,7 @@ def addProducts():
         )
         conn.commit()
         flash("Product added successfully!", "success")
-        return redirect(url_for("addProducts.addProducts"))
-
-    # Fetch existing products for display
-    cursor.execute("SELECT * FROM products")
-    products = cursor.fetchall()
-    cursor.close()
-    conn.close()
-
-    return render_template("productList.html", products=products)
+        return redirect(url_for("productList.productList"))
+    
+    # If GET request → just redirect back to users list
+    return redirect(url_for("productList.productList"))

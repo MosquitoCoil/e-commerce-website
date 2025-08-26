@@ -4,11 +4,14 @@ from backend.auth.login import login_bp
 from backend.auth.register import register_bp
 from backend.routes.admin.adminRoute import admin_bp
 from backend.routes.admin.userList import userList_bp
-from backend.routes.admin.addUser import addUser_bp
-from backend.routes.admin.editUser import editUser_bp
-from backend.routes.admin.deleteUser import deleteUser_bp
-from backend.routes.admin.addProducts import addProducts_bp
-from backend.routes.admin.editProducts import editProduct_bp
+from backend.routes.admin.productList import productList_bp
+from backend.routes.admin.users.addUser import addUser_bp
+from backend.routes.admin.users.editUser import editUser_bp
+from backend.routes.admin.users.deleteUser import deleteUser_bp
+from backend.routes.admin.products.addProduct import addProduct_bp
+from backend.routes.admin.products.editProducts import editProduct_bp
+from backend.routes.admin.products.deleteProduct import deleteProduct_bp
+
 
 
 app = Flask(__name__, template_folder="./frontend/templates")
@@ -20,13 +23,16 @@ app.register_blueprint(login_bp)
 app.register_blueprint(register_bp)
 app.register_blueprint(admin_bp)
 app.register_blueprint(userList_bp)
+app.register_blueprint(productList_bp)
 app.register_blueprint(addUser_bp)
 app.register_blueprint(editUser_bp)
 app.register_blueprint(deleteUser_bp)
 app.config["UPLOAD_FOLDER"] = "static/uploads"
 app.config["MAX_CONTENT_LENGTH"] = 2 * 1024 * 1024  # 2MB
-app.register_blueprint(addProducts_bp)
+app.register_blueprint(addProduct_bp)
 app.register_blueprint(editProduct_bp)
+app.register_blueprint(deleteProduct_bp)
+
 
 
 def inject_user():

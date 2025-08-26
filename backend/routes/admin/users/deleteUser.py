@@ -1,5 +1,5 @@
 from flask import Blueprint, redirect, url_for, flash
-from ...utils.decorators import admin_required
+from ....utils.decorators import admin_required
 from database.database import get_db_connection
 
 deleteUser_bp = Blueprint('deleteUser', __name__)

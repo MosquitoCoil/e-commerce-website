@@ -1,10 +1,10 @@
 from flask import Blueprint, request, flash, redirect, url_for, render_template
-from ...utils.decorators import admin_required
+from ....utils.decorators import admin_required
 from database.database import get_db_connection
 from werkzeug.security import generate_password_hash
 
 addUser_bp = Blueprint(
-    "addUser", __name__, template_folder="../../../frontend/templates/admin"
+    "addUser", __name__, template_folder="../../../../frontend/templates/admin"
 )
 
 @addUser_bp.route("/add-user", methods=["GET", "POST"])

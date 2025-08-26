@@ -1,10 +1,10 @@
 from flask import Blueprint, redirect, request, flash, url_for
 from database.database import get_db_connection
-from ...utils.decorators import admin_required
+from ....utils.decorators import admin_required
 from werkzeug.security import generate_password_hash
 
 editUser_bp = Blueprint(
-    "editUser", __name__, template_folder="../../../frontend/templates/admin"
+    "editUser", __name__, template_folder="../../../../frontend/templates/admin"
 )
 
 # edit users
