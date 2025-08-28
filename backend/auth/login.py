@@ -21,6 +21,7 @@ def login():
         conn.close()
 
         if user and check_password_hash(user["password"], password):
+            session["user_id"] = user["id"]
             session["username"] = user["username"]
             session["firstname"] = user["firstname"]
             session["is_admin"] = user["is_admin"]

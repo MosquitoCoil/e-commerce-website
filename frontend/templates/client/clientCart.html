@@ -1,0 +1,64 @@
+{% extends "clientBase.html" %} {% block title %}Home | MyShop{% endblock %} {%
+block content %}
+<div class="container mt-4">
+  <h2>🛒 My Cart</h2>
+  {% if items %}
+  <table class="table table-bordered mt-3 align-middle text-center">
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Total</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in items %}
+      <tr>
+        <td>{{ item.name }}</td>
+        <td>₱{{ item.price }}</td>
+        <td>
+          <!-- Minus Button -->
+          <form
+            action="{{ url_for('editCart.editCart', cart_id=item.id, action='minus') }}"
+            method="POST"
+            style="display: inline"
+          >
+            <button class="btn btn-sm btn-outline-dark">-</button>
+          </form>
+
+          {{ item.quantity }}
+
+          <!-- Add Button -->
+          <form
+            action="{{ url_for('editCart.editCart', cart_id=item.id, action='add') }}"
+            method="POST"
+            style="display: inline"
+          >
+            <button class="btn btn-sm btn-outline-dark">+</button>
+          </form>
+        </td>
+        <td>₱{{ item.total }}</td>
+        <td>
+          <!-- Delete Button -->
+          <form
+            action="{{ url_for('deleteCart.deleteCart', cart_id=item.id) }}"
+            method="POST"
+            style="display: inline"
+          >
+            <button class="btn btn-sm btn-danger">❌ Remove</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <div class="text-end">
+    <a href="#" class="btn btn-dark">Proceed to Checkout</a>
+  </div>
+  {% else %}
+  <p>Your cart is empty.</p>
+  {% endif %}
+</div>
+{% endblock %}

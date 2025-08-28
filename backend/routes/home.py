@@ -2,9 +2,7 @@ from flask import Blueprint, render_template
 from werkzeug.utils import secure_filename
 from database.database import get_db_connection
 
-home_bp = Blueprint(
-    "home", __name__, template_folder="../../frontend/templates/admin"
-)
+home_bp = Blueprint("home", __name__, template_folder="../../frontend/templates/admin")
 
 
 @home_bp.route("/")

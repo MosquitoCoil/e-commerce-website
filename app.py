@@ -1,7 +1,8 @@
-from flask import Flask, session
+from flask import Flask, session, render_template
 from backend.routes.home import home_bp
 from backend.auth.login import login_bp
 from backend.auth.register import register_bp
+
 # Admin Side
 from backend.routes.admin.adminRoute import admin_bp
 from backend.routes.admin.userList import userList_bp
@@ -12,11 +13,17 @@ from backend.routes.admin.users.deleteUser import deleteUser_bp
 from backend.routes.admin.products.addProduct import addProduct_bp
 from backend.routes.admin.products.editProducts import editProduct_bp
 from backend.routes.admin.products.deleteProduct import deleteProduct_bp
+
 # Client Side
 from backend.routes.client.clientRoute import client_bp
-from backend.routes.addToCart import addToCart_bp
+from backend.routes.client.addToCart import addToCart_bp
+from backend.routes.client.cart import cart_bp
+from backend.routes.client.editCart import editCart_bp
+from backend.routes.client.deleteCart import deleteCart_bp
+
+
 # Auth Page
-from backend.routes.authHome import authHome_bp
+from backend.routes.client.authHome import authHome_bp
 
 
 app = Flask(__name__, template_folder="./frontend/templates")
@@ -41,10 +48,16 @@ app.register_blueprint(deleteProduct_bp)
 # Client Side
 app.register_blueprint(client_bp)
 app.register_blueprint(addToCart_bp)
+app.register_blueprint(cart_bp)
+app.register_blueprint(editCart_bp)
+app.register_blueprint(deleteCart_bp)
 # Auth Page
 app.register_blueprint(authHome_bp)
 
 
+# @app.route("/")
+# def test():
+# return render_template("test.html")
 
 
 def inject_user():

@@ -16,7 +16,7 @@ def allowed_file(filename):
 
 
 @editProduct_bp.route("/edit-product/<int:product_id>", methods=["GET", "POST"])
-@role_required('admin')
+@role_required("admin")
 def editProduct(product_id):
     name = request.form.get("name")
     description = request.form.get("description")
@@ -58,4 +58,4 @@ def editProduct(product_id):
     conn.close()
 
     flash("Product updated successfully.", "success")
-    return redirect(url_for("addProducts.addProducts"))
+    return redirect(url_for("addProduct.addProduct"))
