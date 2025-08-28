@@ -6,6 +6,7 @@ block content %}
   <table class="table table-bordered mt-3 align-middle text-center">
     <thead>
       <tr>
+        <th>Image</th>
         <th>Product</th>
         <th>Price</th>
         <th>Quantity</th>
@@ -16,6 +17,14 @@ block content %}
     <tbody>
       {% for item in items %}
       <tr>
+        <td>
+          {% if item.image %}
+          <img
+            src="{{ url_for('static', filename='uploads/' ~ item.image) }}"
+            width="50"
+          />
+          {% else %} N/A {% endif %}
+        </td>
         <td>{{ item.name }}</td>
         <td>₱{{ item.price }}</td>
         <td>

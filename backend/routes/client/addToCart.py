@@ -54,7 +54,7 @@ def cart_page():
 
     cursor.execute(
         """
-        SELECT c.id, p.name, p.price, c.quantity, (p.price * c.quantity) AS total
+        SELECT c.id, p.image, p.name, p.price, c.quantity, (p.price * c.quantity) AS total
         FROM cart c
         JOIN products p ON c.product_id = p.id
         WHERE c.user_id=%s
