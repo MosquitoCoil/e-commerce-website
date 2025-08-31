@@ -1,29 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %} Admin Panel {% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='dataTables/css/dataTables.bootstrap5.css') }}" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap-icons/font/bootstrap-icons.css') }}" />
-</head>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='bootstrap.min.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='dataTables/css/dataTables.bootstrap5.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='bootstrap-icons/font/bootstrap-icons.css') }}"
+    />
+  </head>
 
-<body>
+  <body>
     <!-- Top navbar just for Admin -->
     {% include "client/partials/clientHeader.html" %} {% with messages =
     get_flashed_messages(with_categories=true) %} {% if messages %}
-    <div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 1100">
-        {% for category, message in messages %}
-        <div class="toast align-items-center text-bg-{{ category }} border-0 show mb-2" role="alert"
-            aria-live="assertive" aria-atomic="true">
-            <div class="d-flex">
-                <div class="toast-body">{{ message }}</div>
-            </div>
+    <div
+      class="toast-container position-fixed top-0 start-50 translate-middle-x p-3"
+      style="z-index: 1100"
+    >
+      {% for category, message in messages %}
+      <div
+        class="toast align-items-center text-bg-{{ category }} border-0 show mb-2"
+        role="alert"
+        aria-live="assertive"
+        aria-atomic="true"
+      >
+        <div class="d-flex">
+          <div class="toast-body">{{ message }}</div>
         </div>
-        {% endfor %}
+      </div>
+      {% endfor %}
     </div>
     {% endif %} {% endwith %}
 
@@ -32,26 +50,25 @@
     {% include "client/partials/clientFooter.html" %} {% block extra_script %}
     <script src="{{ url_for('static', filename='bootstrap.bundle.min.js') }}"></script>
     <script>
-        // Auto-dismiss flash messages after 4 seconds
-        setTimeout(() => {
-            const alerts = document.querySelectorAll(".alert");
-            alerts.forEach((alert) => {
-                let bsAlert = new bootstrap.Alert(alert);
-                bsAlert.close();
-            });
-        }, 4000); // 4000ms = 4 seconds
-        document.addEventListener("DOMContentLoaded", () => {
-            const toastElList = document.querySelectorAll(".toast");
-            toastElList.forEach((toastEl) => {
-                const toast = new bootstrap.Toast(toastEl, {
-                    delay: 3000, // hide after 3s
-                    autohide: true, // make sure autohide is enabled
-                });
-                toast.show();
-            });
+      // Auto-dismiss flash messages after 4 seconds
+      setTimeout(() => {
+        const alerts = document.querySelectorAll(".alert");
+        alerts.forEach((alert) => {
+          let bsAlert = new bootstrap.Alert(alert);
+          bsAlert.close();
         });
+      }, 4000); // 4000ms = 4 seconds
+      document.addEventListener("DOMContentLoaded", () => {
+        const toastElList = document.querySelectorAll(".toast");
+        toastElList.forEach((toastEl) => {
+          const toast = new bootstrap.Toast(toastEl, {
+            delay: 3000, // hide after 3s
+            autohide: true, // make sure autohide is enabled
+          });
+          toast.show();
+        });
+      });
     </script>
     {% endblock %}
-</body>
-
+  </body>
 </html>

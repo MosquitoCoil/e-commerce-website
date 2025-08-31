@@ -1,0 +1,93 @@
+{% extends "clientBase.html" %} {% block title %}Home | MyShop{% endblock %} {%
+block content %}
+<div class="container mt-4">
+  <h2><i class="bi bi-box-seam"></i> My Orders</h2>
+
+  {% if orders %}
+  <table class="table table-bordered text-center align-middle mt-3">
+    <thead>
+      <tr>
+        <th>Order ID</th>
+        <th>Total</th>
+        <th>Date</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in orders %}
+      <tr>
+        <td>{{ order.id }}</td>
+        <td>₱{{ order.total }}</td>
+        <td>{{ order.created_at }}</td>
+        <td>
+          <!-- View Details Button -->
+          <button
+            class="btn btn-sm btn-dark"
+            data-bs-toggle="modal"
+            data-bs-target="#orderModal{{ order.id }}"
+          >
+            View Details
+          </button>
+        </td>
+      </tr>
+
+      <!-- Modal for this order -->
+      <div
+        class="modal fade"
+        id="orderModal{{ order.id }}"
+        tabindex="-1"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+          <div class="modal-content p-3">
+            <div class="modal-header">
+              <h5 class="modal-title">Order #{{ order.id }} Details</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <ul class="list-group mb-3">
+                {% for item in order_items[order.id] %}
+                <li
+                  class="list-group-item d-flex justify-content-between align-items-center"
+                >
+                  <div>
+                    <strong>{{ item.name }}</strong><br />
+                    <small>₱{{ item.price }} × {{ item.quantity }}</small>
+                  </div>
+                  <span>₱{{ item.price * item.quantity }}</span>
+                </li>
+                {% endfor %}
+              </ul>
+              <div class="d-flex justify-content-between">
+                <h5>Total</h5>
+                <h5>₱{{ order.total }}</h5>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <form
+                method="POST"
+                action="{{ url_for('transaction.undo_checkout', order_id=order.id) }}"
+              >
+                <button type="submit" class="btn btn-warning">
+                  <i class="bi bi-arrow-counterclockwise"></i> Undo Checkout
+                </button>
+              </form>
+              <button class="btn btn-secondary" data-bs-dismiss="modal">
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p>You have no orders yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

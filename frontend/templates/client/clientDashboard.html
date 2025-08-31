@@ -1,44 +1,39 @@
-{% extends "clientBase.html" %}
-
-{% block title %}My Profile{% endblock %}
-
-{% block content %}
-{% if user %}
+{% extends "clientBase.html" %} {% block title %}My Profile{% endblock %} {%
+block content %} {% if user %}
 <div class="container-fluid">
-    <h1 class="mb-4">Welcome {{ user.firstname.capitalize() }}</h1>
-    <div class="card mb-4">
+  <h1 class="mb-4">Welcome {{ user.firstname.capitalize() }}</h1>
+  <div class="card mb-4">
+    <div class="card-body">
+      <h5 class="card-text">Username: {{ user.username.capitalize() }}</h5>
+      <h5 class="card-text">Firstname: {{ user.firstname.capitalize() }}</h5>
+      <h5 class="card-text">Adress: {{ user.address }}</h5>
+      <h5 class="card-text">Type of user: {{ user.is_admin.capitalize() }}</h5>
+      <h5 class="card-text">Time created: {{ user.created_at }}</h5>
+    </div>
+  </div>
+  {% endif %}
+  <div class="row g-4">
+    <!-- Card: Cart -->
+    <div class="col-md-3">
+      <div class="card text-bg-primary shadow-sm">
         <div class="card-body">
-            <i class="bi bi-person"></i>
-            <h5 class="card-text">Username: {{ user.username.capitalize() }}</h5>
-            <h5 class="card-text">Firstname: {{ user.firstname.capitalize() }}</h5>
-            <h5 class="card-text">Type of user: {{ user.is_admin.capitalize() }}</h5>
-            <h5 class="card-text">Time created: {{ user.created_at }}</h5>
-
+          <h5 class="card-title"><i class="bi bi-cart"></i> Cart</h5>
+          <p class="card-text">Manage all add to cart items.</p>
+          <a href="/cart" class="btn btn-light btn-sm">Go</a>
         </div>
+      </div>
     </div>
-    {% endif %}
-    <div class="row g-4">
-        <!-- Card: Cart -->
-        <div class="col-md-3">
-            <div class="card text-bg-primary shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title"><i class="bi bi-cart"></i> Cart</h5>
-                    <p class="card-text">Manage all add to cart items.</p>
-                    <a href="/cart" class="btn btn-light btn-sm">Go</a>
-                </div>
-            </div>
-        </div>
 
-        <!-- Card: Reports -->
-        <div class="col-md-3">
-            <div class="card text-bg-danger shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title"><i class="bi bi-receipt"></i> Transaction</h5>
-                    <p class="card-text">View all transaction.</p>
-                    <a href="/client/transaction" class="btn btn-light btn-sm">Go</a>
-                </div>
-            </div>
+    <!-- Card: Reports -->
+    <div class="col-md-3">
+      <div class="card text-bg-danger shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title"><i class="bi bi-receipt"></i> Transaction</h5>
+          <p class="card-text">View all transaction.</p>
+          <a href="/client/transaction" class="btn btn-light btn-sm">Go</a>
         </div>
+      </div>
     </div>
+  </div>
 </div>
 {% endblock %}

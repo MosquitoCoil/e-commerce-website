@@ -20,6 +20,8 @@ from backend.routes.client.addToCart import addToCart_bp
 from backend.routes.client.cart import cart_bp
 from backend.routes.client.editCart import editCart_bp
 from backend.routes.client.deleteCart import deleteCart_bp
+from backend.routes.client.checkout import checkout_bp
+from backend.routes.client.transaction import transaction_bp
 
 
 # Auth Page
@@ -51,6 +53,8 @@ app.register_blueprint(addToCart_bp)
 app.register_blueprint(cart_bp)
 app.register_blueprint(editCart_bp)
 app.register_blueprint(deleteCart_bp)
+app.register_blueprint(checkout_bp)
+app.register_blueprint(transaction_bp)
 # Auth Page
 app.register_blueprint(authHome_bp)
 
