@@ -1,55 +1,52 @@
-{% extends "adminBase.html" %}
-
-{% block title %}Admin Dashboard{% endblock %}
-
-{% block content %}
+{% extends "adminBase.html" %} {% block title %}Admin Dashboard{% endblock %} {%
+block content %}
 <div class="container-fluid">
-    <h1 class="mb-4">Welcome to Admin Dashboard</h1>
+  <h1 class="mb-4">Welcome to Admin Dashboard</h1>
 
-    <div class="row g-4">
-        <!-- Card: Products -->
-        <div class="col-md-3">
-            <div class="card text-bg-primary shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title"><i class="bi bi-box"></i> Products</h5>
-                    <p class="card-text">Manage all products in the store.</p>
-                    <a href="/products" class="btn btn-light btn-sm">Go</a>
-                </div>
-            </div>
+  <div class="row g-4">
+    <!-- Card: Products -->
+    <div class="col-md-3">
+      <div class="card text-bg-primary shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title"><i class="bi bi-box"></i> Products</h5>
+          <p class="card-text">Manage all products in the store.</p>
+          <a href="/products" class="btn btn-light btn-sm">Go</a>
         </div>
-
-        <!-- Card: Orders -->
-        <div class="col-md-3">
-            <div class="card text-bg-success shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title"><i class="bi bi-cart"></i> Orders</h5>
-                    <p class="card-text">View and manage customer orders.</p>
-                    <a href="/admin/orders" class="btn btn-light btn-sm">Go</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Card: Users -->
-        <div class="col-md-3">
-            <div class="card text-bg-warning shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title"><i class="bi bi-person"></i> Users</h5>
-                    <p class="card-text">Manage registered users.</p>
-                    <a href="/users" class="btn btn-light btn-sm">Go</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Card: Reports -->
-        <div class="col-md-3">
-            <div class="card text-bg-danger shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title"><i class="bi bi-folder"></i> Reports</h5>
-                    <p class="card-text">View sales & performance reports.</p>
-                    <a href="/admin/reports" class="btn btn-light btn-sm">Go</a>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
+
+    <!-- Card: Orders -->
+    <div class="col-md-3">
+      <div class="card text-bg-success shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title"><i class="bi bi-cart"></i> Orders</h5>
+          <p class="card-text">View and manage customer orders.</p>
+          <a href="/admin/transactions" class="btn btn-light btn-sm">Go</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card: Users -->
+    <div class="col-md-3">
+      <div class="card text-bg-warning shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title"><i class="bi bi-person"></i> Users</h5>
+          <p class="card-text">Manage registered users.</p>
+          <a href="/users" class="btn btn-light btn-sm">Go</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card: Reports -->
+    <div class="col-md-3">
+      <div class="card text-bg-danger shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title"><i class="bi bi-folder"></i> Reports</h5>
+          <p class="card-text">View sales & performance reports.</p>
+          <a href="/admin/reports" class="btn btn-light btn-sm">Go</a>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}

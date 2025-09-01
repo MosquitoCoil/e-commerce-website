@@ -13,7 +13,7 @@ def checkout():
     user_id = session.get("user_id")
     if not user_id:
         flash("You must be logged in to checkout.", "error")
-        return redirect(url_for("auth.login"))
+        return redirect(url_for("login.login"))
 
     db = get_db_connection()
     cursor = db.cursor(dictionary=True)
@@ -39,7 +39,8 @@ def checkout():
 
     # Insert into orders
     cursor.execute(
-        "INSERT INTO orders (user_id, total) VALUES (%s, %s)", (user_id, total)
+        "INSERT INTO orders (user_id, total, status) VALUES (%s, %s, %s)",
+        (user_id, total, "Pending"),
     )
     order_id = cursor.lastrowid
 
@@ -60,6 +61,5 @@ def checkout():
     cursor.close()
     db.close()
 
-    flash("✅ Checkout successful! Your order has been placed.", "success")
-
+    flash("Order placed successfully! Waiting for admin approval.", "success")
     return redirect(url_for("transaction.transaction"))

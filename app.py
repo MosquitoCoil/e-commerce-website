@@ -13,6 +13,8 @@ from backend.routes.admin.users.deleteUser import deleteUser_bp
 from backend.routes.admin.products.addProduct import addProduct_bp
 from backend.routes.admin.products.editProducts import editProduct_bp
 from backend.routes.admin.products.deleteProduct import deleteProduct_bp
+from backend.routes.admin.client.adminTransaction import adminTransactions_bp
+
 
 # Client Side
 from backend.routes.client.clientRoute import client_bp
@@ -47,6 +49,8 @@ app.config["MAX_CONTENT_LENGTH"] = 2 * 1024 * 1024  # 2MB
 app.register_blueprint(addProduct_bp)
 app.register_blueprint(editProduct_bp)
 app.register_blueprint(deleteProduct_bp)
+app.register_blueprint(adminTransactions_bp)
+
 # Client Side
 app.register_blueprint(client_bp)
 app.register_blueprint(addToCart_bp)

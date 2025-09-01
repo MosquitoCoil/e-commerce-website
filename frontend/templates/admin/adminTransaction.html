@@ -1,0 +1,102 @@
+{% extends "adminBase.html" %} {% block title %}Admin Transaction{% endblock %}
+{% block content %}
+<h2><i class="bi bi-receipt"></i> Transactions</h2>
+
+<table id="orderTable" class="table table-bordered text-center mt-3">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Firstname</th>
+      <th>Status</th>
+      <th>Date</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for order in orders %}
+    <tr>
+      <td>{{ order.id }}</td>
+      <td>{{ order.firstname }}</td>
+      <td>
+        {% if order.status == "Pending" %}
+        <span class="btn btn-sm btn-warning">{{ order.status }}</span>
+        {% elif order.status == "Processing" %}
+        <span class="btn btn-sm btn-primary">{{ order.status }}</span>
+        {% elif order.status == "Delivered" %}
+        <span class="btn btn-sm btn-dark">{{ order.status }}</span>
+        {% elif order.status == "Completed" %}
+        <span class="btn btn-sm btn-success">{{ order.status }}</span>
+        {% elif order.status == "Cancelled" %}
+        <span class="btn btn-sm btn-danger">{{ order.status }}</span>
+        {% elif order.status == "Received" %}
+        <span class="btn btn-sm btn-success"
+          ><i class="bi bi-check"></i> {{ order.status }}</span
+        >
+        {% else %}
+        <span class="btn btn-sm btn-secondary">{{ order.status }}</span>
+        {% endif %}
+      </td>
+      <td>{{ order.created_at }}</td>
+      <td>
+        {% if order.status == "Received" %}
+        <!-- Show only Received button -->
+        <button class="btn btn-sm btn-success">
+          <i class="bi bi-check"></i> Received
+        </button>
+        {% else %}
+        <!-- Show all status update buttons -->
+        <a
+          href="{{ url_for('adminTransactions.update_order_status', order_id=order.id, status='Pending') }}"
+          class="btn btn-sm btn-warning"
+          >Pending</a
+        >
+        <a
+          href="{{ url_for('adminTransactions.update_order_status', order_id=order.id, status='Processing') }}"
+          class="btn btn-sm btn-primary"
+          >Accept</a
+        >
+        <a
+          href="{{ url_for('adminTransactions.update_order_status', order_id=order.id, status='Delivered') }}"
+          class="btn btn-sm btn-dark"
+          >Delivered</a
+        >
+        <a
+          href="{{ url_for('adminTransactions.update_order_status', order_id=order.id, status='Completed') }}"
+          class="btn btn-sm btn-success"
+          >Complete</a
+        >
+        <a
+          href="{{ url_for('adminTransactions.update_order_status', order_id=order.id, status='Cancelled') }}"
+          class="btn btn-sm btn-danger"
+          >Cancel</a
+        >
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %} {% block extra_script %}
+
+<script src="{{ url_for('static', filename='js/jquery-3.7.1.min.js') }}"></script>
+
+<script src="{{ url_for('static', filename='bootstrap.bundle.min.js') }}"></script>
+
+<script src="{{ url_for('static', filename='datatables/js/datatables.min.js') }}"></script>
+
+<script>
+  // Init DataTable
+  $(document).ready(function () {
+    $("#orderTable").DataTable({
+      pageLength: 10,
+      lengthMenu: [5, 10, 25, 50],
+      ordering: true,
+      searching: true,
+      language: {
+        search: '<i class="bi bi-search"></i>',
+        searchPlaceholder: "Search orders...",
+      },
+    });
+  });
+</script>
+{% endblock %}

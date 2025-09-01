@@ -1,6 +1,8 @@
 from flask import Blueprint, session, render_template, redirect, url_for, flash
 from ...utils.decorators import role_required
 from database.database import get_db_connection
+from datetime import datetime
+
 
 transaction_bp = Blueprint(
     "transaction", __name__, template_folder="../../../frontend/templates/client"
@@ -8,20 +10,20 @@ transaction_bp = Blueprint(
 
 
 # Show ALL orders of the client
-@transaction_bp.route("/transaction")
+@transaction_bp.route("/client/transaction")
 @role_required("user")
 def transaction():
     user_id = session.get("user_id")
     if not user_id:
         flash("Please log in to view your orders.", "error")
-        return redirect(url_for("auth.login"))
+        return redirect(url_for("login.login"))
 
     db = get_db_connection()
     cursor = db.cursor(dictionary=True)
 
     # Get all orders for this user
     cursor.execute(
-        "SELECT id, total, created_at FROM orders WHERE user_id = %s ORDER BY created_at DESC",
+        "SELECT id, total, created_at, status FROM orders WHERE user_id = %s ORDER BY created_at DESC",
         (user_id,),
     )
     orders = cursor.fetchall()
@@ -76,9 +78,31 @@ def view_order(order_id):
 @transaction_bp.route("/transaction/undo/<int:order_id>", methods=["POST"])
 @role_required("user")
 def undo_checkout(order_id):
-    user_id = session["user_id"]  # who owns the cart
+    user_id = session.get("user_id")
+    if not user_id:
+        flash("You must be logged in to undo checkout.", "error")
+        return redirect(url_for("login.login"))  # who owns the cart
     db = get_db_connection()
     cursor = db.cursor(dictionary=True)
+
+    # ✅ Check if order exists and is still Pending
+    cursor.execute(
+        "SELECT id, status FROM orders WHERE id=%s AND user_id=%s",
+        (order_id, user_id),
+    )
+    order = cursor.fetchone()
+
+    if not order:
+        flash("Order not found.", "error")
+        cursor.close()
+        db.close()
+        return redirect(url_for("cart.cart"))
+
+    if order["status"] != "Pending":
+        flash("You can only undo orders that are still pending.", "error")
+        cursor.close()
+        db.close()
+        return redirect(url_for("transaction.transaction"))
 
     # 1. Get all items from this order
     cursor.execute(
@@ -86,50 +110,87 @@ def undo_checkout(order_id):
         SELECT product_id, quantity
         FROM order_items
         WHERE order_id = %s
-    """,
+        """,
         (order_id,),
     )
     items = cursor.fetchall()
 
     # 2. Insert back into cart
     for item in items:
-        # Check if already in cart
         cursor.execute(
-            """
-            SELECT id, quantity FROM cart
-            WHERE user_id = %s AND product_id = %s
-        """,
+            "SELECT id, quantity FROM cart WHERE user_id=%s AND product_id=%s",
             (user_id, item["product_id"]),
         )
         existing = cursor.fetchone()
 
         if existing:
-            # Update quantity
             new_qty = existing["quantity"] + item["quantity"]
             cursor.execute(
-                """
-                UPDATE cart SET quantity = %s
-                WHERE id = %s
-            """,
+                "UPDATE cart SET quantity=%s WHERE id=%s",
                 (new_qty, existing["id"]),
             )
         else:
-            # Insert new row
             cursor.execute(
-                """
-                INSERT INTO cart (user_id, product_id, quantity)
-                VALUES (%s, %s, %s)
-            """,
+                "INSERT INTO cart (user_id, product_id, quantity) VALUES (%s, %s, %s)",
                 (user_id, item["product_id"], item["quantity"]),
             )
 
     # 3. Delete order + order_items
-    cursor.execute("DELETE FROM order_items WHERE order_id = %s", (order_id,))
-    cursor.execute("DELETE FROM orders WHERE id = %s", (order_id,))
+    cursor.execute("DELETE FROM order_items WHERE order_id=%s", (order_id,))
+    cursor.execute("DELETE FROM orders WHERE id=%s", (order_id,))
 
     db.commit()
     cursor.close()
     db.close()
 
     flash("Order has been undone and items restored to your cart.", "success")
+    return redirect(url_for("cart.cart"))
+
+
+@transaction_bp.route("/mark_as_received/<int:order_id>", methods=["POST"])
+@role_required("user")
+def mark_as_received(order_id):
+    user_id = session.get("user_id")
+    db = get_db_connection()
+    cursor = db.cursor(dictionary=True)
+
+    # ✅ 1. Get all order items
+    cursor.execute(
+        """
+        SELECT oi.product_id, oi.quantity, oi.price, p.name
+        FROM order_items oi
+        JOIN products p ON oi.product_id = p.id
+        WHERE oi.order_id = %s
+    """,
+        (order_id,),
+    )
+    order_items = cursor.fetchall()
+
+    # ✅ 2. Insert into purchase_history
+    for item in order_items:
+        total = item["price"] * item["quantity"]
+        cursor.execute(
+            """
+            INSERT INTO purchase_history (user_id, order_id, product_name, quantity, price, total, received_at)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
+        """,
+            (
+                user_id,
+                order_id,
+                item["name"],
+                item["quantity"],
+                item["price"],
+                total,
+                datetime.now(),
+            ),
+        )
+
+    # ✅ 3. Update order status
+    cursor.execute("UPDATE orders SET status = 'Received' WHERE id = %s", (order_id,))
+
+    db.commit()
+    cursor.close()
+    db.close()
+
+    flash("Order marked as received and added to purchase history!", "success")
     return redirect(url_for("cart.cart"))

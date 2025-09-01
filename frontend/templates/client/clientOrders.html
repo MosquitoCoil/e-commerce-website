@@ -4,18 +4,24 @@ block content %}
   <h2><i class="bi bi-box-seam"></i> My Orders</h2>
 
   {% if orders %}
-  <table class="table table-bordered text-center align-middle mt-3">
+  <table
+    id="orderTable"
+    class="table table-bordered text-center align-middle mt-3"
+  >
     <thead>
       <tr>
+        <th>No.</th>
         <th>Order ID</th>
         <th>Total</th>
         <th>Date</th>
         <th>Action</th>
+        <th>Status</th>
       </tr>
     </thead>
     <tbody>
       {% for order in orders %}
       <tr>
+        <td>{{ loop.index }}</td>
         <td>{{ order.id }}</td>
         <td>₱{{ order.total }}</td>
         <td>{{ order.created_at }}</td>
@@ -28,6 +34,25 @@ block content %}
           >
             View Details
           </button>
+        </td>
+        <td>
+          {% if order.status == "Pending" %}
+          <span class="btn btn-sm btn-warning">{{ order.status }}</span>
+          {% elif order.status == "Processing" %}
+          <span class="btn btn-sm btn-primary">{{ order.status }}</span>
+          {% elif order.status == "Delivered" %}
+          <span class="btn btn-sm btn-dark">{{ order.status }}</span>
+          {% elif order.status == "Completed" %}
+          <span class="btn btn-sm btn-success">{{ order.status }}</span>
+          {% elif order.status == "Cancelled" %}
+          <span class="btn btn-sm btn-danger">{{ order.status }}</span>
+          {% elif order.status == "Received" %}
+          <span class="btn btn-sm btn-success"
+            ><i class="bi bi-check"></i> {{ order.status }}</span
+          >
+          {% else %}
+          <span class="btn btn-sm btn-secondary">{{ order.status }}</span>
+          {% endif %}
         </td>
       </tr>
 
@@ -68,14 +93,43 @@ block content %}
               </div>
             </div>
             <div class="modal-footer">
+              {% if order.status == "Pending" %}
               <form
-                method="POST"
                 action="{{ url_for('transaction.undo_checkout', order_id=order.id) }}"
+                method="POST"
+                style="display: inline"
               >
                 <button type="submit" class="btn btn-warning">
                   <i class="bi bi-arrow-counterclockwise"></i> Undo Checkout
                 </button>
               </form>
+              {% elif order.status == "Completed" %}
+              <form
+                action="{{ url_for('transaction.mark_as_received', order_id=order.id) }}"
+                method="POST"
+                style="display: inline"
+              >
+                <button type="submit" class="btn btn-warning">
+                  <i class="bi bi-check2-circle"></i> Received
+                </button>
+              </form>
+              {% else %}
+              <span class="text-muted">
+                {% if order.status == "Pending" %}
+                <span class="btn btn-warning">{{ order.status }}</span>
+                {% elif order.status == "Processing" %}
+                <span class="btn btn-primary">{{ order.status }}</span>
+                {% elif order.status == "Delivered" %}
+                <span class="btn btn-dark">{{ order.status }}</span>
+                {% elif order.status == "Completed" %}
+                <span class="btn btn-success">{{ order.status }}</span>
+                {% elif order.status == "Cancelled" %}
+                <span class="btn btn-danger">{{ order.status }}</span>
+                {% else %}
+                <span class="btn btn-secondary">{{ order.status }}</span>
+                {% endif %}
+              </span>
+              {% endif %}
               <button class="btn btn-secondary" data-bs-dismiss="modal">
                 Close
               </button>
@@ -89,5 +143,51 @@ block content %}
   {% else %}
   <p>You have no orders yet.</p>
   {% endif %}
+  <h2><i class="bi bi-receipt"></i> Purchase History</h2>
+  <table class="table table-bordered mt-3 text-center">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Total</th>
+        <th>Received At</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for purchase in purchases %}
+      <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ purchase.quantity }}</td>
+        <td>₱{{ purchase.price }}</td>
+        <td>₱{{ purchase.total }}</td>
+        <td>{{ purchase.received_at }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
+{% endblock %} {% block extra_script %}
+
+<script src="{{ url_for('static', filename='js/jquery-3.7.1.min.js') }}"></script>
+
+<script src="{{ url_for('static', filename='bootstrap.bundle.min.js') }}"></script>
+
+<script src="{{ url_for('static', filename='datatables/js/datatables.min.js') }}"></script>
+
+<script>
+  // Init DataTable
+  $(document).ready(function () {
+    $("#orderTable").DataTable({
+      pageLength: 5,
+      lengthMenu: [5, 10, 25, 50],
+      ordering: true,
+      searching: true,
+      language: {
+        search: '<i class="bi bi-search"></i>',
+        searchPlaceholder: "Search orders...",
+      },
+    });
+  });
+</script>
 {% endblock %}

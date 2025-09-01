@@ -3,9 +3,13 @@ block content %}
 <div class="container mt-4">
   <h2>🛒 My Cart</h2>
   {% if items %}
-  <table class="table table-bordered mt-3 align-middle text-center">
+  <table
+    id="cartTable"
+    class="table table-bordered mt-3 align-middle text-center"
+  >
     <thead>
       <tr>
+        <th>No.</th>
         <th>Image</th>
         <th>Product</th>
         <th>Price</th>
@@ -17,6 +21,7 @@ block content %}
     <tbody>
       {% for item in items %}
       <tr>
+        <td>{{ loop.index }}</td>
         <td>
           {% if item.image %}
           <img
@@ -134,4 +139,27 @@ block content %}
     </div>
   </div>
 </div>
+{% endblock %} {% block extra_script %}
+
+<script src="{{ url_for('static', filename='js/jquery-3.7.1.min.js') }}"></script>
+
+<script src="{{ url_for('static', filename='bootstrap.bundle.min.js') }}"></script>
+
+<script src="{{ url_for('static', filename='datatables/js/datatables.min.js') }}"></script>
+
+<script>
+  // Init DataTable
+  $(document).ready(function () {
+    $("#cartTable").DataTable({
+      pageLength: 5,
+      lengthMenu: [5, 10, 25, 50],
+      ordering: true,
+      searching: true,
+      language: {
+        search: '<i class="bi bi-search"></i>',
+        searchPlaceholder: "Search items...",
+      },
+    });
+  });
+</script>
 {% endblock %}
