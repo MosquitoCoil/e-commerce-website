@@ -42,10 +42,27 @@ def transaction():
         )
         order_items[order["id"]] = cursor.fetchall()
 
+    # ✅ Get purchase history
+    cursor.execute(
+        """
+        SELECT id, order_id, product_name, quantity, price, total, received_at
+        FROM purchase_history
+        WHERE user_id = %s
+        ORDER BY received_at DESC
+        """,
+        (user_id,),
+    )
+    purchases = cursor.fetchall()
+
     cursor.close()
     db.close()
 
-    return render_template("clientOrders.html", orders=orders, order_items=order_items)
+    return render_template(
+        "clientOrders.html",
+        orders=orders,
+        order_items=order_items,
+        purchases=purchases,
+    )
 
 
 # Show ONE specific order
@@ -58,8 +75,8 @@ def view_order(order_id):
     cursor.execute(
         """
         SELECT o.id, o.total, o.created_at,
-               oi.product_id, oi.quantity, oi.price,
-               p.name
+        oi.product_id, oi.quantity, oi.price,
+        p.name
         FROM orders o
         JOIN order_items oi ON o.id = oi.order_id
         JOIN products p ON oi.product_id = p.id
@@ -154,38 +171,64 @@ def mark_as_received(order_id):
     db = get_db_connection()
     cursor = db.cursor(dictionary=True)
 
-    # ✅ 1. Get all order items
+    # 1. Get all order items
     cursor.execute(
         """
         SELECT oi.product_id, oi.quantity, oi.price, p.name
         FROM order_items oi
         JOIN products p ON oi.product_id = p.id
         WHERE oi.order_id = %s
-    """,
+        """,
         (order_id,),
     )
     order_items = cursor.fetchall()
 
-    # ✅ 2. Insert into purchase_history
+    # 2. Insert each item into purchase_history
     for item in order_items:
         total = item["price"] * item["quantity"]
-        cursor.execute(
-            """
-            INSERT INTO purchase_history (user_id, order_id, product_name, quantity, price, total, received_at)
-            VALUES (%s, %s, %s, %s, %s, %s, %s)
-        """,
-            (
-                user_id,
-                order_id,
-                item["name"],
-                item["quantity"],
-                item["price"],
-                total,
-                datetime.now(),
-            ),
-        )
 
-    # ✅ 3. Update order status
+        # Check if product still exists (to avoid FK error)
+        cursor.execute("SELECT id FROM products WHERE id = %s", (item["product_id"],))
+        exists = cursor.fetchone()
+
+        if exists:
+            cursor.execute(
+                """
+                INSERT INTO purchase_history 
+                (user_id, order_id, product_id, product_name, quantity, price, total, received_at)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                """,
+                (
+                    user_id,
+                    order_id,
+                    item["product_id"],
+                    item["name"],
+                    item["quantity"],
+                    item["price"],
+                    total,
+                    datetime.now(),
+                ),
+            )
+        else:
+            # fallback: insert without product_id
+            cursor.execute(
+                """
+                INSERT INTO purchase_history 
+                (user_id, order_id, product_name, quantity, price, total, received_at)
+                VALUES (%s, %s, %s, %s, %s, %s, %s)
+                """,
+                (
+                    user_id,
+                    order_id,
+                    item["name"],
+                    item["quantity"],
+                    item["price"],
+                    total,
+                    datetime.now(),
+                ),
+            )
+
+    # 3. Update order status
     cursor.execute("UPDATE orders SET status = 'Received' WHERE id = %s", (order_id,))
 
     db.commit()
@@ -193,4 +236,4 @@ def mark_as_received(order_id):
     db.close()
 
     flash("Order marked as received and added to purchase history!", "success")
-    return redirect(url_for("cart.cart"))
+    return redirect(url_for("transaction.transaction"))

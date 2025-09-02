@@ -26,7 +26,7 @@
         <li class="nav-item">
           <a
             class="nav-link {% if request.endpoint == 'admin.products' %}active{% endif %}"
-            href="/products"
+            href="/admin/products"
             >Products</a
           >
         </li>
@@ -40,8 +40,16 @@
         <li class="nav-item">
           <a
             class="nav-link {% if request.endpoint == 'admin.users' %}active{% endif %}"
-            href="/users"
+            href="/admin/users"
             >Users</a
+          >
+        </li>
+
+        <li class="nav-item">
+          <a
+            class="nav-link {% if request.endpoint == 'admin.products' %}active{% endif %}"
+            href="/admin/reports"
+            >Reports</a
           >
         </li>
         {% if user %}

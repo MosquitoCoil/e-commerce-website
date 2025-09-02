@@ -1,17 +1,22 @@
-from flask import Blueprint, render_template, redirect, url_for, flash
+from flask import Blueprint, render_template, redirect, url_for, flash, session
 from database.database import get_db_connection
-from ....utils.decorators import role_required
+from ...utils.decorators import role_required
 
 adminTransactions_bp = Blueprint(
     "adminTransactions",
     __name__,
-    template_folder="../../../../frontend/templates/admin",
+    template_folder="../../../frontend/templates/admin",
 )
 
 
 @adminTransactions_bp.route("/admin/transactions")
 @role_required("admin")
 def adminTransactions():
+    user_id = session.get("user_id")
+    if not user_id:
+        flash("You must be logged in to checkout.", "error")
+        return redirect(url_for("login.login"))
+
     db = get_db_connection()
     cursor = db.cursor(dictionary=True)
 

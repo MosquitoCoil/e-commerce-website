@@ -13,7 +13,8 @@ from backend.routes.admin.users.deleteUser import deleteUser_bp
 from backend.routes.admin.products.addProduct import addProduct_bp
 from backend.routes.admin.products.editProducts import editProduct_bp
 from backend.routes.admin.products.deleteProduct import deleteProduct_bp
-from backend.routes.admin.client.adminTransaction import adminTransactions_bp
+from backend.routes.admin.adminTransaction import adminTransactions_bp
+from backend.routes.admin.adminReports import adminReports_bp
 
 
 # Client Side
@@ -50,6 +51,7 @@ app.register_blueprint(addProduct_bp)
 app.register_blueprint(editProduct_bp)
 app.register_blueprint(deleteProduct_bp)
 app.register_blueprint(adminTransactions_bp)
+app.register_blueprint(adminReports_bp)
 
 # Client Side
 app.register_blueprint(client_bp)
@@ -63,9 +65,28 @@ app.register_blueprint(transaction_bp)
 app.register_blueprint(authHome_bp)
 
 
-# @app.route("/")
-# def test():
-# return render_template("test.html")
+@app.route("/test")
+def test():
+    products = [
+        {
+            "id": 1,
+            "name": "Oversized Hoodie",
+            "price": 1800,
+            "stock": 5,
+            "image": "hoodie.jpg",
+        },
+        {
+            "id": 2,
+            "name": "Cargo Pants",
+            "price": 1600,
+            "stock": 0,
+            "image": "pants.jpg",
+        },
+    ]
+    lookbook_images = ["look1.jpg", "look2.jpg", "look3.jpg", "look4.jpg"]
+    return render_template(
+        "test.html", products=products, lookbook_images=lookbook_images
+    )
 
 
 def inject_user():

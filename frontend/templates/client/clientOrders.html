@@ -143,51 +143,59 @@ block content %}
   {% else %}
   <p>You have no orders yet.</p>
   {% endif %}
-  <h2><i class="bi bi-receipt"></i> Purchase History</h2>
-  <table class="table table-bordered mt-3 text-center">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Quantity</th>
-        <th>Price</th>
-        <th>Total</th>
-        <th>Received At</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for purchase in purchases %}
-      <tr>
-        <td>{{ loop.index }}</td>
-        <td>{{ purchase.quantity }}</td>
-        <td>₱{{ purchase.price }}</td>
-        <td>₱{{ purchase.total }}</td>
-        <td>{{ purchase.received_at }}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
-{% endblock %} {% block extra_script %}
+  <div class="container mt-5">
+    <h2><i class="bi bi-bag-check"></i> Purchase History</h2>
+    {% if purchases %}
+    <table class="table table-bordered text-center align-middle mt-3">
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Product</th>
+          <th>Quantity</th>
+          <th>Price</th>
+          <th>Total</th>
+          <th>Received At</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in purchases %}
+        <tr>
+          <td>{{ p.order_id }}</td>
+          <td>{{ p.product_name }}</td>
+          <td>{{ p.quantity }}</td>
+          <td>{{ p.price }}</td>
+          <td>{{ p.total }}</td>
+          <td>{{ p.received_at }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p class="text-muted">No purchase history yet.</p>
+    {% endif %}
+  </div>
+  {% endblock %} {% block extra_script %}
 
-<script src="{{ url_for('static', filename='js/jquery-3.7.1.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/jquery-3.7.1.min.js') }}"></script>
 
-<script src="{{ url_for('static', filename='bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='bootstrap.bundle.min.js') }}"></script>
 
-<script src="{{ url_for('static', filename='datatables/js/datatables.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='datatables/js/datatables.min.js') }}"></script>
 
-<script>
-  // Init DataTable
-  $(document).ready(function () {
-    $("#orderTable").DataTable({
-      pageLength: 5,
-      lengthMenu: [5, 10, 25, 50],
-      ordering: true,
-      searching: true,
-      language: {
-        search: '<i class="bi bi-search"></i>',
-        searchPlaceholder: "Search orders...",
-      },
+  <script>
+    // Init DataTable
+    $(document).ready(function () {
+      $("#orderTable").DataTable({
+        pageLength: 5,
+        lengthMenu: [5, 10, 25, 50],
+        ordering: true,
+        searching: true,
+        language: {
+          search: '<i class="bi bi-search"></i>',
+          searchPlaceholder: "Search orders...",
+        },
+      });
     });
-  });
-</script>
-{% endblock %}
+  </script>
+  {% endblock %}
+</div>
