@@ -1,32 +1,99 @@
-{% extends "base.html" %} {% block title %}Home | MyShop{% endblock %} {% block
-content %}
-<h1 class="text-center">Welcome to MyShop!</h1>
-<p class="lead text-center">T-shirt Collection</p>
-<div class="container mt-4">
-  <div class="row g-3">
-    {% for product in products %}
-    <div class="col-md-3 col-sm-6">
-      <div class="card border-0 bg-white text-center h-100 p-2">
-        <!-- Product Image -->
-        <img src="{{ url_for('static', filename='uploads/' ~ product.image) }}" class="card-img-top img-fluid"
-          alt="{{ product.name }}" style="max-height: 300px; object-fit: cover" />
-
-        <!-- Card Body -->
-        <div class="card-body p-2">
-          <h6 class="fw-semibold mb-1">{{ product.name }}</h6>
-          <p class="text-muted small mb-2">{{ product.description }}</p>
-          <p class="fw-bold mb-2">₱{{ "%.2f"|format(product.price) }}</p>
-
-          <!-- Add to Cart Button -->
-          <form action="{{ url_for('addToCart.addToCart', product_id=product.id) }}" method="POST">
-            <button type="submit" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#cartModal">
-              <i class="bi bi-cart-plus"></i> Add to Cart
-            </button>
-          </form>
-        </div>
+{% extends "base.html" %} {% block title %}Home | Collections{% endblock %} {%
+block content %}
+<div
+  data-bs-spy="scroll"
+  data-bs-target="#navbar-example2"
+  data-bs-root-margin="0px 0px -40%"
+  data-bs-smooth-scroll="true"
+  class="scrollspy-example"
+  tabindex="0"
+>
+  <section id="home">
+    <div class="container-fluid p-0 my-2">
+      <div class="text-center">
+        <img
+          src="/static/images/bg/jaymar.png"
+          class="img-fluid"
+          width="100%"
+          height="90vh"
+          alt="..."
+        />
       </div>
     </div>
-    {% endfor %}
-  </div>
+  </section>
+  <section id="collections">
+    <div class="container-sm mt-4">
+      <h1 class="text-left">Best Sellers</h1>
+      <p class="text-left">T-shirt Collections</p>
+      <div class="row g-3">
+        {% if view_all %} {% for product in products %}
+        <div class="col-md-3 col-sm-6">
+          <div class="card border-0 bg-white text-center h-100 p-2">
+            <img
+              src="{{ url_for('static', filename='uploads/' ~ product.image) }}"
+              class="card-img-top img-fluid"
+              alt="{{ product.name }}"
+              style="max-height: 250px; object-fit: cover"
+            />
+            <div class="card-body p-2">
+              <h6 class="fw-semibold mb-1">{{ product.name }}</h6>
+              <p class="text-muted small mb-2">{{ product.description }}</p>
+              <p class="fw-bold mb-2">₱{{ "%.2f"|format(product.price) }}</p>
+              <form
+                action="{{ url_for('addToCart.addToCart', product_id=product.id) }}"
+                method="POST"
+              >
+                <button type="submit" class="btn btn-dark">
+                  <i class="bi bi-cart-plus"></i> Add to Cart
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+        {% endfor %} {% else %} {% for product in products[:12] %}
+        <div class="col-md-3 col-sm-6">
+          <div class="card border-0 bg-white text-center h-100 p-2">
+            <img
+              src="{{ url_for('static', filename='uploads/' ~ product.image) }}"
+              class="card-img-top img-fluid"
+              alt="{{ product.name }}"
+              style="max-height: 250px; object-fit: cover"
+            />
+            <div class="card-body p-2">
+              <h6 class="fw-semibold mb-1">{{ product.name }}</h6>
+              <p class="text-muted small mb-2">{{ product.description }}</p>
+              <p class="fw-bold mb-2">₱{{ "%.2f"|format(product.price) }}</p>
+              <form
+                action="{{ url_for('addToCart.addToCart', product_id=product.id) }}"
+                method="POST"
+              >
+                <button type="submit" class="btn btn-dark">
+                  <i class="bi bi-cart-plus"></i> Add to Cart
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+        {% endfor %} {% endif %}
+      </div>
+
+      <!-- View All Button -->
+      {% if products|length > 12 %}
+      <div class="text-center mt-3">
+        {% if view_all %}
+        <a href="{{ url_for('home.home') }}" class="btn btn-outline-dark"
+          >See Less</a
+        >
+        {% else %}
+        <a
+          href="{{ url_for('home.home', view_all=1) }}"
+          class="btn btn-outline-dark"
+          >View All</a
+        >
+        {% endif %}
+      </div>
+      {% endif %}
+    </div>
+  </section>
 </div>
 {% endblock %}

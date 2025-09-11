@@ -1,42 +1,98 @@
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-        <!-- Brand / Logo -->
-        <a class="navbar-brand" href="/">MyShop</a>
+<nav
+  id="smartNavbar"
+  class="navbar navbar-expand-lg navbar-light bg-light container-sm fixed-top shadow"
+>
+  <div class="container-fluid px-5">
+    <!-- Logo on the left -->
+    <a class="navbar-brand ms-3" href="#">
+      <img src="/static/images/logo2.png" width="130" height="50" alt="Logo" />
+    </a>
 
-        <!-- Toggler for mobile -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+    <!-- Navbar Toggler (mobile) -->
+    <button
+      class="navbar-toggler me-3"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-        <!-- Navbar Links -->
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <!-- Common links -->
-                <li class="nav-item">
-                    <a class="nav-link {% if request.endpoint == 'home' %}active{% endif %}" href="/">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {% if request.endpoint == 'products' %}active{% endif %}"
-                        href="/products">Products</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {% if request.endpoint == 'about' %}active{% endif %}" href="/about">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {% if request.endpoint == 'contact' %}active{% endif %}"
-                        href="/contact">Contact</a>
-                </li>
-
-                <!-- Conditional links (depends if logged in or not) -->
-                <li class="nav-item">
-                    <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#registerModal">Register</a>
-                </li>
-            </ul>
-        </div>
+    <!-- Center links -->
+    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item {% if request.endpoint == 'home' %}active{% endif %}"><a class="nav-link" href="#home">Home</a></li>
+        <li class="nav-item {% if request.endpoint == 'collections' %}active{% endif %}">
+          <a class="nav-link" href="#collections">Collections</a>
+        </li>
+        <li class="nav-item {% if request.endpoint == 'about' %}active{% endif %}"><a class="nav-link" href="#about">About</a></li>
+        <li class="nav-item {% if request.endpoint == 'contact' %}active{% endif %}">
+          <a class="nav-link" href="#contact">Contact</a>
+        </li>
+      </ul>
     </div>
+        <ul class="navbar-nav ms-auto me-3">
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="userDropdown"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <i class="bi bi-person"></i>
+            </a>
+            <ul
+              class="dropdown-menu dropdown-menu-end custom-dropdown"
+              aria-labelledby="userDropdown"
+            >
+              <li>
+                <a
+                  class="dropdown-item d-flex align-items-center"
+                  href="#"
+                  data-bs-toggle="modal"
+                  data-bs-target="#loginModal"
+                >
+                  <i class="bi bi-box-arrow-in-right me-2"></i> Login
+                </a>
+              </li>
+              <li>
+                <a
+                  class="dropdown-item d-flex align-items-center"
+                  href="#"
+                  data-bs-toggle="modal"
+                  data-bs-target="#registerModal"
+                >
+                  <i class="bi bi-person-plus  me-2"></i> Register
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
 </nav>
+<script>
+  let prevScrollpos = window.pageYOffset;
+  const navbar = document.getElementById("smartNavbar");
+  navbar.style.top = "0"; // navbar visible on page load
+
+  window.onscroll = function () {
+    let currentScrollPos = window.pageYOffset;
+
+    if (prevScrollpos > currentScrollPos) {
+      // scrolling up → show navbar
+      navbar.style.top = "0";
+    } else {
+      // scrolling down → hide navbar
+      navbar.style.top = "-120px"; // adjust based on navbar height
+    }
+
+    prevScrollpos = currentScrollPos;
+  };
+</script>
