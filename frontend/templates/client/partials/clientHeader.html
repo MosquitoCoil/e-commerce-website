@@ -1,6 +1,11 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/client/dashboard">Client Panel</a>
+<nav
+  id="smartNavbar"
+  class="navbar navbar-expand-lg navbar-light bg-light container-sm fixed-top shadow"
+>
+  <div class="container-fluid px-5">
+    <a class="navbar-brand ms-3" href="#">
+      <img src="/static/images/logo2.png" width="130" height="50" alt="Logo" />
+    </a>
 
     <button
       class="navbar-toggler"
@@ -40,7 +45,7 @@
         {% if user %}
         <li class="nav-item dropdown">
           <a
-            class="nav-link dropdown-toggle"
+            class="nav-link dropdown-toggle d-flex align-items-center"
             href="#"
             id="navbarDropdown"
             role="button"
@@ -48,34 +53,31 @@
             aria-expanded="false"
           >
             Hello, {{ user['firstname'].capitalize() }}
+            <i class="bi bi-chevron-down ms-1" id="dropdownIcon"></i>
           </a>
           <ul
             class="dropdown-menu dropdown-menu-end"
             aria-labelledby="navbarDropdown"
           >
             <li>
-              <a class="dropdown-item" href="{{ url_for('client.client') }}"
-                ><i class="bi bi-person"></i> Profile</a
-              >
+              <a class="dropdown-item" href="{{ url_for('client.client') }}">
+                <i class="bi bi-person"></i> Profile
+              </a>
             </li>
-            <li></li>
+            <li><hr class="dropdown-divider" /></li>
             <li>
-              <hr class="dropdown-divider" />
+              <a class="dropdown-item" href="/orders">
+                <i class="bi bi-basket"></i> My Orders
+              </a>
             </li>
             <li>
-              <a class="dropdown-item" href="/orders"
-                ><i class="bi bi-basket"></i> My Orders</a
-              >
-            </li>
-            <li></li>
-
-            <li>
-              <a class="dropdown-item" href="{{ url_for('login.logout') }}"
-                ><i class="bi bi-box-arrow-right"></i> Logout</a
-              >
+              <a class="dropdown-item" href="{{ url_for('login.logout') }}">
+                <i class="bi bi-box-arrow-right"></i> Logout
+              </a>
             </li>
           </ul>
         </li>
+
         {% endif %}
       </ul>
     </div>
@@ -133,3 +135,36 @@
     </div>
   </div>
 </div>
+<script>
+  let prevScrollpos = window.pageYOffset;
+  const navbar = document.getElementById("smartNavbar");
+  navbar.style.top = "0"; // navbar visible on page load
+
+  window.onscroll = function () {
+    let currentScrollPos = window.pageYOffset;
+
+    if (prevScrollpos > currentScrollPos) {
+      // scrolling up → show navbar
+      navbar.style.top = "0";
+    } else {
+      // scrolling down → hide navbar
+      navbar.style.top = "-120px"; // adjust based on navbar height
+    }
+
+    prevScrollpos = currentScrollPos;
+  };
+  const dropdownToggle = document.getElementById("navbarDropdown");
+  const dropdownIcon = document.getElementById("dropdownIcon");
+
+  dropdownToggle.addEventListener("click", function () {
+    setTimeout(() => {
+      if (dropdownToggle.getAttribute("aria-expanded") === "true") {
+        dropdownIcon.classList.remove("bi-chevron-down");
+        dropdownIcon.classList.add("bi-chevron-up");
+      } else {
+        dropdownIcon.classList.remove("bi-chevron-up");
+        dropdownIcon.classList.add("bi-chevron-down");
+      }
+    }, 10);
+  });
+</script>

@@ -22,7 +22,7 @@
     {% include "partials/header.html" %} {% with messages =
     get_flashed_messages(with_categories=true) %} {% if messages %}
     <div
-      class="toast-container position-fixed top-0 start-50 translate-middle-x p-3"
+      class="toast-container position-fixed top-30 start-50 translate-middle-x p-3"
       style="z-index: 1100"
     >
       {% for category, message in messages %}
@@ -51,12 +51,20 @@
         aria-hidden="true"
       >
         <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content rounded-4 shadow-lg">
-            <div class="modal-header">
-              <h5 class="modal-title" id="loginModalLabel">Login</h5>
+          <div class="modal-content shadow-lg">
+            <div class="modal-header d-block">
+              <div class="w-100 text-center">
+                <img
+                  src="/static/images/logo2.png"
+                  width="130"
+                  height="50"
+                  alt="Logo"
+                />
+              </div>
+              <h5 class="modal-title ms-2" id="loginModalLabel">Login</h5>
               <button
                 type="button"
-                class="btn-close"
+                class="btn-close position-absolute top-0 end-0 m-2"
                 data-bs-dismiss="modal"
                 aria-label="Close"
               ></button>
@@ -72,7 +80,7 @@
                     class="form-control"
                     id="username"
                     name="username"
-                    placeholder="Enter your username"
+                    placeholder="Email"
                     required
                   />
                 </div>
@@ -84,7 +92,7 @@
                     class="form-control"
                     id="password"
                     name="password"
-                    placeholder="Enter your password"
+                    placeholder="Password"
                     required
                   />
                 </div>
@@ -101,9 +109,7 @@
                   >
                 </div>
 
-                <button type="submit" class="btn btn-primary w-100">
-                  Login
-                </button>
+                <button type="submit" class="btn btn-dark w-100">Login</button>
 
                 <p class="text-center mt-3">
                   Don’t have an account?
@@ -128,14 +134,20 @@
         aria-hidden="true"
       >
         <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content rounded-4 shadow-lg">
-            <div class="modal-header">
-              <h5 class="modal-title" id="registerModalLabel">
-                Create an Account
-              </h5>
+          <div class="modal-content shadow-lg">
+            <div class="modal-header d-block">
+              <div class="w-100 text-center">
+                <img
+                  src="/static/images/logo2.png"
+                  width="130"
+                  height="50"
+                  alt="Logo"
+                />
+              </div>
+              <h5 class="modal-title ms-2" id="registerModalLabel">Sign Up</h5>
               <button
                 type="button"
-                class="btn-close"
+                class="btn-close position-absolute top-0 end-0 m-2"
                 data-bs-dismiss="modal"
                 aria-label="Close"
               ></button>
@@ -184,12 +196,16 @@
                 </div>
                 <div class="mb-3">
                   <label for="is_admin" class="form-label">Role</label>
-                  <select class="form-select" id="is_admin" name="is_admin">
+                  <select
+                    class="form-select form-select-sm"
+                    id="is_admin"
+                    name="is_admin"
+                  >
                     <option value="user" selected>User</option>
                     <option value="admin">Admin</option>
                   </select>
                 </div>
-                <button type="submit" class="btn btn-primary w-100">
+                <button type="submit" class="btn btn-dark w-100">
                   Register
                 </button>
                 <p class="mt-3 text-center">

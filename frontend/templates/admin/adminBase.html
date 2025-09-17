@@ -27,7 +27,7 @@
     {% include "admin/partials/adminHeader.html" %} {% with messages =
     get_flashed_messages(with_categories=true) %} {% if messages %}
     <div
-      class="toast-container position-fixed top-0 start-50 translate-middle-x p-3"
+      class="toast-container position-fixed top-30 start-50 translate-middle-x p-3"
       style="z-index: 1100"
     >
       {% for category, message in messages %}
@@ -45,7 +45,7 @@
     </div>
     {% endif %} {% endwith %}
 
-    <main class="container mt-4">{% block content %} {% endblock %}</main>
+    <main>{% block content %} {% endblock %}</main>
 
     {% include "admin/partials/adminFooter.html" %} {% block extra_script %}
     <script src="{{ url_for('static', filename='bootstrap.bundle.min.js') }}"></script>

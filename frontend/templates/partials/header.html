@@ -21,33 +21,94 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <!-- Center links -->
-    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item {% if request.endpoint == 'home' %}active{% endif %}"><a class="nav-link" href="#home">Home</a></li>
-        <li class="nav-item {% if request.endpoint == 'collections' %}active{% endif %}">
-          <a class="nav-link" href="#collections">Collections</a>
+    <!-- Navbar content -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <!-- Center links -->
+      <ul class="navbar-nav mx-auto">
+        <li
+          class="nav-item {% if request.endpoint == 'home' %}active{% endif %}"
+        >
+          <a class="nav-link" href="{{ url_for('home.home') }}#home">Home</a>
         </li>
-        <li class="nav-item {% if request.endpoint == 'about' %}active{% endif %}"><a class="nav-link" href="#about">About</a></li>
-        <li class="nav-item {% if request.endpoint == 'contact' %}active{% endif %}">
-          <a class="nav-link" href="#contact">Contact</a>
+        <li
+          class="nav-item {% if request.endpoint == 'home' %}active{% endif %}"
+        >
+          <a class="nav-link" href="{{ url_for('home.home') }}#collections"
+            >Collections</a
+          >
+        </li>
+        <li
+          class="nav-item {% if request.endpoint == 'home' %}active{% endif %}"
+        >
+          <a class="nav-link" href="{{ url_for('home.home') }}#about">About</a>
+        </li>
+        <li
+          class="nav-item {% if request.endpoint == 'home' %}active{% endif %}"
+        >
+          <a class="nav-link" href="{{ url_for('home.home') }}#contact"
+            >Contact</a
+          >
         </li>
       </ul>
+
+      <!-- Right side -->
+      <ul class="navbar-nav ms-2">
+        {% if user %}
+        <!-- Dropdown if logged in -->
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle d-flex align-items-center"
+            href="#"
+            id="navbarDropdown"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Hello, {{ user['firstname'].capitalize() }}
+            <i class="bi bi-chevron-down ms-1" id="dropdownIcon"></i>
+          </a>
+          <ul
+            class="dropdown-menu dropdown-menu-end"
+            aria-labelledby="navbarDropdown"
+          >
+            <li>
+              <a class="dropdown-item" href="{{ url_for('client.client') }}">
+                <i class="bi bi-person"></i> Profile
+              </a>
+            </li>
+            <li><hr class="dropdown-divider" /></li>
+            <li>
+              <a class="dropdown-item" href="/cart">
+                <i class="bi bi-cart"></i> Cart
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="/client/transaction">
+                <i class="bi bi-list-ul"></i> Transaction
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{{ url_for('login.logout') }}">
+                <i class="bi bi-box-arrow-right"></i> Logout
+              </a>
+            </li>
+          </ul>
+        </li>
+        {% else %}
+        <!-- Person icon if not logged in -->
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            href="#"
+            data-bs-toggle="modal"
+            data-bs-target="#loginModal"
+          >
+            <i class="bi bi-person"></i>
+          </a>
+        </li>
+        {% endif %}
+      </ul>
     </div>
-        <ul class="navbar-nav ms-auto me-3">
-          <li class="nav-item dropdown">
-            <a
-              class="dropdown-item d-flex align-items-center"
-              href="#"
-              data-bs-toggle="modal"
-              data-bs-target="#loginModal"
-            >
-              <i class="bi bi-person"></i>
-            </a>
-          </li>
-        </ul>
-      </li>
-    </ul>
   </div>
 </nav>
 <script>

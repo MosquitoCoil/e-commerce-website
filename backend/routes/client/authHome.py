@@ -16,4 +16,4 @@ def authHome():
     products = cursor.fetchall()
     cursor.close()
     conn.close()
-    return render_template("clientHome.html", products=products)
+    return render_template("home.html", products=products)

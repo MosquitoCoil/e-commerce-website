@@ -98,3 +98,29 @@ body {
 .navbar-nav .nav-link.active::after {
   transform: scaleX(1);
 }
+/* Product hover effects */
+.product-card {
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-5px); /* subtle lift */
+}
+
+/* Image zoom */
+.product-image {
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-image {
+  transform: scale(1.05); /* zoom in */
+}
+
+/* Product name underline on hover */
+.product-name {
+  transition: all 0.3s ease;
+}
+
+.product-card:hover .product-name {
+  text-decoration: underline;
+}

@@ -23,20 +23,24 @@ block content %}
   </section>
   <section id="collections">
     <div class="container-sm mt-4">
-      <h1 class="text-left">Best Sellers</h1>
-      <p class="text-left">T-shirt Collections</p>
+      <h1 class="text-left">T-shirt Collections</h1>
+      <p class="text-left">Plain T-shirt & Oversized T-shirt</p>
       <div class="row g-3">
         {% if view_all %} {% for product in products %}
         <div class="col-md-3 col-sm-6">
-          <div class="card border-0 bg-white text-center h-100 p-2">
-            <img
-              src="{{ url_for('static', filename='uploads/' ~ product.image) }}"
-              class="card-img-top img-fluid"
-              alt="{{ product.name }}"
-              style="max-height: 250px; object-fit: cover"
-            />
+          <div
+            class="card border-0 bg-white text-center h-100 p-2 product-card"
+          >
+            <div class="overflow-hidden">
+              <img
+                src="{{ url_for('static', filename='uploads/' ~ product.image) }}"
+                class="card-img-top img-fluid product-image"
+                alt="{{ product.name }}"
+                style="max-height: 250px; object-fit: cover"
+              />
+            </div>
             <div class="card-body p-2">
-              <h6 class="fw-semibold mb-1">{{ product.name }}</h6>
+              <h6 class="fw-semibold mb-1 product-name">{{ product.name }}</h6>
               <p class="text-muted small mb-2">{{ product.description }}</p>
               <p class="fw-bold mb-2">₱{{ "%.2f"|format(product.price) }}</p>
               <form
@@ -52,15 +56,19 @@ block content %}
         </div>
         {% endfor %} {% else %} {% for product in products[:12] %}
         <div class="col-md-3 col-sm-6">
-          <div class="card border-0 bg-white text-center h-100 p-2">
-            <img
-              src="{{ url_for('static', filename='uploads/' ~ product.image) }}"
-              class="card-img-top img-fluid"
-              alt="{{ product.name }}"
-              style="max-height: 250px; object-fit: cover"
-            />
+          <div
+            class="card border-0 bg-white text-center h-100 p-2 product-card"
+          >
+            <div class="overflow-hidden">
+              <img
+                src="{{ url_for('static', filename='uploads/' ~ product.image) }}"
+                class="card-img-top img-fluid product-image"
+                alt="{{ product.name }}"
+                style="max-height: 250px; object-fit: cover"
+              />
+            </div>
             <div class="card-body p-2">
-              <h6 class="fw-semibold mb-1">{{ product.name }}</h6>
+              <h6 class="fw-semibold mb-1 product-name">{{ product.name }}</h6>
               <p class="text-muted small mb-2">{{ product.description }}</p>
               <p class="fw-bold mb-2">₱{{ "%.2f"|format(product.price) }}</p>
               <form

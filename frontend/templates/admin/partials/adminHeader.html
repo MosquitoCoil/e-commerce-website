@@ -1,6 +1,11 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/admin/dashboard">Admin Panel</a>
+<nav
+  id="smartNavbar"
+  class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow"
+>
+  <div class="container-sm">
+    <a class="navbar-brand ms-3" href="/admin/dashboard">
+      <img src="/static/images/logo.png" width="130" height="50" alt="Logo" />
+    </a>
 
     <button
       class="navbar-toggler"
@@ -62,7 +67,7 @@
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            Hello, {{ user['firstname'].capitalize() }}
+            Hello, {{ user['is_admin'].capitalize() }}
           </a>
           <ul
             class="dropdown-menu dropdown-menu-end"
@@ -144,3 +149,22 @@
     </div>
   </div>
 </div>
+<script>
+  let prevScrollpos = window.pageYOffset;
+  const navbar = document.getElementById("smartNavbar");
+  navbar.style.top = "0"; // navbar visible on page load
+
+  window.onscroll = function () {
+    let currentScrollPos = window.pageYOffset;
+
+    if (prevScrollpos > currentScrollPos) {
+      // scrolling up → show navbar
+      navbar.style.top = "0";
+    } else {
+      // scrolling down → hide navbar
+      navbar.style.top = "-120px"; // adjust based on navbar height
+    }
+
+    prevScrollpos = currentScrollPos;
+  };
+</script>

@@ -1,6 +1,6 @@
 {% extends "adminBase.html" %} {% block title %}Admin Dashboard{% endblock %} {%
 block content %}
-<div class="container-fluid">
+<div class="container mt-4 vh-100">
   <h1 class="mb-4">Welcome to Admin Dashboard</h1>
 
   <div class="row g-4">
@@ -48,5 +48,101 @@ block content %}
       </div>
     </div>
   </div>
+
+  <h2 class="mt-4"><i class="bi bi-bar-chart"></i> Sales Reports</h2>
+  <!-- Daily Sales Table -->
+  <h4 class="mt-4">Daily Sales</h4>
+  <table class="table table-bordered text-center">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Total Sales</th>
+        <th>Products Sold</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in daily_sales %}
+      <tr>
+        <td>{{ row.sale_date }}</td>
+        <td>₱{{ row.total_sales }}</td>
+        <td>{{ row.total_products_sold }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- Monthly Sales Table -->
+  <h4 class="mt-5">Monthly Sales</h4>
+  <table class="table table-bordered text-center">
+    <thead>
+      <tr>
+        <th>Month</th>
+        <th>Total Sales</th>
+        <th>Products Sold</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in monthly_sales %}
+      <tr>
+        <td>{{ row.sale_month }}</td>
+        <td>₱{{ row.total_sales }}</td>
+        <td>{{ row.total_products_sold }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
+
+<script id="daily-labels" type="application/json">
+  {{ daily_sales_labels|tojson }}
+</script>
+<script id="daily-data" type="application/json">
+  {{ daily_sales_values|tojson }}
+</script>
+<script>
+  // Parse JSON safely
+  const dailyLabels = JSON.parse(
+    document.getElementById("daily-labels").textContent
+  );
+  const dailyData = JSON.parse(
+    document.getElementById("daily-data").textContent
+  );
+
+  // Daily Sales Chart
+  new Chart(document.getElementById("dailySalesChart").getContext("2d"), {
+    type: "line",
+    data: {
+      labels: dailyLabels,
+      datasets: [
+        {
+          label: "Daily Sales (₱)",
+          data: dailyData,
+          borderColor: "blue",
+          backgroundColor: "rgba(0, 123, 255, 0.2)",
+          fill: true,
+          tension: 0.3,
+        },
+      ],
+    },
+    options: { responsive: true },
+  });
+
+  // Monthly Sales Chart
+  new Chart(document.getElementById("monthlySalesChart").getContext("2d"), {
+    type: "bar",
+    data: {
+      labels: monthlyLabels,
+      datasets: [
+        {
+          label: "Monthly Sales (₱)",
+          data: monthlyData,
+          backgroundColor: "rgba(40, 167, 69, 0.6)",
+          borderColor: "green",
+          borderWidth: 1,
+        },
+      ],
+    },
+    options: { responsive: true },
+  });
+</script>
 {% endblock %}
