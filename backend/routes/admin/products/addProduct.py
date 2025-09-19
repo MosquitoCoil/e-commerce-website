@@ -23,7 +23,7 @@ def allowed_file(filename):
 
 
 @addProduct_bp.route("/add-product", methods=["GET", "POST"])
-@role_required('admin') 
+@role_required("admin")
 def addProduct():
     upload_folder = current_app.config.get("UPLOAD_FOLDER", "static/uploads")
     os.makedirs(upload_folder, exist_ok=True)
@@ -49,7 +49,7 @@ def addProduct():
         )
         conn.commit()
         flash("Product added successfully!", "success")
-        return redirect(url_for("productList.productList"))
-    
+        return redirect(url_for("adminProductlist.adminProductlist"))
+
     # If GET request → just redirect back to users list
-    return redirect(url_for("productList.productList"))
+    return redirect(url_for("adminProductlist.adminProductlist"))

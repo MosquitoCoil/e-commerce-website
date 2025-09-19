@@ -7,8 +7,9 @@ addUser_bp = Blueprint(
     "addUser", __name__, template_folder="../../../../frontend/templates/admin"
 )
 
+
 @addUser_bp.route("/add-user", methods=["GET", "POST"])
-@role_required('admin')
+@role_required("admin")
 def addUser():
     if request.method == "POST":
         firstname = request.form.get("firstname")
@@ -19,7 +20,7 @@ def addUser():
 
         if not firstname or not lastname or not username or not password:
             flash(f"All fields are required!", "danger")
-            return redirect(url_for("userList.userList"))
+            return redirect(url_for("adminUserList.adminUserList"))
 
         hashed_password = generate_password_hash(password)
 
@@ -37,7 +38,7 @@ def addUser():
         conn.close()
 
         flash(f"User successfully added!", "success")
-        return redirect(url_for("userList.userList"))
+        return redirect(url_for("adminUserList.adminUserList"))
 
     # If GET request → just redirect back to users list
-    return redirect(url_for("userList.userList"))
+    return redirect(url_for("adminUserList.adminUserList"))

@@ -2,12 +2,12 @@ from flask import Blueprint, render_template, flash, redirect, url_for, session
 from ...utils.decorators import role_required
 from database.database import get_db_connection
 
-productList_bp = Blueprint(
-    "productList", __name__, template_folder="../../../frontend/templates/admin"
+adminProductlist_bp = Blueprint(
+    "adminProductlist", __name__, template_folder="../../../frontend/templates/admin"
 )
 
 
-@productList_bp.route("/admin/products")
+@adminProductlist_bp.route("/admin/products")
 @role_required("admin")
 def productList():
     user_id = session.get("user_id")
@@ -21,4 +21,4 @@ def productList():
     products = cursor.fetchall()
     conn.close()
 
-    return render_template("productList.html", products=products)
+    return render_template("adminProductList.html", products=products)

@@ -14,3 +14,17 @@ def home():
     cursor.close()
     conn.close()
     return render_template("home.html", products=products, view_all=view_all)
+
+
+@home_bp.route("/product/<int:product_id>")
+def productDetail(product_id):
+    conn = get_db_connection()
+    cur = conn.cursor(dictionary=True)
+    cur.execute("SELECT * FROM products WHERE id = %s", (product_id,))
+    product = cur.fetchone()
+    conn.close()
+
+    if not product:
+        return "Product not found", 404
+
+    return render_template("productDetail.html", product=product)

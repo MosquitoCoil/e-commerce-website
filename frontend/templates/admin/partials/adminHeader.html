@@ -67,7 +67,8 @@
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            Hello, {{ user['is_admin'].capitalize() }}
+            Hello, {{ user['is_admin'].capitalize() }} {{
+            user['is_admin'].capitalize() }}
           </a>
           <ul
             class="dropdown-menu dropdown-menu-end"

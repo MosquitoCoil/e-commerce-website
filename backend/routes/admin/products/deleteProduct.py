@@ -24,4 +24,4 @@ def deleteProduct(product_id):
     except Exception as e:
         flash(f"Error deleting Product: {str(e)}", "error")
 
-    return redirect(url_for("productList.productList"))
+    return redirect(url_for("adminProductlist.adminProductlist"))

@@ -5,8 +5,8 @@ from backend.auth.register import register_bp
 
 # Admin Side
 from backend.routes.admin.adminRoute import admin_bp
-from backend.routes.admin.userList import userList_bp
-from backend.routes.admin.productList import productList_bp
+from backend.routes.admin.adminUserList import adminUserList_bp
+from backend.routes.admin.adminProductList import adminProductlist_bp
 from backend.routes.admin.users.addUser import addUser_bp
 from backend.routes.admin.users.editUser import editUser_bp
 from backend.routes.admin.users.deleteUser import deleteUser_bp
@@ -40,8 +40,8 @@ app.register_blueprint(login_bp)
 app.register_blueprint(register_bp)
 # Admin Side
 app.register_blueprint(admin_bp)
-app.register_blueprint(userList_bp)
-app.register_blueprint(productList_bp)
+app.register_blueprint(adminUserList_bp)
+app.register_blueprint(adminProductlist_bp)
 app.register_blueprint(addUser_bp)
 app.register_blueprint(editUser_bp)
 app.register_blueprint(deleteUser_bp)

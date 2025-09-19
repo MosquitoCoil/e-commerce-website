@@ -7,19 +7,20 @@ editUser_bp = Blueprint(
     "editUser", __name__, template_folder="../../../../frontend/templates/admin"
 )
 
+
 # edit users
 @editUser_bp.route("/edit-user/<int:user_id>", methods=["POST"])
-@role_required('admin')
+@role_required("admin")
 def editUser(user_id):
-    firstname = request.form.get('firstname')
-    lastname = request.form.get('lastname')
-    username = request.form.get('username')
+    firstname = request.form.get("firstname")
+    lastname = request.form.get("lastname")
+    username = request.form.get("username")
     password = request.form.get("password")
-    is_admin = request.form.get('is_admin')
+    is_admin = request.form.get("is_admin")
 
     if not firstname or not lastname or not username:
         flash(f"Firstname, Lastname, and Username are required.", "danger")
-        return redirect(url_for("userList.userList"))
+        return redirect(url_for("adminUserList.adminUserList"))
 
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
@@ -45,4 +46,4 @@ def editUser(user_id):
     conn.close()
 
     flash(f"User updated successfully.", "success")
-    return redirect(url_for("userList.userList"))
+    return redirect(url_for("adminUserList.adminUserList"))

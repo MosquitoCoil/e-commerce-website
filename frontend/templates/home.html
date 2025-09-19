@@ -12,7 +12,7 @@ block content %}
     <div class="container-fluid p-0 my-2">
       <div class="text-center">
         <img
-          src="/static/images/bg/jaymar.png"
+          src="{{ url_for('static', filename='images/bg/jaymar.png') }}"
           class="img-fluid"
           width="100%"
           height="90vh"
@@ -40,7 +40,14 @@ block content %}
               />
             </div>
             <div class="card-body p-2">
-              <h6 class="fw-semibold mb-1 product-name">{{ product.name }}</h6>
+              <h6 class="fw-semibold mb-1 product-name">
+                <a
+                  href="{{ url_for('home.productDetail', product_id=product.id) }}"
+                  class="text-dark text-decoration-none"
+                >
+                  {{ product.name }}
+                </a>
+              </h6>
               <p class="text-muted small mb-2">{{ product.description }}</p>
               <p class="fw-bold mb-2">₱{{ "%.2f"|format(product.price) }}</p>
               <form
@@ -68,7 +75,14 @@ block content %}
               />
             </div>
             <div class="card-body p-2">
-              <h6 class="fw-semibold mb-1 product-name">{{ product.name }}</h6>
+              <h6 class="fw-semibold mb-1 product-name">
+                <a
+                  href="{{ url_for('home.productDetail', product_id=product.id) }}"
+                  class="text-dark text-decoration-none"
+                >
+                  {{ product.name }}
+                </a>
+              </h6>
               <p class="text-muted small mb-2">{{ product.description }}</p>
               <p class="fw-bold mb-2">₱{{ "%.2f"|format(product.price) }}</p>
               <form
@@ -101,6 +115,88 @@ block content %}
         {% endif %}
       </div>
       {% endif %}
+    </div>
+  </section>
+  <section id="about" class="py-5">
+    <div class="container-sm">
+      <hr class="my-4" />
+      <div class="row align-items-center">
+        <!-- Image / Project Visual -->
+        <div class="col-lg-6 mb-4 mb-lg-0">
+          <img
+            src="{{ url_for('static', filename='images/bg/jaymar.png') }}"
+            alt="Jaymar Clothing"
+            class="img-fluid rounded shadow"
+          />
+        </div>
+
+        <!-- Text Content -->
+        <div class="col-lg-6">
+          <h2 class="fw-bold mb-3">
+            <i class="bi bi-code-slash"></i> About This Project
+          </h2>
+
+          <h5 class="fw-bold mt-4">🧵 The Beginning</h5>
+          <p class="lead text-muted">
+            Every project starts with a spark. Mine began with the idea of
+            building a platform where clothing and technology meet—a fully
+            functional e-commerce website for clothing. <br />Back in Quezon
+            City, I was just a learner, experimenting with code, frameworks, and
+            design. <br />But I wanted something real—something I could build
+            from scratch and be proud of. Not just a demo, not just a school
+            project. <br />A complete system that people could actually use. And
+            that was my very first chapter.
+          </p>
+
+          <h5 class="fw-bold mt-4">🌟 From Code to Creation</h5>
+          <p>
+            I started with one page. Then another. Slowly, the site grew—product
+            listings, shopping cart, checkout, authentication, and even an admin
+            panel.
+            <br />
+            What once felt impossible started coming together piece by piece.<br />
+            That’s when I realized: this wasn’t just practice anymore.<br />
+            👉 This was a <strong>real e-commerce platform</strong>, built with
+            Flask (Python), MySQL, and Bootstrap.
+          </p>
+
+          <h5 class="fw-bold mt-4">💡 The Bigger Vision</h5>
+          <p>
+            This project is more than a website—it’s a stepping stone toward my
+            dream of becoming a <strong>back-end web developer</strong>.
+            <br />
+            I want to keep learning, keep building, and eventually create
+            platforms that can scale and serve businesses worldwide.
+            <br />
+            I’m not here to copy what’s already been done. I’m here to create,
+            innovate, and grow—one project at a time.
+          </p>
+
+          <h5 class="fw-bold mt-4">🔥 What This Project Stands For</h5>
+          <p>
+            This e-commerce site isn’t just lines of code. <br />It represents
+            my belief that technology should be practical, creative, and
+            meaningful. <br />Every feature and function is built with the goal
+            of solving real problems and making life easier for users.<br />
+          </p>
+
+          <div class="mt-4">
+            <a
+              href="{{ url_for('home.home') }}#home"
+              class="btn btn-dark btn-lg shadow-sm"
+            >
+              View Demo
+            </a>
+            <a
+              href="{{ url_for('home.home') }}#contact"
+              class="btn btn-outline-dark btn-lg ms-3"
+            >
+              Let’s Connect
+            </a>
+          </div>
+        </div>
+      </div>
+      <hr class="my-4" />
     </div>
   </section>
 </div>

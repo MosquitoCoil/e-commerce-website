@@ -3,12 +3,12 @@ from ...utils.decorators import role_required
 from database.database import get_db_connection
 
 
-userList_bp = Blueprint(
-    "userList", __name__, template_folder="../../../frontend/templates/admin"
+adminUserList_bp = Blueprint(
+    "adminUserList", __name__, template_folder="../../../frontend/templates/admin"
 )
 
 
-@userList_bp.route("/admin/users")
+@adminUserList_bp.route("/admin/users")
 @role_required("admin")
 def userList():
     user_id = session.get("user_id")
@@ -24,4 +24,4 @@ def userList():
     users = cursor.fetchall()
     conn.close()
 
-    return render_template("userList.html", users=users)
+    return render_template("adminUserList.html", users=users)

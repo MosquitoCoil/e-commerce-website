@@ -174,28 +174,28 @@ block content %}
     <p class="text-muted">No purchase history yet.</p>
     {% endif %}
   </div>
-  {% endblock %} {% block extra_script %}
-
-  <script src="{{ url_for('static', filename='js/jquery-3.7.1.min.js') }}"></script>
-
-  <script src="{{ url_for('static', filename='bootstrap.bundle.min.js') }}"></script>
-
-  <script src="{{ url_for('static', filename='datatables/js/datatables.min.js') }}"></script>
-
-  <script>
-    // Init DataTable
-    $(document).ready(function () {
-      $("#orderTable").DataTable({
-        pageLength: 5,
-        lengthMenu: [5, 10, 25, 50],
-        ordering: true,
-        searching: true,
-        language: {
-          search: '<i class="bi bi-search"></i>',
-          searchPlaceholder: "Search orders...",
-        },
-      });
-    });
-  </script>
-  {% endblock %}
 </div>
+{% endblock %} {% block extra_script %}
+
+<script src="{{ url_for('static', filename='js/jquery-3.7.1.min.js') }}"></script>
+
+<script src="{{ url_for('static', filename='bootstrap.bundle.min.js') }}"></script>
+
+<script src="{{ url_for('static', filename='datatables/js/datatables.min.js') }}"></script>
+
+<script>
+  // Init DataTable
+  $(document).ready(function () {
+    $("#orderTable").DataTable({
+      pageLength: 5,
+      lengthMenu: [5, 10, 25, 50],
+      ordering: true,
+      searching: true,
+      language: {
+        search: '<i class="bi bi-search"></i>',
+        searchPlaceholder: "Search orders...",
+      },
+    });
+  });
+</script>
+{% endblock %}
