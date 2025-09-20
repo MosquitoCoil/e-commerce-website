@@ -29,6 +29,8 @@ from backend.routes.client.clientOrders import clientOrders_bp
 # Profile
 from backend.routes.profile import profile_bp
 
+# Email
+from backend.routes.email import email_bp
 
 app = Flask(__name__, template_folder="./frontend/templates")
 app.secret_key = "supersecret"
@@ -63,6 +65,8 @@ app.register_blueprint(clientOrders_bp)
 
 # Profile
 app.register_blueprint(profile_bp)
+# Email
+app.register_blueprint(email_bp)
 
 
 @app.route("/test")
