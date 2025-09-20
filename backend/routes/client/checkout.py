@@ -32,7 +32,7 @@ def checkout():
 
     if not cart_items:
         flash("Your cart is empty!", "error")
-        return redirect(url_for("cart.cart"))
+        return redirect(url_for("clientCart.clientCart"))
 
     # Calculate total
     total = sum(item["price"] * item["quantity"] for item in cart_items)
@@ -62,4 +62,4 @@ def checkout():
     db.close()
 
     flash("Order placed successfully! Waiting for admin approval.", "success")
-    return redirect(url_for("transaction.transaction"))
+    return redirect(url_for("clientOrders.clientOrders"))

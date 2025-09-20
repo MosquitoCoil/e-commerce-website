@@ -6,7 +6,7 @@
     <title>{% block title %} Admin Panel {% endblock %}</title>
     <link
       rel="stylesheet"
-      href="{{ url_for('static', filename='bootstrap.min.css') }}"
+      href="{{ url_for('static', filename='/css/bootstrap.min.css') }}"
     />
     <link
       rel="stylesheet"
@@ -14,12 +14,31 @@
     />
     <link
       rel="stylesheet"
-      href="{{ url_for('static', filename='dataTables/css/dataTables.bootstrap5.css') }}"
+      href="{{ url_for('static', filename='bootstrap-icons/font/bootstrap-icons.css') }}"
     />
     <link
       rel="stylesheet"
-      href="{{ url_for('static', filename='bootstrap-icons/font/bootstrap-icons.css') }}"
+      href="{{ url_for('static', filename='css/dataTables.bootstrap5.min.css') }}"
     />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/responsive.bootstrap5.min.css') }}"
+    />
+    <style>
+      .modal-backdrop {
+        z-index: 1050 !important;
+      }
+
+      .modal {
+        z-index: 1060 !important;
+      }
+
+      /* hide header when modal open */
+      body.modal-open .navbar,
+      body.modal-open header {
+        display: none !important;
+      }
+    </style>
   </head>
 
   <body>
@@ -45,10 +64,195 @@
     </div>
     {% endif %} {% endwith %}
 
-    <main>{% block content %} {% endblock %}</main>
+    <main>
+      {% block content %} {% endblock %}
+      <!-- Profile Modal -->
+      <div
+        class="modal fade"
+        id="profileModal"
+        tabindex="-1"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content bg-dark text-white">
+            <div class="modal-header d-block">
+              <div class="w-100 text-center">
+                <img
+                  src="/static/images/logo.png"
+                  width="130"
+                  height="50"
+                  alt="Logo"
+                />
+              </div>
+              <button
+                type="button"
+                class="btn-close btn-close-white position-absolute top-0 end-0 m-2"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+              <h5 class="modal-title">
+                <i class="bi bi-person"></i> My Profile
+              </h5>
+            </div>
+            <div class="modal-body bg-dark text-white">
+              <ul class="list-group">
+                <li class="list-group-item bg-dark text-white">
+                  <strong>Username:</strong> {{ user.username }}
+                </li>
+                <li class="list-group-item bg-dark text-white">
+                  <strong>First Name:</strong> {{ user.firstname }}
+                </li>
+                <li class="list-group-item bg-dark text-white">
+                  <strong>Address:</strong> {{ user.address }}
+                </li>
+                <li class="list-group-item bg-dark text-white">
+                  <strong>Account Type:</strong>
+                  {% if user.is_admin %} Admin {% else %} User {% endif %}
+                </li>
+                <li class="list-group-item bg-dark text-white">
+                  <strong>Joined:</strong> {{ user.created_at }}
+                </li>
+              </ul>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-secondary" data-bs-dismiss="modal">
+                Close
+              </button>
+              <button
+                class="btn btn-primary"
+                href="#"
+                data-bs-toggle="modal"
+                data-bs-target="#editProfileModal"
+                id="openEditProfile"
+              >
+                <i class="bi bi-pencil"></i> Edit Profile
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Edit Profile Modal -->
+      <div
+        class="modal fade"
+        id="editProfileModal"
+        tabindex="-1"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content bg-dark text-white">
+            <div class="modal-header d-block">
+              <div class="w-100 text-center">
+                <img
+                  src="/static/images/logo2.png"
+                  width="130"
+                  height="50"
+                  alt="Logo"
+                />
+              </div>
+              <button
+                type="button"
+                class="btn-close btn-close-white position-absolute top-0 end-0 m-2"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+              <h5 class="modal-title">
+                <i class="bi bi-pencil"></i> Edit Profile
+              </h5>
+            </div>
+
+            <form
+              id="editProfileForm"
+              method="POST"
+              action="/client/edit-profile"
+            >
+              <div class="modal-body">
+                <div class="mb-3">
+                  <label for="username" class="form-label">Username</label>
+                  <input
+                    type="text"
+                    class="form-control bg-dark text-white"
+                    id="username"
+                    name="username"
+                    value="{{ user.username }}"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="firstname" class="form-label">First Name</label>
+                  <input
+                    type="text"
+                    class="form-control bg-dark text-white"
+                    id="firstname"
+                    name="firstname"
+                    value="{{ user.firstname }}"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="lastname" class="form-label">Last Name</label>
+                  <input
+                    type="text"
+                    class="form-control bg-dark text-white"
+                    id="lastname"
+                    name="lastname"
+                    value="{{ user.lastname }}"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="address" class="form-label">Address</label>
+                  <input
+                    type="text"
+                    class="form-control bg-dark text-white"
+                    id="address"
+                    name="address"
+                    value="{{ user.address }}"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="password" class="form-label">New Password</label>
+                  <input
+                    type="password"
+                    class="form-control bg-dark text-white"
+                    id="password"
+                    name="password"
+                    placeholder="Leave blank to keep current password"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="accountType" class="form-label"
+                    >Account Type</label
+                  >
+                  <select
+                    class="form-select bg-dark text-white"
+                    id="accountType"
+                    name="is_admin"
+                  >
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                  </select>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-success">
+                  Save Changes
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
 
     {% include "admin/partials/adminFooter.html" %} {% block extra_script %}
-    <script src="{{ url_for('static', filename='bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/dataTables.bootstrap5.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='profileModal.js')}}"></script>
     <script>
       // Auto-dismiss flash messages after 4 seconds
       setTimeout(() => {

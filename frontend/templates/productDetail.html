@@ -13,26 +13,26 @@ endblock %} {% block content %}
 
     <!-- Product Info -->
     <div class="col-md-6">
-      <h2 class="fw-bold">{{ product.name }}</h2>
-      <p class="text-muted">{{ product.description }}</p>
-      <h4 class="fw-bold text-danger">₱{{ "%.2f"|format(product.price) }}</h4>
+      <h2>{{ product.name }}</h2>
+      <p>{{ product.description }}</p>
+      <p><strong>₱{{ product.price }}</strong></p>
 
-      <!-- (Optional) Sizes -->
-      <div class="my-3">
-        <label class="fw-semibold">Size:</label>
-        <select class="form-select w-auto d-inline-block">
-          <option>Small</option>
-          <option>Medium</option>
-          <option>Large</option>
-          <option>XL</option>
-        </select>
-      </div>
-
-      <!-- Add to Cart -->
       <form
-        action="{{ url_for('addToCart.addToCart', product_id=product.id) }}"
         method="POST"
+        action="{{ url_for('addToCart.addToCart', product_id=product.id) }}"
       >
+        <label for="size">Select Size:</label>
+        <div class="mb-3">
+          {% for v in variants %} <input type="radio" class="btn-check"
+          name="size" id="size-{{ v.size }}" value="{{ v.size }}" {% if v.stock
+          == 0 %}disabled{% endif %}>
+          <label class="btn btn-outline-dark m-1" for="size-{{ v.size }}">
+            {{ v.size }} {% if v.stock == 0 %}(Out of Stock){% endif %}
+          </label>
+          {% endfor %}
+        </div>
+
+        <!-- Add to Cart -->
         <button type="submit" class="btn btn-dark btn-lg">
           <i class="bi bi-cart-plus"></i> Add to Cart
         </button>

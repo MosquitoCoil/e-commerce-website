@@ -9,7 +9,7 @@ adminProductlist_bp = Blueprint(
 
 @adminProductlist_bp.route("/admin/products")
 @role_required("admin")
-def productList():
+def adminProductlist():
     user_id = session.get("user_id")
     if not user_id:
         flash("You must be logged in to checkout.", "error")
@@ -17,8 +17,18 @@ def productList():
 
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
+
+    # Get all products
     cursor.execute("SELECT * FROM products")
     products = cursor.fetchall()
+
+    # For each product, get its variants
+    for p in products:
+        cursor.execute(
+            "SELECT * FROM product_variants WHERE product_id = %s", (p["id"],)
+        )
+        p["variants"] = cursor.fetchall()
+
     conn.close()
 
     return render_template("adminProductList.html", products=products)

@@ -7,7 +7,7 @@ editCart_bp = Blueprint(
 )
 
 
-@editCart_bp.route("/cart/update/<int:cart_id>/<action>", methods=["POST"])
+@editCart_bp.route("/clientCart/update/<int:cart_id>/<action>", methods=["POST"])
 @role_required("user")
 def editCart(cart_id, action):
 
@@ -31,4 +31,4 @@ def editCart(cart_id, action):
     cursor.close()
     conn.close()
 
-    return redirect(url_for("cart.cart"))
+    return redirect(url_for("clientCart.clientCart"))

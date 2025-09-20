@@ -1,187 +1,190 @@
-{% extends "clientBase.html" %} {% block title %}Home | MyShop{% endblock %} {%
-block content %}
-<div class="container mt-4 vh-100">
-  <h2><i class="bi bi-box-seam"></i> My Orders</h2>
+{% extends "base.html" %} {% block title %}Home | MyShop{% endblock %} {% block
+content %}
+<div class="container-fluid mt-4">
+  <div class="container-sm">
+    <h2><i class="bi bi-box-seam"></i> My Orders</h2>
 
-  {% if orders %}
-  <table
-    id="orderTable"
-    class="table table-bordered text-center align-middle mt-3"
-  >
-    <thead>
-      <tr>
-        <th>No.</th>
-        <th>Order ID</th>
-        <th>Total</th>
-        <th>Date</th>
-        <th>Action</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for order in orders %}
-      <tr>
-        <td>{{ loop.index }}</td>
-        <td>{{ order.id }}</td>
-        <td>₱{{ order.total }}</td>
-        <td>{{ order.created_at }}</td>
-        <td>
-          <!-- View Details Button -->
-          <button
-            class="btn btn-sm btn-dark"
-            data-bs-toggle="modal"
-            data-bs-target="#orderModal{{ order.id }}"
-          >
-            View Details
-          </button>
-        </td>
-        <td>
-          {% if order.status == "Pending" %}
-          <span class="btn btn-sm btn-warning">{{ order.status }}</span>
-          {% elif order.status == "Processing" %}
-          <span class="btn btn-sm btn-primary">{{ order.status }}</span>
-          {% elif order.status == "Delivered" %}
-          <span class="btn btn-sm btn-dark">{{ order.status }}</span>
-          {% elif order.status == "Completed" %}
-          <span class="btn btn-sm btn-success">{{ order.status }}</span>
-          {% elif order.status == "Cancelled" %}
-          <span class="btn btn-sm btn-danger">{{ order.status }}</span>
-          {% elif order.status == "Received" %}
-          <span class="btn btn-sm btn-success"
-            ><i class="bi bi-check"></i> {{ order.status }}</span
-          >
-          {% else %}
-          <span class="btn btn-sm btn-secondary">{{ order.status }}</span>
-          {% endif %}
-        </td>
-      </tr>
-
-      <!-- Modal for this order -->
-      <div
-        class="modal fade"
-        id="orderModal{{ order.id }}"
-        tabindex="-1"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-          <div class="modal-content p-3">
-            <div class="modal-header">
-              <h5 class="modal-title">Order #{{ order.id }} Details</h5>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-              ></button>
-            </div>
-            <div class="modal-body">
-              <ul class="list-group mb-3">
-                {% for item in order_items[order.id] %}
-                <li
-                  class="list-group-item d-flex justify-content-between align-items-center"
-                >
-                  <div>
-                    <strong>{{ item.name }}</strong><br />
-                    <small>₱{{ item.price }} × {{ item.quantity }}</small>
-                  </div>
-                  <span>₱{{ item.price * item.quantity }}</span>
-                </li>
-                {% endfor %}
-              </ul>
-              <div class="d-flex justify-content-between">
-                <h5>Total</h5>
-                <h5>₱{{ order.total }}</h5>
-              </div>
-            </div>
-            <div class="modal-footer">
-              {% if order.status == "Pending" %}
-              <form
-                action="{{ url_for('transaction.undo_checkout', order_id=order.id) }}"
-                method="POST"
-                style="display: inline"
-              >
-                <button type="submit" class="btn btn-warning">
-                  <i class="bi bi-arrow-counterclockwise"></i> Undo Checkout
-                </button>
-              </form>
-              {% elif order.status == "Completed" %}
-              <form
-                action="{{ url_for('transaction.mark_as_received', order_id=order.id) }}"
-                method="POST"
-                style="display: inline"
-              >
-                <button type="submit" class="btn btn-warning">
-                  <i class="bi bi-check2-circle"></i> Received
-                </button>
-              </form>
-              {% else %}
-              <span class="text-muted">
-                {% if order.status == "Pending" %}
-                <span class="btn btn-warning">{{ order.status }}</span>
-                {% elif order.status == "Processing" %}
-                <span class="btn btn-primary">{{ order.status }}</span>
-                {% elif order.status == "Delivered" %}
-                <span class="btn btn-dark">{{ order.status }}</span>
-                {% elif order.status == "Completed" %}
-                <span class="btn btn-success">{{ order.status }}</span>
-                {% elif order.status == "Cancelled" %}
-                <span class="btn btn-danger">{{ order.status }}</span>
-                {% else %}
-                <span class="btn btn-secondary">{{ order.status }}</span>
-                {% endif %}
-              </span>
-              {% endif %}
-              <button class="btn btn-secondary" data-bs-dismiss="modal">
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      {% endfor %}
-    </tbody>
-  </table>
-  {% else %}
-  <p>You have no orders yet.</p>
-  {% endif %}
-  <div class="container mt-5">
-    <h2><i class="bi bi-bag-check"></i> Purchase History</h2>
-    {% if purchases %}
-    <table class="table table-bordered text-center align-middle mt-3">
+    {% if orders %}
+    <table
+      id="orderTable"
+      class="table table-bordered text-center align-middle mt-3"
+    >
       <thead>
         <tr>
+          <th>No.</th>
           <th>Order ID</th>
-          <th>Product</th>
-          <th>Quantity</th>
-          <th>Price</th>
           <th>Total</th>
-          <th>Received At</th>
+          <th>Date</th>
+          <th>Action</th>
+          <th>Status</th>
         </tr>
       </thead>
       <tbody>
-        {% for p in purchases %}
+        {% for order in orders %}
         <tr>
-          <td>{{ p.order_id }}</td>
-          <td>{{ p.product_name }}</td>
-          <td>{{ p.quantity }}</td>
-          <td>{{ p.price }}</td>
-          <td>{{ p.total }}</td>
-          <td>{{ p.received_at }}</td>
+          <td>{{ loop.index }}</td>
+          <td>{{ order.id }}</td>
+          <td>₱{{ order.total }}</td>
+          <td>{{ order.created_at }}</td>
+          <td>
+            <!-- View Details Button -->
+            <button
+              class="btn btn-sm btn-dark"
+              data-bs-toggle="modal"
+              data-bs-target="#orderModal{{ order.id }}"
+            >
+              View Details
+            </button>
+          </td>
+          <td>
+            {% if order.status == "Pending" %}
+            <span class="btn btn-sm btn-warning">{{ order.status }}</span>
+            {% elif order.status == "Processing" %}
+            <span class="btn btn-sm btn-primary">{{ order.status }}</span>
+            {% elif order.status == "Delivered" %}
+            <span class="btn btn-sm btn-dark">{{ order.status }}</span>
+            {% elif order.status == "Completed" %}
+            <span class="btn btn-sm btn-success">{{ order.status }}</span>
+            {% elif order.status == "Cancelled" %}
+            <span class="btn btn-sm btn-danger">{{ order.status }}</span>
+            {% elif order.status == "Received" %}
+            <span class="btn btn-sm btn-success"
+              ><i class="bi bi-check"></i> {{ order.status }}</span
+            >
+            {% else %}
+            <span class="btn btn-sm btn-secondary">{{ order.status }}</span>
+            {% endif %}
+          </td>
         </tr>
+
+        <!-- Modal for this order -->
+        <div
+          class="modal fade"
+          id="orderModal{{ order.id }}"
+          tabindex="-1"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content p-3">
+              <div class="modal-header">
+                <h5 class="modal-title">Order #{{ order.id }} Details</h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                ></button>
+              </div>
+              <div class="modal-body">
+                <ul class="list-group mb-3">
+                  {% for item in order_items[order.id] %}
+                  <li
+                    class="list-group-item d-flex justify-content-between align-items-center"
+                  >
+                    <div>
+                      <strong>{{ item.name }} | {{ item.size }}</strong><br />
+                      <small>₱{{ item.price }} × {{ item.quantity }}</small>
+                    </div>
+                    <span>₱{{ item.price * item.quantity }}</span>
+                  </li>
+                  {% endfor %}
+                </ul>
+                <div class="d-flex justify-content-between">
+                  <h5>Total</h5>
+                  <h5>₱{{ order.total }}</h5>
+                </div>
+              </div>
+              <div class="modal-footer">
+                {% if order.status == "Pending" %}
+                <form
+                  action="{{ url_for('clientOrders.undo_checkout', order_id=order.id) }}"
+                  method="POST"
+                  style="display: inline"
+                >
+                  <button type="submit" class="btn btn-warning">
+                    <i class="bi bi-arrow-counterclockwise"></i> Undo Checkout
+                  </button>
+                </form>
+                {% elif order.status == "Completed" %}
+                <form
+                  action="{{ url_for('clientOrders.mark_as_received', order_id=order.id) }}"
+                  method="POST"
+                  style="display: inline"
+                >
+                  <button type="submit" class="btn btn-warning">
+                    <i class="bi bi-check2-circle"></i> Received
+                  </button>
+                </form>
+                {% else %}
+                <span class="text-muted">
+                  {% if order.status == "Pending" %}
+                  <span class="btn btn-warning">{{ order.status }}</span>
+                  {% elif order.status == "Processing" %}
+                  <span class="btn btn-primary">{{ order.status }}</span>
+                  {% elif order.status == "Delivered" %}
+                  <span class="btn btn-dark">{{ order.status }}</span>
+                  {% elif order.status == "Completed" %}
+                  <span class="btn btn-success">{{ order.status }}</span>
+                  {% elif order.status == "Cancelled" %}
+                  <span class="btn btn-danger">{{ order.status }}</span>
+                  {% else %}
+                  <span class="btn btn-secondary">{{ order.status }}</span>
+                  {% endif %}
+                </span>
+                {% endif %}
+                <button class="btn btn-secondary" data-bs-dismiss="modal">
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
         {% endfor %}
       </tbody>
     </table>
     {% else %}
-    <p class="text-muted">No purchase history yet.</p>
+    <p>You have no orders yet.</p>
     {% endif %}
+    <div class="container mt-5">
+      <h2><i class="bi bi-bag-check"></i> Purchase History</h2>
+      {% if purchases %}
+      <table class="table table-bordered text-center align-middle mt-3">
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total</th>
+            <th>Received At</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in purchases %}
+          <tr>
+            <td>{{ p.order_id }}</td>
+            <td>{{ p.product_name }}</td>
+            <td>{{ p.quantity }}</td>
+            <td>{{ p.price }}</td>
+            <td>{{ p.total }}</td>
+            <td>{{ p.received_at }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p class="text-muted">No purchase history yet.</p>
+      {% endif %}
+    </div>
   </div>
 </div>
 {% endblock %} {% block extra_script %}
+<script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
 
 <script src="{{ url_for('static', filename='js/jquery-3.7.1.min.js') }}"></script>
-
-<script src="{{ url_for('static', filename='bootstrap.bundle.min.js') }}"></script>
-
-<script src="{{ url_for('static', filename='datatables/js/datatables.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dataTables.bootstrap5.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dataTables.responsive.min.js') }}"></script>
+<script src="{{ url_for('static', filename='profileModal.js') }}"></script>
 
 <script>
   // Init DataTable
@@ -195,6 +198,35 @@ block content %}
         search: '<i class="bi bi-search"></i>',
         searchPlaceholder: "Search orders...",
       },
+    });
+  });
+  // Auto-dismiss flash messages after 4 seconds
+  setTimeout(() => {
+    const alerts = document.querySelectorAll(".alert");
+    alerts.forEach((alert) => {
+      let bsAlert = new bootstrap.Alert(alert);
+      bsAlert.close();
+    });
+  }, 4000); // 4000ms = 4 seconds
+  const loginModal = new URLSearchParams(window.location.search);
+  if (loginModal.get("login") === "1") {
+    const loginModal = new bootstrap.Modal(
+      document.getElementById("loginModal")
+    );
+    loginModal.show();
+  }
+  const registerModal = new URLSearchParams(window.location.search);
+  if (registerModal.get("register") === "1") {
+    const registerModal = new bootstrap.Modal(
+      document.getElementById("registerModal")
+    );
+    registerModal.show();
+  }
+  document.addEventListener("DOMContentLoaded", () => {
+    const toastElList = [].slice.call(document.querySelectorAll(".toast"));
+    toastElList.forEach((toastEl) => {
+      const toast = new bootstrap.Toast(toastEl, { delay: 3000 }); // auto-hide after 3s
+      toast.show();
     });
   });
 </script>

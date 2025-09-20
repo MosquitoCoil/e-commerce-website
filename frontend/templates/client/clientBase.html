@@ -6,7 +6,7 @@
     <title>{% block title %} Base HTML {% endblock %}</title>
     <link
       rel="stylesheet"
-      href="{{ url_for('static', filename='bootstrap.min.css') }}"
+      href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
     />
     <link
       rel="stylesheet"
@@ -15,6 +15,14 @@
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='bootstrap-icons/font/bootstrap-icons.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/dataTables.bootstrap5.min.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/responsive.bootstrap5.min.css') }}"
     />
   </head>
 
@@ -224,7 +232,9 @@
       </div>
     </main>
     {% include "partials/footer.html" %} {% block extra_script %}
-    <script src="{{ url_for('static', filename='bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/dataTables.bootstrap5.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='profileModal.js') }}"></script>
     <script>
       // Auto-dismiss flash messages after 4 seconds
       setTimeout(() => {

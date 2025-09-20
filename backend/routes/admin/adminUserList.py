@@ -10,7 +10,7 @@ adminUserList_bp = Blueprint(
 
 @adminUserList_bp.route("/admin/users")
 @role_required("admin")
-def userList():
+def adminUserList():
     user_id = session.get("user_id")
     if not user_id:
         flash("You must be logged in to checkout.", "error")

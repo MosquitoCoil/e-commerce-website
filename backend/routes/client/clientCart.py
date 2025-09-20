@@ -2,14 +2,14 @@ from flask import Blueprint, session, render_template
 from ...utils.decorators import role_required
 from database.database import get_db_connection
 
-cart_bp = Blueprint(
-    "cart", __name__, template_folder="../../../frontend/templates/client"
+clientCart_bp = Blueprint(
+    "clientCart", __name__, template_folder="../../../frontend/templates/client"
 )
 
 
-@cart_bp.route("/cart")
+@clientCart_bp.route("/client/clientCart")
 @role_required("user")
-def cart():
+def clientCart():
     user_id = session["user_id"]
 
     conn = get_db_connection()

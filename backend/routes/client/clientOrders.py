@@ -4,15 +4,15 @@ from database.database import get_db_connection
 from datetime import datetime
 
 
-transaction_bp = Blueprint(
-    "transaction", __name__, template_folder="../../../frontend/templates/client"
+clientOrders_bp = Blueprint(
+    "clientOrders", __name__, template_folder="../../../frontend/templates/client"
 )
 
 
 # Show ALL orders of the client
-@transaction_bp.route("/client/transaction")
+@clientOrders_bp.route("/client/clientOrders")
 @role_required("user")
-def transaction():
+def clientOrders():
     user_id = session.get("user_id")
     if not user_id:
         flash("Please log in to view your orders.", "error")
@@ -66,7 +66,7 @@ def transaction():
 
 
 # Show ONE specific order
-@transaction_bp.route("/transaction/<int:order_id>")
+@clientOrders_bp.route("/clientOrders/<int:order_id>")
 @role_required("user")
 def view_order(order_id):
     db = get_db_connection()
@@ -92,7 +92,7 @@ def view_order(order_id):
     return render_template("clientOrderDetails.html", order=order_details)
 
 
-@transaction_bp.route("/transaction/undo/<int:order_id>", methods=["POST"])
+@clientOrders_bp.route("/clientOrders/undo/<int:order_id>", methods=["POST"])
 @role_required("user")
 def undo_checkout(order_id):
     user_id = session.get("user_id")
@@ -113,13 +113,13 @@ def undo_checkout(order_id):
         flash("Order not found.", "error")
         cursor.close()
         db.close()
-        return redirect(url_for("cart.cart"))
+        return redirect(url_for("clientCart.clientCart"))
 
     if order["status"] != "Pending":
         flash("You can only undo orders that are still pending.", "error")
         cursor.close()
         db.close()
-        return redirect(url_for("transaction.transaction"))
+        return redirect(url_for("clientOrders.clientOrders"))
 
     # 1. Get all items from this order
     cursor.execute(
@@ -161,10 +161,10 @@ def undo_checkout(order_id):
     db.close()
 
     flash("Order has been undone and items restored to your cart.", "success")
-    return redirect(url_for("cart.cart"))
+    return redirect(url_for("clientCart.clientCart"))
 
 
-@transaction_bp.route("/mark_as_received/<int:order_id>", methods=["POST"])
+@clientOrders_bp.route("/mark_as_received/<int:order_id>", methods=["POST"])
 @role_required("user")
 def mark_as_received(order_id):
     user_id = session.get("user_id")
@@ -236,4 +236,4 @@ def mark_as_received(order_id):
     db.close()
 
     flash("Order marked as received and added to purchase history!", "success")
-    return redirect(url_for("transaction.transaction"))
+    return redirect(url_for("clientOrders.clientOrders"))

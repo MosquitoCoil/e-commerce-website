@@ -24,6 +24,13 @@
         <li class="nav-item">
           <a
             class="nav-link {% if request.endpoint == 'admin.dashboard' %}active{% endif %}"
+            href="/"
+            >Home</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link {% if request.endpoint == 'admin.dashboard' %}active{% endif %}"
             href="/admin/dashboard"
             >Dashboard</a
           >
@@ -38,7 +45,7 @@
         <li class="nav-item">
           <a
             class="nav-link {% if request.endpoint == 'admin.orders' %}active{% endif %}"
-            href="/admin/transactions"
+            href="/admin/orders"
             >Orders</a
           >
         </li>
@@ -99,57 +106,8 @@
   </div>
 </nav>
 
-<!-- Profile Modal -->
-<div
-  class="modal fade"
-  id="profileModal"
-  tabindex="-1"
-  aria-labelledby="profileModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="profileModalLabel">
-          <i class="bi bi-person"></i> My Profile
-        </h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-
-      <div class="modal-body">
-        {% if user %}
-        <ul class="list-group">
-          <li class="list-group-item">
-            <strong>Username:</strong> {{ user.username.capitalize() }}
-          </li>
-          <li class="list-group-item">
-            <strong>Firstname:</strong> {{ user.firstname.capitalize() }}
-          </li>
-          <li class="list-group-item">
-            <strong>Role:</strong> {{ user.is_admin.capitalize() }}
-          </li>
-        </ul>
-        {% else %}
-        <p>No user logged in.</p>
-        {% endif %}
-      </div>
-
-      <div class="modal-footer">
-        <a href="{{ url_for('login.logout') }}" class="btn btn-danger"
-          ><i class="bi bi-box-arrow-right"></i> Logout</a
-        >
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
+<script src="{{ url_for('static', filename='profileModal.js')}}"></script>
+<script src="{{ url_for('static', filename='js/chart.min.js') }}"></script>
 <script>
   let prevScrollpos = window.pageYOffset;
   const navbar = document.getElementById("smartNavbar");

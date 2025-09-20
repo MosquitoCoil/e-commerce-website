@@ -18,7 +18,15 @@ def admin():
 
     db = get_db_connection()
     cursor = db.cursor(dictionary=True)
-
+    cursor.execute(
+        """
+        SELECT id, username, firstname, lastname, address, is_admin, created_at
+        FROM users
+        WHERE id = %s
+    """,
+        (user_id,),
+    )
+    users = cursor.fetchone()
     # Daily sales (with total products sold)
     cursor.execute(
         """
@@ -64,6 +72,7 @@ def admin():
 
     return render_template(
         "adminDashboard.html",
+        user=users,
         daily_sales=daily_sales,
         monthly_sales=monthly_sales,
         daily_sales_labels=daily_sales_labels,

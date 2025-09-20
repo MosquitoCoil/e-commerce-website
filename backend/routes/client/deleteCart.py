@@ -7,7 +7,7 @@ deleteCart_bp = Blueprint(
 )
 
 
-@deleteCart_bp.route("/cart/delete/<int:cart_id>", methods=["POST"])
+@deleteCart_bp.route("/clientCart/delete/<int:cart_id>", methods=["POST"])
 @role_required("user")
 def deleteCart(cart_id):
 
@@ -20,4 +20,4 @@ def deleteCart(cart_id):
     conn.close()
 
     flash("Item removed from cart.", "success")
-    return redirect(url_for("cart.cart"))
+    return redirect(url_for("clientCart.clientCart"))

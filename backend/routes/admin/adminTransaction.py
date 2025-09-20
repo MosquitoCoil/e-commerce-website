@@ -2,16 +2,16 @@ from flask import Blueprint, render_template, redirect, url_for, flash, session
 from database.database import get_db_connection
 from ...utils.decorators import role_required
 
-adminTransactions_bp = Blueprint(
-    "adminTransactions",
+adminOrders_bp = Blueprint(
+    "adminOrders",
     __name__,
     template_folder="../../../frontend/templates/admin",
 )
 
 
-@adminTransactions_bp.route("/admin/transactions")
+@adminOrders_bp.route("/admin/orders")
 @role_required("admin")
-def adminTransactions():
+def adminOrders():
     user_id = session.get("user_id")
     if not user_id:
         flash("You must be logged in to checkout.", "error")
@@ -35,7 +35,7 @@ def adminTransactions():
     return render_template("adminTransaction.html", orders=orders)
 
 
-@adminTransactions_bp.route("/admin/transactions/update/<int:order_id>/<string:status>")
+@adminOrders_bp.route("/admin/orders/update/<int:order_id>/<string:status>")
 @role_required("admin")
 def update_order_status(order_id, status):
     db = get_db_connection()
@@ -46,4 +46,4 @@ def update_order_status(order_id, status):
     db.close()
 
     flash(f"Order #{order_id} updated to {status}", "success")
-    return redirect(url_for("adminTransactions.adminTransactions"))
+    return redirect(url_for("adminOrders.adminOrders"))
