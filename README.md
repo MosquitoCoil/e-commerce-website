@@ -102,9 +102,9 @@ ecommerce-website/
 │   ├── database/ (database)
 │── frontend/
 │   ├── templates/ (base, home, productDetail)
-│       ├── admin/ ()
+│       ├── admin/ (adminPages)
 │           ├── partials/ (adminHeader, adminFooter)
-│       ├── client/
+│       ├── client/ (clientPages)
 │       ├── partials/ (header, footer)
 │── static/ (CSS, JS, images)
 │── screenshots/ (project screenshots for README)
