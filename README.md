@@ -81,26 +81,28 @@ It allows users to browse products, manage carts, and checkout, while admins can
 ```
 3. **Configure database**
 - Create a MySQL database
-- Import database.sql
+- Import e-commerece-web.sql
 - Update connection settings in backend/database/database.py
 4. **Run the app**
 ```bash
 flask run
 Your app will be live at: http://127.0.0.1:5000/
 ```
-6. **Folder Structure**
-- ecommerce-website/
-- │── backend/
-- │   ├── auth/ (login, register blueprints)
-- │   ├── client/ (orders, cart)
-- │   ├── admin/ (dashboard, inventory)
-- │   ├── database/ (connection + queries)
-- │── frontend/
-- │   ├── templates/ (Jinja HTML files)
-- │   ├── static/ (CSS, JS, images)
-- │── screenshots/ (project screenshots for README)
-- │── requirements.txt
-- │── app.py
+5. **Folder Structure**
+```php  
+ecommerce-website/
+│── backend/
+│   ├── auth/ (login, register blueprints)
+│   ├── client/ (orders, cart)
+│   ├── admin/ (dashboard, inventory)
+│   ├── database/ (connection + queries)
+│── frontend/
+│   ├── templates/ (Jinja HTML files)
+│   ├── static/ (CSS, JS, images)
+│── screenshots/ (project screenshots for README)
+│── requirements.txt
+│── app.py
+```
 ## 📜 License
 - Distributed under the MIT License. See LICENSE for more information.
 ## 👤 Author
