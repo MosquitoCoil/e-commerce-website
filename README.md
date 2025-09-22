@@ -26,9 +26,17 @@ It allows users to browse products, manage carts, and securely checkout, while a
     <img src="screenshots/client order details.png" width="300" />
     <br/><br/>
     <b>Admin Pages</b><br/>
-    <img src="screenshots/cart.png" width="300" />
-    <img src="screenshots/profile.png" width="300" />
-    <img src="screenshots/orders.png" width="300" />
+    <img src="screenshots/admin dashboard.png" width="300" />
+    <img src="screenshots/admin product.png" width="300" />
+    <img src="screenshots/admin add product modal.PNG" width="300" />
+    <img src="screenshots/admin edit product modal.PNG" width="300" />
+    <img src="screenshots/admin delete product modal.PNG" width="300" />
+    <img src="screenshots/admin order.png" width="300" />
+    <img src="screenshots/admin user.png" width="300" />
+    <img src="screenshots/admin add user modal.PNG" width="300" />
+    <img src="screenshots/admin edit user modal.PNG" width="300" />
+    <img src="screenshots/admin delete user modal.PNG" width="300" />
+    <img src="screenshots/admin report.png" width="300" />
   </p>
 </details>
 
