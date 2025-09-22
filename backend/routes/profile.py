@@ -15,6 +15,7 @@ def edit_profile():
 
     firstname = request.form.get("firstname", "").strip()
     lastname = request.form.get("lastname", "").strip()
+    address = request.form.get("address", "").strip()
     username = request.form.get("username", "").strip()
     password = request.form.get("password", "").strip()
     is_admin = request.form.get("is_admin", "user")
@@ -29,16 +30,24 @@ def edit_profile():
         hashed_password = generate_password_hash(password)
         cursor.execute(
             """UPDATE users 
-               SET firstname=%s, lastname=%s, username=%s, password=%s, is_admin=%s 
+               SET firstname=%s, lastname=%s, address=%s, username=%s, password=%s, is_admin=%s 
                WHERE id=%s""",
-            (firstname, lastname, username, hashed_password, is_admin, user_id),
+            (
+                firstname,
+                lastname,
+                address,
+                username,
+                hashed_password,
+                is_admin,
+                user_id,
+            ),
         )
     else:  # don’t overwrite password
         cursor.execute(
             """UPDATE users 
-               SET firstname=%s, lastname=%s, username=%s, is_admin=%s 
+               SET firstname=%s, lastname=%s, address=%s, username=%s, is_admin=%s 
                WHERE id=%s""",
-            (firstname, lastname, username, is_admin, user_id),
+            (firstname, lastname, address, username, is_admin, user_id),
         )
 
     conn.commit()

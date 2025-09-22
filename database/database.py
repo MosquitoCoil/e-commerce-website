@@ -9,4 +9,7 @@ db_config = {
 
 
 def get_db_connection():
-    return mysql.connector.connect(**db_config)
+    conn = mysql.connector.connect(**db_config)
+    # force dict cursor every time
+    conn.cursor_factory = lambda: conn.cursor(dictionary=True)
+    return conn

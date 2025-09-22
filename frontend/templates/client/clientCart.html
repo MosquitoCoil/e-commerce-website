@@ -85,14 +85,23 @@ content %}
 <!-- Checkout Modal -->
 <div class="modal fade" id="checkoutModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content p-3">
-      <div class="modal-header">
-        <h5 class="modal-title">Checkout</h5>
+    <div class="modal-content">
+      <div class="modal-header d-block">
+        <div class="w-100 text-center">
+          <img
+            src="/static/images/logo2.png"
+            width="130"
+            height="50"
+            alt="Logo"
+          />
+        </div>
         <button
           type="button"
-          class="btn-close"
+          class="btn-close position-absolute top-0 end-0 m-2"
           data-bs-dismiss="modal"
+          aria-label="Close"
         ></button>
+        <h5 class="modal-title">Checkout</h5>
       </div>
 
       <form action="{{ url_for('checkout.checkout') }}" method="post">
@@ -155,14 +164,14 @@ content %}
   // Init DataTable
   $(document).ready(function () {
     $("#cartTable").DataTable({
-      pageLength: 5,
+      pageLength: 10,
       lengthMenu: [5, 10, 25, 50],
       ordering: true,
       searching: true,
       responsive: true, // makes table adapt on mobile
       language: {
         search: '<i class="bi bi-search"></i>',
-        searchPlaceholder: "Search users...",
+        searchPlaceholder: "Search items...",
       },
     });
   });

@@ -14,6 +14,7 @@ editUser_bp = Blueprint(
 def editUser(user_id):
     firstname = request.form.get("firstname")
     lastname = request.form.get("lastname")
+    address = request.form.get("lastname")
     username = request.form.get("username")
     password = request.form.get("password")
     is_admin = request.form.get("is_admin")
@@ -29,16 +30,16 @@ def editUser(user_id):
         new_password = generate_password_hash(password)
         cursor.execute(
             """UPDATE users 
-               SET firstname=%s, lastname=%s, username=%s, password=%s, is_admin=%s 
+               SET firstname=%s, lastname=%s, address=%s, username=%s, password=%s, is_admin=%s 
                WHERE id=%s""",
-            (firstname, lastname, username, new_password, is_admin, user_id),
+            (firstname, lastname, address, username, new_password, is_admin, user_id),
         )
     else:  # don’t overwrite password if empty
         cursor.execute(
             """UPDATE users 
-               SET firstname=%s, lastname=%s, username=%s, is_admin=%s 
+               SET firstname=%s, lastname=%s, address=%s, username=%s, is_admin=%s 
                WHERE id=%s""",
-            (firstname, lastname, username, is_admin, user_id),
+            (firstname, lastname, address, username, is_admin, user_id),
         )
 
     conn.commit()
