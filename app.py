@@ -13,7 +13,7 @@ from backend.routes.admin.users.deleteUser import deleteUser_bp
 from backend.routes.admin.products.addProduct import addProduct_bp
 from backend.routes.admin.products.editProducts import editProduct_bp
 from backend.routes.admin.products.deleteProduct import deleteProduct_bp
-from backend.routes.admin.adminTransaction import adminOrders_bp
+from backend.routes.admin.adminOrder import adminOrders_bp
 from backend.routes.admin.adminReports import adminReports_bp
 
 

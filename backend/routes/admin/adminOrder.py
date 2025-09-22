@@ -32,7 +32,7 @@ def adminOrders():
 
     cursor.close()
     db.close()
-    return render_template("adminTransaction.html", orders=orders)
+    return render_template("adminOrder.html", orders=orders)
 
 
 @adminOrders_bp.route("/admin/orders/update/<int:order_id>/<string:status>")
