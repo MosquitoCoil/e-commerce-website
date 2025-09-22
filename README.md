@@ -92,8 +92,9 @@ Your app will be live at: http://127.0.0.1:5000/
 ```php  
 ecommerce-website/
 │── backend/
-│   ├── auth/ (login, register blueprints)
-│   ├── client/ (orders, cart)
+│   ├── auth/ (login, register)
+│   ├── routes/ (email, home, profile)
+│       ├── admin/ (adminProductList, adminReports, adminRoute, adminTransaction, adminUserList)
 │   ├── admin/ (dashboard, inventory)
 │   ├── database/ (connection + queries)
 │── frontend/
@@ -101,7 +102,7 @@ ecommerce-website/
 │   ├── static/ (CSS, JS, images)
 │── screenshots/ (project screenshots for README)
 │── requirements.txt
-│── app.py
+│── app.py (register blueprints)
 ```
 ## 📜 License
 - Distributed under the MIT License. See LICENSE for more information.
