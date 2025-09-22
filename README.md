@@ -69,15 +69,25 @@ It allows users to browse products, manage carts, and checkout, while admins can
 ## ⚙️ Installation & Setup
 
 1. **Clone the repo**
-   ```bash
+```bash
    git clone https://github.com/your-username/e-commerce-website.git
    cd e-commerce-website
+```
 2. **Set up virtual environment & install dependencies**
-python -m venv venv
-source venv/bin/activate   # On Windows: venv\Scripts\activate
-pip install -r requirements.txt
-4. **Configure database**
-5. **Run the app**
+```bash
+  python -m venv venv
+  source venv/bin/activate   # On Windows: venv\Scripts\activate
+  pip install -r requirements.txt
+```
+3. **Configure database**
+- Create a MySQL database
+- Import database.sql
+- Update connection settings in backend/database/database.py
+4. **Run the app**
+```bash
+flask run
+Your app will be live at: http://127.0.0.1:5000/
+```
 6. **Folder Structure**
 - ecommerce-website/
 - │── backend/
