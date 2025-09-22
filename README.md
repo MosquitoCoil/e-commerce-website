@@ -1,7 +1,11 @@
 # 🛍️ E-Commerce Website
 
+<p align="center">
+  <img src="static/images/logo.png" width="800" alt="E-Commerce Website Logo" />
+</p>
+
 An end-to-end full-stack **E-Commerce Website** built with **Flask (Python), MySQL, and modern frontend tools**.  
-It allows users to browse products, manage carts, and securely checkout, while admins can manage products and orders.
+It allows users to browse products, manage carts, and securely checkout, while admins can manage inventory and orders.
 
 ---
 
@@ -48,7 +52,7 @@ It allows users to browse products, manage carts, and securely checkout, while a
 - 🛒 Product Listings
 - 📦 Shopping Cart & Checkout
 - 💳 Order Management (Client & Admin)
-- 📊 Admin Dashboard for Inventory & Sales
+- 📊 Admin Dashboard for Products & Sales
 - 📱 Responsive Design (Mobile-Friendly)
 
 ---
