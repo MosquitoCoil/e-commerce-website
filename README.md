@@ -81,4 +81,4 @@ It allows users to browse products, manage carts, and checkout, while admins can
 ## 👤 Author
 Jaymar
 📧 Email: jaymarroco.j@gmail.com
-🌐 Portfolio: [[your-portfolio-link](https://jaymarportfolio.netlify.app/)]
+🌐 Portfolio: [jaymarportfolio.netlify.app](https://jaymarportfolio.netlify.app/)
