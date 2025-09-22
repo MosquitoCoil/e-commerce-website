@@ -1,7 +1,7 @@
 # 🛍️ E-Commerce Website
 
 <p align="center">
-  <img src="static/images/logo.png" width="800" alt="E-Commerce Website Logo" />
+  <img src="static/images/bg/jaymar.png" width="800" alt="E-Commerce Website Banner" />
 </p>
 
 An end-to-end full-stack **E-Commerce Website** built with **Flask (Python), MySQL, and modern frontend tools**.  
