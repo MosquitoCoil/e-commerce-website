@@ -10,15 +10,16 @@ It allows users to browse products, manage carts, and securely checkout, while a
 <details>
   <summary>📸 View All Screenshots</summary>
   <p align="center">
-    landing page
-    <img src="screenshots/landing page.png" width="300" />
-    client page
-    <img src="screenshots/client order details.png" width="300" />
-    <img src="screenshots/client order.png" width="300" />
-    <img src="screenshots/client cart.png" width="300" />
-    <img src="screenshots/client checkout.png" width="300" />
-    
-    
+    <b>Landing Page</b><br/>
+    <img src="screenshots/landing-page.png" width="300" /><br/><br/>
+
+    <b>Client Pages</b><br/>
+    <img src="screenshots/client-order-details.png" width="300" />
+    <img src="screenshots/client-order.png" width="300" />
+    <img src="screenshots/client-cart.png" width="300" />
+    <img src="screenshots/client-checkout.png" width="300" /><br/><br/>
+
+    <b>Admin Pages</b><br/>
     <img src="screenshots/cart.png" width="300" />
     <img src="screenshots/profile.png" width="300" />
     <img src="screenshots/orders.png" width="300" />
