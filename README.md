@@ -8,7 +8,7 @@ It allows users to browse products, manage carts, and securely checkout, while a
 ## 📸 Screenshots
 
 <p align="center">
-  <img src="screenshots/homepage.png" width="600" alt="Homepage" />
+  <img src="screenshots/landing page.png" width="600" alt="Homepage" />
   <img src="screenshots/product-page.png" width="600" alt="Product Page" />
   <img src="screenshots/cart.png" width="600" alt="Cart" />
 </p>
@@ -18,7 +18,7 @@ It allows users to browse products, manage carts, and securely checkout, while a
 ## ✨ Features
 
 - 🔑 User Authentication (Register/Login/Logout)
-- 🛒 Product Listings with Categories
+- 🛒 Product Listings
 - 📦 Shopping Cart & Checkout
 - 💳 Order Management (Client & Admin)
 - 📊 Admin Dashboard for Inventory & Sales
