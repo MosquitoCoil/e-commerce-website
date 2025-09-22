@@ -7,11 +7,16 @@ It allows users to browse products, manage carts, and securely checkout, while a
 
 ## 📸 Screenshots
 
-<p align="center">
-  <img src="screenshots/landing page.png" width="600" alt="Homepage" />
-  <img src="screenshots/product-page.png" width="600" alt="Product Page" />
-  <img src="screenshots/cart.png" width="600" alt="Cart" />
-</p>
+<details>
+  <summary>📸 View All Screenshots</summary>
+  <p align="center">
+    <img src="screenshots/homepage.png" width="300" />
+    <img src="screenshots/product.png" width="300" />
+    <img src="screenshots/cart.png" width="300" />
+    <img src="screenshots/profile.png" width="300" />
+    <img src="screenshots/orders.png" width="300" />
+  </p>
+</details>
 
 ---
 
