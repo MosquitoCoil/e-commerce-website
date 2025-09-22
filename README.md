@@ -76,9 +76,22 @@ It allows users to browse products, manage carts, and checkout, while admins can
 3. **Configure database**
 4. **Run the app**
 5. **Folder Structure**
+ecommerce-website/
+│── backend/
+│   ├── auth/ (login, register blueprints)
+│   ├── client/ (orders, cart)
+│   ├── admin/ (dashboard, inventory)
+│   ├── database/ (connection + queries)
+│── frontend/
+│   ├── templates/ (Jinja HTML files)
+│   ├── static/ (CSS, JS, images)
+│── screenshots/ (project screenshots for README)
+│── requirements.txt
+│── app.py
 ## 📜 License
 - Distributed under the MIT License. See LICENSE for more information.
 ## 👤 Author
-Jaymar
-📧 Email: jaymarroco.j@gmail.com
-🌐 Portfolio: [jaymarportfolio.netlify.app](https://jaymarportfolio.netlify.app/)
+- Jaymar
+- 📧 Email: jaymarroco.j@gmail.com
+- 🌐 Portfolio: [jaymarportfolio.netlify.app](https://jaymarportfolio.netlify.app/)
+## 
