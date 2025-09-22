@@ -5,7 +5,7 @@
 </p>
 
 An end-to-end full-stack **E-Commerce Website** built with **Flask (Python), MySQL, and modern frontend tools**.  
-It allows users to browse products, manage carts, and securely checkout, while admins can manage inventory and orders.
+It allows users to browse products, manage carts, and checkout, while admins can manage products and orders.
 
 ---
 
@@ -72,3 +72,13 @@ It allows users to browse products, manage carts, and securely checkout, while a
    ```bash
    git clone https://github.com/your-username/e-commerce-website.git
    cd e-commerce-website
+2. **Set up virtual environment & install dependencies**
+3. **Configure database**
+4. **Run the app**
+5. **Folder Structure**
+## 📜 License
+- Distributed under the MIT License. See LICENSE for more information.
+## 👤 Author
+Jaymar
+📧 Email: jaymarroco.j@gmail.com
+🌐 Portfolio: [your-portfolio-link](https://jaymarportfolio.netlify.app/)
