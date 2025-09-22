@@ -73,9 +73,12 @@ It allows users to browse products, manage carts, and checkout, while admins can
    git clone https://github.com/your-username/e-commerce-website.git
    cd e-commerce-website
 2. **Set up virtual environment & install dependencies**
-3. **Configure database**
-4. **Run the app**
-5. **Folder Structure**
+python -m venv venv
+source venv/bin/activate   # On Windows: venv\Scripts\activate
+pip install -r requirements.txt
+4. **Configure database**
+5. **Run the app**
+6. **Folder Structure**
 - ecommerce-website/
 - │── backend/
 - │   ├── auth/ (login, register blueprints)
