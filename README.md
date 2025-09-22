@@ -14,10 +14,10 @@ It allows users to browse products, manage carts, and securely checkout, while a
     <img src="screenshots/home header.PNG" width="300" />
     <img src="screenshots/landing page.png" width="300" />
     <img src="screenshots/home footer.PNG" width="300" />
-    <img src="screenshots/login form modal.png" width="300" />
-    <img src="screenshots/registration form modal.png" width="300" />
-    <img src="screenshots/profile modal.png" width="300" />
-    <img src="screenshots/edit profile modal.png" width="300" />
+    <img src="screenshots/login form modal.PNG" width="300" />
+    <img src="screenshots/registration form modal.PNG" width="300" />
+    <img src="screenshots/profile modal.PNG" width="300" />
+    <img src="screenshots/edit profile modal.PNG" width="300" />
     <br/><br/>
     <b>Client Pages</b><br/>
     <img src="screenshots/client cart.png" width="300" />
