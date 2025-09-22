@@ -12,7 +12,13 @@ It allows users to browse products, manage carts, and securely checkout, while a
   <p align="center">
     landing page
     <img src="screenshots/landing page.png" width="300" />
-    <img src="screenshots/product.png" width="300" />
+    client page
+    <img src="screenshots/client order details.png" width="300" />
+    <img src="screenshots/client order.png" width="300" />
+    <img src="screenshots/client cart.png" width="300" />
+    <img src="screenshots/client checkout.png" width="300" />
+    
+    
     <img src="screenshots/cart.png" width="300" />
     <img src="screenshots/profile.png" width="300" />
     <img src="screenshots/orders.png" width="300" />
