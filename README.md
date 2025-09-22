@@ -95,11 +95,18 @@ ecommerce-website/
 │   ├── auth/ (login, register)
 │   ├── routes/ (email, home, profile)
 │       ├── admin/ (adminProductList, adminReports, adminRoute, adminTransaction, adminUserList)
-│   ├── admin/ (dashboard, inventory)
-│   ├── database/ (connection + queries)
+│           ├── products/ (addProduct, deleteProduct, editProduct)
+│           ├── users/ (addUser, deleteUser, editUser)
+│       ├── client (addToCart, checkout, clientCart, clientOrders, clientRoute, deleteCart, editCart)
+│   ├── utils/ (decorators)
+│   ├── database/ (database)
 │── frontend/
-│   ├── templates/ (Jinja HTML files)
-│   ├── static/ (CSS, JS, images)
+│   ├── templates/ (base, home, productDetail)
+│       ├── admin/ ()
+│           ├── partials/ (adminHeader, adminFooter)
+│       ├── client/
+│       ├── partials/ (header, footer)
+│── static/ (CSS, JS, images)
 │── screenshots/ (project screenshots for README)
 │── requirements.txt
 │── app.py (register blueprints)
