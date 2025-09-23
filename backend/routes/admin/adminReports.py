@@ -9,45 +9,49 @@ adminReports_bp = Blueprint(
 
 @adminReports_bp.route("/admin/reports")
 @role_required("admin")
-def adminReports():
+def admin_reports():
     user_id = session.get("user_id")
     if not user_id:
-        flash("You must be logged in to view reports.", "error")
+        flash("You must be logged in to view reports.", "danger")
         return redirect(url_for("login.login"))
 
-    db = get_db_connection()
-    cursor = db.cursor(dictionary=True)
+    db = None
+    daily_sales, monthly_sales = [], []
+    try:
+        db = get_db_connection()
+        cursor = db.cursor(dictionary=True)
 
-    # Daily sales (with total products sold)
-    cursor.execute(
-        """
-        SELECT DATE(received_at) AS sale_date,
-               SUM(total) AS total_sales,
-               SUM(quantity) AS total_products_sold
-        FROM purchase_history
-        GROUP BY DATE(received_at)
-        ORDER BY sale_date ASC
-        """
-    )
-    daily_sales = cursor.fetchall()
+        cursor.execute(
+            """
+            SELECT DATE(received_at) AS sale_date,
+                   SUM(total) AS total_sales,
+                   SUM(quantity) AS total_products_sold
+            FROM purchase_history
+            GROUP BY DATE(received_at)
+            ORDER BY sale_date ASC
+            """
+        )
+        daily_sales = cursor.fetchall()
 
-    # Monthly sales (with total products sold)
-    cursor.execute(
-        """
-        SELECT DATE_FORMAT(received_at, '%Y-%m') AS sale_month,
-               SUM(total) AS total_sales,
-               SUM(quantity) AS total_products_sold
-        FROM purchase_history
-        GROUP BY DATE_FORMAT(received_at, '%Y-%m')
-        ORDER BY sale_month ASC
-        """
-    )
-    monthly_sales = cursor.fetchall()
+        cursor.execute(
+            """
+            SELECT DATE_FORMAT(received_at, '%%Y-%%m') AS sale_month,
+                   SUM(total) AS total_sales,
+                   SUM(quantity) AS total_products_sold
+            FROM purchase_history
+            GROUP BY DATE_FORMAT(received_at, '%%Y-%%m')
+            ORDER BY sale_month ASC
+            """
+        )
+        monthly_sales = cursor.fetchall()
 
-    cursor.close()
-    db.close()
+        cursor.close()
+    except Exception as e:
+        flash(f"Error fetching reports: {e}", "danger")
+    finally:
+        if db:
+            db.close()
 
-    # Chart data
     daily_sales_labels = [
         (
             row["sale_date"].strftime("%Y-%m-%d")

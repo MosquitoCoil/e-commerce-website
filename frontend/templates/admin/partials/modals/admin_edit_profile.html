@@ -1,0 +1,52 @@
+<!-- Edit Profile Modal -->
+      <div class="modal fade" id="editProfileModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content bg-dark text-white">
+            <div class="modal-header d-block">
+              <div class="w-100 text-center">
+                <img src="/static/images/logo.png" width="130" height="50" alt="Logo" />
+              </div>
+              <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-2"
+                      data-bs-dismiss="modal" aria-label="Close"></button>
+              <h5 class="modal-title"><i class="bi bi-pencil"></i> Edit Profile</h5>
+            </div>
+
+            <form id="editProfileForm" method="POST" action="/client/edit-profile">
+              <div class="modal-body">
+                <div class="mb-3">
+                  <label for="username" class="form-label">Username</label>
+                  <input type="text" class="form-control bg-dark text-white" id="username" name="username" value="{{ user.username }}" required />
+                </div>
+                <div class="mb-3">
+                  <label for="firstname" class="form-label">First Name</label>
+                  <input type="text" class="form-control bg-dark text-white" id="firstname" name="firstname" value="{{ user.firstname }}" />
+                </div>
+                <div class="mb-3">
+                  <label for="lastname" class="form-label">Last Name</label>
+                  <input type="text" class="form-control bg-dark text-white" id="lastname" name="lastname" value="{{ user.lastname }}" />
+                </div>
+                <div class="mb-3">
+                  <label for="address" class="form-label">Address</label>
+                  <input type="text" class="form-control bg-dark text-white" id="address" name="address" value="{{ user.address }}" />
+                </div>
+                <div class="mb-3">
+                  <label for="password" class="form-label">New Password</label>
+                  <input type="password" class="form-control bg-dark text-white" id="password" name="password"
+                         placeholder="Leave blank to keep current password" />
+                </div>
+                <div class="mb-3">
+                  <label for="accountType" class="form-label">Account Type</label>
+                  <select class="form-select bg-dark text-white" id="accountType" name="is_admin">
+                    <option value="client" {% if user.is_admin == "client" %}selected{% endif %}>Client</option>
+                    <option value="admin" {% if user.is_admin == "admin" %}selected{% endif %}>Admin</option>
+                  </select>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-success">Save Changes</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>

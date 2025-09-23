@@ -1,0 +1,54 @@
+<!-- Profile Modal -->
+<div class="modal fade" id="profileModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header d-block text-center">
+        <img
+          src="{{ url_for('static', filename='images/logo2.png') }}"
+          width="130"
+          height="50"
+          alt="Logo"
+        />
+        <h5 class="modal-title mt-2">
+          <i class="bi bi-person"></i> My Profile
+        </h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white position-absolute top-0 end-0 m-2"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <ul class="list-group">
+          <li class="list-group-item">
+            <strong>Username:</strong> {{ user.username }}
+          </li>
+          <li class="list-group-item">
+            <strong>First Name:</strong> {{ user.firstname }}
+          </li>
+          <li class="list-group-item">
+            <strong>Address:</strong> {{ user.address }}
+          </li>
+          <li class="list-group-item">
+            <strong>Account Type:</strong> {{ "Admin" if user.is_admin=="admin"
+            else "User" }}
+          </li>
+          <li class="list-group-item">
+            <strong>Joined:</strong> {{ user.created_at }}
+          </li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button
+          class="btn btn-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#editProfileModal"
+        >
+          <i class="bi bi-pencil"></i> Edit Profile
+        </button>
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

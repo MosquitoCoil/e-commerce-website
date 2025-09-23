@@ -3,12 +3,12 @@
   class="navbar navbar-expand-lg navbar-light bg-light container-sm fixed-top shadow"
 >
   <div class="container-fluid px-5">
-    <!-- Logo on the left -->
-    <a class="navbar-brand ms-3" href="#">
+    <!-- Logo -->
+    <a class="navbar-brand ms-3" href="{{ url_for('home.home') }}#home">
       <img src="/static/images/logo2.png" width="130" height="50" alt="Logo" />
     </a>
 
-    <!-- Navbar Toggler (mobile) -->
+    <!-- Toggler (mobile) -->
     <button
       class="navbar-toggler me-3"
       type="button"
@@ -25,27 +25,31 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <!-- Center links -->
       <ul class="navbar-nav mx-auto">
-        <li
-          class="nav-item {% if request.endpoint == 'home' %}active{% endif %}"
-        >
-          <a class="nav-link" href="{{ url_for('home.home') }}#home">Home</a>
+        <li class="nav-item">
+          <a
+            class="nav-link {% if request.endpoint == 'home' %}active{% endif %}"
+            href="{{ url_for('home.home') }}#home"
+            >Home</a
+          >
         </li>
-        <li
-          class="nav-item {% if request.endpoint == 'home' %}active{% endif %}"
-        >
-          <a class="nav-link" href="{{ url_for('home.home') }}#collections"
+        <li class="nav-item">
+          <a
+            class="nav-link {% if request.endpoint == 'home' %}active{% endif %}"
+            href="{{ url_for('home.home') }}#collections"
             >Collections</a
           >
         </li>
-        <li
-          class="nav-item {% if request.endpoint == 'home' %}active{% endif %}"
-        >
-          <a class="nav-link" href="{{ url_for('home.home') }}#about">About</a>
+        <li class="nav-item">
+          <a
+            class="nav-link {% if request.endpoint == 'home' %}active{% endif %}"
+            href="{{ url_for('home.home') }}#about"
+            >About</a
+          >
         </li>
-        <li
-          class="nav-item {% if request.endpoint == 'home' %}active{% endif %}"
-        >
-          <a class="nav-link" href="{{ url_for('home.home') }}#contact"
+        <li class="nav-item">
+          <a
+            class="nav-link {% if request.endpoint == 'home' %}active{% endif %}"
+            href="{{ url_for('home.home') }}#contact"
             >Contact</a
           >
         </li>
@@ -54,7 +58,7 @@
       <!-- Right side -->
       <ul class="navbar-nav ms-2">
         {% if user %}
-        <!-- Dropdown if logged in -->
+        <!-- Dropdown (logged in) -->
         <li class="nav-item dropdown">
           <a
             class="nav-link dropdown-toggle d-flex align-items-center"
@@ -65,78 +69,85 @@
             aria-expanded="false"
           >
             Hello, {{ user['firstname'].capitalize() }}
-            <i class="bi bi-chevron-down ms-1" id="dropdownIcon"></i>
+            <i class="bi bi-chevron-down ms-1"></i>
           </a>
+
           <ul
             class="dropdown-menu dropdown-menu-end"
             aria-labelledby="navbarDropdown"
           >
+            <!-- Profile -->
             <li>
               <a
                 class="dropdown-item"
                 href="#"
                 data-bs-toggle="modal"
                 data-bs-target="#profileModal"
-                id="openProfile"
               >
                 <i class="bi bi-person"></i> Profile
               </a>
             </li>
+
             {% if user['is_admin'] == 'admin' %}
+            <!-- Admin menu -->
             <li><hr class="dropdown-divider" /></li>
             <li>
-              <a class="dropdown-item" href="{{ url_for('admin.admin') }}">
-                <i class="bi bi-speedometer2"></i> Dashboard
-              </a>
+              <a
+                class="dropdown-item"
+                href="{{ url_for('admin.admin_dashboard') }}"
+                ><i class="bi bi-speedometer2"></i> Dashboard</a
+              >
             </li>
             <li>
-              <a class="dropdown-item" href="/admin/products">
-                <i class="bi bi-box"></i> Products
-              </a>
+              <a class="dropdown-item" href="/admin/products"
+                ><i class="bi bi-box"></i> Products</a
+              >
             </li>
             <li>
-              <a class="dropdown-item" href="/admin/orders">
-                <i class="bi bi-cart"></i> Orders
-              </a>
+              <a class="dropdown-item" href="/admin/orders"
+                ><i class="bi bi-cart"></i> Orders</a
+              >
             </li>
             <li>
-              <a class="dropdown-item" href="/admin/users">
-                <i class="bi bi-person"></i> Users
-              </a>
+              <a class="dropdown-item" href="/admin/users"
+                ><i class="bi bi-person"></i> Users</a
+              >
             </li>
             <li>
-              <a class="dropdown-item" href="/admin/reports">
-                <i class="bi bi-folder"></i> Reports
-              </a>
+              <a class="dropdown-item" href="/admin/reports"
+                ><i class="bi bi-folder"></i> Reports</a
+              >
             </li>
             <li><hr class="dropdown-divider" /></li>
             <li>
-              <a class="dropdown-item" href="{{ url_for('login.logout') }}">
-                <i class="bi bi-box-arrow-right"></i> Logout
-              </a>
+              <a class="dropdown-item" href="{{ url_for('login.logout') }}"
+                ><i class="bi bi-box-arrow-right"></i> Logout</a
+              >
             </li>
-            {% endif %} {% if user['is_admin'] == 'user' %}
+
+            {% elif user['is_admin'] == 'user' %}
+            <!-- Client menu -->
             <li><hr class="dropdown-divider" /></li>
             <li>
-              <a class="dropdown-item" href="/clientCart">
-                <i class="bi bi-cart"></i> Cart
-              </a>
+              <a class="dropdown-item" href="/clientCart"
+                ><i class="bi bi-cart"></i> Cart</a
+              >
             </li>
             <li>
-              <a class="dropdown-item" href="/client/clientOrders">
-                <i class="bi bi-list-ul"></i> Orders
-              </a>
+              <a class="dropdown-item" href="/client/clientOrders"
+                ><i class="bi bi-list-ul"></i> Orders</a
+              >
             </li>
             <li>
-              <a class="dropdown-item" href="{{ url_for('login.logout') }}">
-                <i class="bi bi-box-arrow-right"></i> Logout
-              </a>
+              <a class="dropdown-item" href="{{ url_for('login.logout') }}"
+                ><i class="bi bi-box-arrow-right"></i> Logout</a
+              >
             </li>
             {% endif %}
           </ul>
         </li>
         {% else %}
-        <!-- Person icon if not logged in -->
+        <!-- Person icon (not logged in) -->
         <li class="nav-item">
           <a
             class="nav-link"
@@ -152,22 +163,16 @@
     </div>
   </div>
 </nav>
+
+<!-- Smart navbar scroll -->
 <script>
   let prevScrollpos = window.pageYOffset;
   const navbar = document.getElementById("smartNavbar");
-  navbar.style.top = "0"; // navbar visible on page load
+  navbar.style.top = "0"; // always visible on page load
 
-  window.onscroll = function () {
+  window.addEventListener("scroll", () => {
     let currentScrollPos = window.pageYOffset;
-
-    if (prevScrollpos > currentScrollPos) {
-      // scrolling up → show navbar
-      navbar.style.top = "0";
-    } else {
-      // scrolling down → hide navbar
-      navbar.style.top = "-120px"; // adjust based on navbar height
-    }
-
+    navbar.style.top = prevScrollpos > currentScrollPos ? "0" : "-120px";
     prevScrollpos = currentScrollPos;
-  };
+  });
 </script>

@@ -1,15 +1,8 @@
-from flask import (
-    Blueprint,
-    request,
-    redirect,
-    url_for,
-    flash,
-    current_app,
-)
+from flask import Blueprint, request, redirect, url_for, flash, current_app
 import os
-from ....utils.decorators import role_required
 from werkzeug.utils import secure_filename
 from database.database import get_db_connection
+from ....utils.decorators import role_required
 
 addProduct_bp = Blueprint(
     "addProduct", __name__, template_folder="../../../../frontend/templates/admin"
@@ -24,7 +17,7 @@ def allowed_file(filename):
 
 @addProduct_bp.route("/add-product", methods=["GET", "POST"])
 @role_required("admin")
-def addProduct():
+def add_product():
     upload_folder = current_app.config.get("UPLOAD_FOLDER", "static/uploads")
     os.makedirs(upload_folder, exist_ok=True)
 
@@ -32,29 +25,25 @@ def addProduct():
     cursor = conn.cursor(dictionary=True)
 
     if request.method == "POST":
-        name = request.form["name"]
-        description = request.form["description"]
-        price = float(request.form["price"])
+        name = request.form.get("name")
+        description = request.form.get("description")
+        price = float(request.form.get("price", 0))
 
-        # Handle file upload
         file = request.files.get("image")
         filename = None
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(upload_folder, filename))
 
-        # Insert product (no stock here, stock goes to variants)
         cursor.execute(
             "INSERT INTO products (name, description, price, image) VALUES (%s, %s, %s, %s)",
             (name, description, price, filename),
         )
         product_id = cursor.lastrowid
 
-        # Sizes to loop through
         sizes = ["S", "M", "L", "XL", "XXL"]
-
         for size in sizes:
-            stock = int(request.form.get(f"stock_{size}", 0))  # default 0 if not filled
+            stock = int(request.form.get(f"stock_{size}", 0))
             cursor.execute(
                 "INSERT INTO product_variants (product_id, size, stock) VALUES (%s, %s, %s)",
                 (product_id, size, stock),
@@ -67,7 +56,6 @@ def addProduct():
         flash("Product added successfully with size variants!", "success")
         return redirect(url_for("adminProductlist.adminProductlist"))
 
-    # If GET → redirect back to product list
     return redirect(url_for("adminProductlist.adminProductlist"))
 
 
@@ -76,18 +64,18 @@ def addProduct():
 def update_stock(variant_id):
     new_stock = request.form.get("stock")
 
-    if not new_stock.isdigit():
-        flash("❌ Invalid stock value!", "danger")
+    if not new_stock or not new_stock.isdigit():
+        flash("Invalid stock value!", "danger")
         return redirect(url_for("adminProductlist.adminProductlist"))
 
     conn = get_db_connection()
-    cur = conn.cursor()
-    cur.execute(
+    cursor = conn.cursor()
+    cursor.execute(
         "UPDATE product_variants SET stock = %s WHERE id = %s", (new_stock, variant_id)
     )
     conn.commit()
-    cur.close()
+    cursor.close()
     conn.close()
 
-    flash("✅ Stock updated successfully!", "success")
+    flash("Stock updated successfully!", "success")
     return redirect(url_for("adminProductlist.adminProductlist"))

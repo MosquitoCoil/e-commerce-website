@@ -8,6 +8,7 @@ block content %}
   class="scrollspy-example"
   tabindex="0"
 >
+  <!-- Hero Section -->
   <section id="home">
     <div class="container-fluid p-0 my-2">
       <div class="text-center">
@@ -16,17 +17,20 @@ block content %}
           class="img-fluid"
           width="100%"
           height="90vh"
-          alt="..."
+          alt="Jaymar Clothing Hero"
         />
       </div>
     </div>
   </section>
+
+  <!-- Collections Section -->
   <section id="collections">
     <div class="container-sm mt-4">
-      <h1 class="text-left">T-shirt Collections</h1>
-      <p class="text-left">Plain T-shirt & Oversized T-shirt</p>
+      <h1>T-shirt Collections</h1>
+      <p>Plain T-shirt & Oversized T-shirt</p>
       <div class="row g-3">
-        {% if view_all %} {% for product in products %}
+        {% set display_products = products if view_all else products[:12] %} {%
+        for product in display_products %}
         <div class="col-md-3 col-sm-6">
           <div
             class="card border-0 bg-white text-center h-100 p-2 product-card"
@@ -42,7 +46,7 @@ block content %}
             <div class="card-body p-2">
               <h6 class="fw-semibold mb-1 product-name">
                 <a
-                  href="{{ url_for('home.productDetail', product_id=product.id) }}"
+                  href="{{ url_for('home.product_detail', product_id=product.id) }}"
                   class="text-dark text-decoration-none"
                 >
                   {{ product.name }}
@@ -51,7 +55,7 @@ block content %}
               <p class="text-muted small mb-2">{{ product.description }}</p>
               <p class="fw-bold mb-2">₱{{ "%.2f"|format(product.price) }}</p>
               <form
-                action="{{ url_for('addToCart.addToCart', product_id=product.id) }}"
+                action="{{ url_for('addToCart.add_to_cart', product_id=product.id) }}"
                 method="POST"
               >
                 <button type="submit" class="btn btn-dark">
@@ -61,45 +65,10 @@ block content %}
             </div>
           </div>
         </div>
-        {% endfor %} {% else %} {% for product in products[:12] %}
-        <div class="col-md-3 col-sm-6">
-          <div
-            class="card border-0 bg-white text-center h-100 p-2 product-card"
-          >
-            <div class="overflow-hidden">
-              <img
-                src="{{ url_for('static', filename='uploads/' ~ product.image) }}"
-                class="card-img-top img-fluid product-image"
-                alt="{{ product.name }}"
-                style="max-height: 250px; object-fit: cover"
-              />
-            </div>
-            <div class="card-body p-2">
-              <h6 class="fw-semibold mb-1 product-name">
-                <a
-                  href="{{ url_for('home.productDetail', product_id=product.id) }}"
-                  class="text-dark text-decoration-none"
-                >
-                  {{ product.name }}
-                </a>
-              </h6>
-              <p class="text-muted small mb-2">{{ product.description }}</p>
-              <p class="fw-bold mb-2">₱{{ "%.2f"|format(product.price) }}</p>
-              <form
-                action="{{ url_for('addToCart.addToCart', product_id=product.id) }}"
-                method="POST"
-              >
-                <button type="submit" class="btn btn-dark">
-                  <i class="bi bi-cart-plus"></i> Add to Cart
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-        {% endfor %} {% endif %}
+        {% endfor %}
       </div>
 
-      <!-- View All Button -->
+      <!-- View All / See Less Button -->
       {% if products|length > 12 %}
       <div class="text-center mt-3">
         {% if view_all %}
@@ -117,11 +86,12 @@ block content %}
       {% endif %}
     </div>
   </section>
+
+  <!-- About Section -->
   <section id="about" class="py-5">
     <div class="container-sm">
       <hr class="my-4" />
       <div class="row align-items-center">
-        <!-- Image / Project Visual -->
         <div class="col-lg-6 mb-4 mb-lg-0">
           <img
             src="{{ url_for('static', filename='images/bg/jaymar.png') }}"
@@ -129,8 +99,6 @@ block content %}
             class="img-fluid rounded shadow"
           />
         </div>
-
-        <!-- Text Content -->
         <div class="col-lg-6">
           <h2 class="fw-bold mb-3">
             <i class="bi bi-code-slash"></i> About This Project
@@ -140,12 +108,9 @@ block content %}
           <p class="lead text-muted">
             Every project starts with a spark. Mine began with the idea of
             building a platform where clothing and technology meet—a fully
-            functional e-commerce website for clothing. <br />Back in Quezon
-            City, I was just a learner, experimenting with code, frameworks, and
-            design. <br />But I wanted something real—something I could build
-            from scratch and be proud of. Not just a demo, not just a school
-            project. <br />A complete system that people could actually use. And
-            that was my very first chapter.
+            functional e-commerce website for clothing.
+            <br />Back in Quezon City, I was just a learner, experimenting with
+            code, frameworks, and design.
           </p>
 
           <h5 class="fw-bold mt-4">🌟 From Code to Creation</h5>
@@ -153,46 +118,35 @@ block content %}
             I started with one page. Then another. Slowly, the site grew—product
             listings, shopping cart, checkout, authentication, and even an admin
             panel.
-            <br />
-            What once felt impossible started coming together piece by piece.<br />
-            That’s when I realized: this wasn’t just practice anymore.<br />
-            👉 This was a <strong>real e-commerce platform</strong>, built with
-            Flask (Python), MySQL, and Bootstrap.
+            <br />This became a <strong>real e-commerce platform</strong>, built
+            with Flask (Python), MySQL, and Bootstrap.
           </p>
 
           <h5 class="fw-bold mt-4">💡 The Bigger Vision</h5>
           <p>
-            This project is more than a website—it’s a stepping stone toward my
-            dream of becoming a <strong>back-end web developer</strong>.
-            <br />
-            I want to keep learning, keep building, and eventually create
-            platforms that can scale and serve businesses worldwide.
-            <br />
-            I’m not here to copy what’s already been done. I’m here to create,
-            innovate, and grow—one project at a time.
+            More than a website—it’s my stepping stone to becoming a
+            <strong>back-end web developer</strong>. I aim to create scalable
+            platforms that serve users worldwide.
           </p>
 
           <h5 class="fw-bold mt-4">🔥 What This Project Stands For</h5>
           <p>
-            This e-commerce site isn’t just lines of code. <br />It represents
-            my belief that technology should be practical, creative, and
-            meaningful. <br />Every feature and function is built with the goal
-            of solving real problems and making life easier for users.<br />
+            This e-commerce site represents my belief that technology should be
+            practical, creative, and meaningful. Every feature is built to solve
+            real problems for users.
           </p>
 
           <div class="mt-4">
             <a
               href="{{ url_for('home.home') }}#home"
               class="btn btn-dark btn-lg shadow-sm"
+              >View Demo</a
             >
-              View Demo
-            </a>
             <a
               href="{{ url_for('home.home') }}#contact"
               class="btn btn-outline-dark btn-lg ms-3"
+              >Let’s Connect</a
             >
-              Let’s Connect
-            </a>
           </div>
         </div>
       </div>

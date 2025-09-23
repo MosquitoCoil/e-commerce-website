@@ -1,0 +1,47 @@
+<!-- Edit Profile Modal -->
+<div class="modal fade" id="editProfileModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header d-block text-center">
+        <img src="{{ url_for('static', filename='images/logo2.png') }}" width="130" height="50" alt="Logo">
+        <h5 class="modal-title mt-2"><i class="bi bi-pencil"></i> Edit Profile</h5>
+        <button type="button" class="btn-close position-absolute top-0 end-0 m-2" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form method="POST" action="{{ url_for('profile.edit_profile') }}">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Username</label>
+            <input type="text" class="form-control" name="username" value="{{ user.username }}" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">First Name</label>
+            <input type="text" class="form-control" name="firstname" value="{{ user.firstname }}">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Last Name</label>
+            <input type="text" class="form-control" name="lastname" value="{{ user.lastname }}">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Address</label>
+            <input type="text" class="form-control" name="address" value="{{ user.address }}">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">New Password</label>
+            <input type="password" class="form-control" name="password" placeholder="Leave blank to keep current password">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Account Type</label>
+            <select class="form-select" name="is_admin">
+              <option value="user" {% if user.is_admin=='user' %}selected{% endif %}>User</option>
+              <option value="admin" {% if user.is_admin=='admin' %}selected{% endif %}>Admin</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Save Changes</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

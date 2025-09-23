@@ -12,7 +12,7 @@ client_bp = Blueprint(
 def client():
     user_id = session.get("user_id")
     if not user_id:
-        flash("You must be logged in to checkout.", "error")
+        flash("You must be logged in to access the dashboard.", "error")
         return redirect(url_for("login.login"))
 
     conn = get_db_connection()
@@ -22,9 +22,12 @@ def client():
         SELECT id, username, firstname, address, is_admin, created_at
         FROM users
         WHERE id = %s
-    """,
+        """,
         (user_id,),
     )
     user = cursor.fetchone()
+
+    cursor.close()
+    conn.close()
 
     return render_template("clientDashboard.html", user=user)

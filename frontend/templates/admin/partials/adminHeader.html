@@ -1,4 +1,7 @@
-<nav id="" class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow">
+<nav
+  id="adminNavbarWrapper"
+  class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow"
+>
   <div class="container-sm">
     <a class="navbar-brand ms-3" href="/admin/dashboard">
       <img src="/static/images/logo.png" width="130" height="50" alt="Logo" />
@@ -53,14 +56,14 @@
             >Users</a
           >
         </li>
-
         <li class="nav-item">
           <a
-            class="nav-link {% if request.endpoint == 'admin.products' %}active{% endif %}"
+            class="nav-link {% if request.endpoint == 'admin.reports' %}active{% endif %}"
             href="/admin/reports"
             >Reports</a
           >
         </li>
+
         {% if user %}
         <li class="nav-item dropdown">
           <a
@@ -71,8 +74,7 @@
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            Hello, {{ user['is_admin'].capitalize() }} {{
-            user['is_admin'].capitalize() }}
+            Hello, {{ user['is_admin'].capitalize() }}
           </a>
           <ul
             class="dropdown-menu dropdown-menu-end"
@@ -81,19 +83,18 @@
             <li>
               <a
                 class="dropdown-item"
-                href="{{ url_for('admin.admin') }}"
+                href="{{ url_for('admin.admin_dashboard') }}"
                 data-bs-toggle="modal"
                 data-bs-target="#profileModal"
-                ><i class="bi bi-person"></i> Profile</a
               >
+                <i class="bi bi-person"></i> Profile
+              </a>
             </li>
+            <li><hr class="dropdown-divider" /></li>
             <li>
-              <hr class="dropdown-divider" />
-            </li>
-            <li>
-              <a class="dropdown-item" href="{{ url_for('login.logout') }}"
-                ><i class="bi bi-box-arrow-right"></i> Logout</a
-              >
+              <a class="dropdown-item" href="{{ url_for('login.logout') }}">
+                <i class="bi bi-box-arrow-right"></i> Logout
+              </a>
             </li>
           </ul>
         </li>
@@ -103,24 +104,16 @@
   </div>
 </nav>
 
-<script src="{{ url_for('static', filename='profileModal.js')}}"></script>
+<script src="{{ url_for('static', filename='profileModal.js') }}"></script>
 <script src="{{ url_for('static', filename='js/chart.min.js') }}"></script>
 <script>
   let prevScrollpos = window.pageYOffset;
-  const navbar = document.getElementById("smartNavbar");
-  navbar.style.top = "0"; // navbar visible on page load
+  const navbar = document.getElementById("adminNavbarWrapper");
+  navbar.style.top = "0";
 
   window.onscroll = function () {
     let currentScrollPos = window.pageYOffset;
-
-    if (prevScrollpos > currentScrollPos) {
-      // scrolling up → show navbar
-      navbar.style.top = "0";
-    } else {
-      // scrolling down → hide navbar
-      navbar.style.top = "-120px"; // adjust based on navbar height
-    }
-
+    navbar.style.top = prevScrollpos > currentScrollPos ? "0" : "-120px";
     prevScrollpos = currentScrollPos;
   };
 </script>

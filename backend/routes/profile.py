@@ -26,27 +26,30 @@ def edit_profile():
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    if password:  # update password if provided
-        hashed_password = generate_password_hash(password)
+    if password:
         cursor.execute(
-            """UPDATE users 
-               SET firstname=%s, lastname=%s, address=%s, username=%s, password=%s, is_admin=%s 
-               WHERE id=%s""",
+            """
+            UPDATE users 
+            SET firstname=%s, lastname=%s, address=%s, username=%s, password=%s, is_admin=%s 
+            WHERE id=%s
+            """,
             (
                 firstname,
                 lastname,
                 address,
                 username,
-                hashed_password,
+                generate_password_hash(password),
                 is_admin,
                 user_id,
             ),
         )
-    else:  # don’t overwrite password
+    else:
         cursor.execute(
-            """UPDATE users 
-               SET firstname=%s, lastname=%s, address=%s, username=%s, is_admin=%s 
-               WHERE id=%s""",
+            """
+            UPDATE users 
+            SET firstname=%s, lastname=%s, address=%s, username=%s, is_admin=%s 
+            WHERE id=%s
+            """,
             (firstname, lastname, address, username, is_admin, user_id),
         )
 

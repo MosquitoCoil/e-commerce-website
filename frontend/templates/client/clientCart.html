@@ -3,6 +3,8 @@ content %}
 <div class="container-fluid mt-4">
   <div class="container-sm">
     <h2>🛒 My Cart</h2>
+
+    {% if items %}
     <table id="cartTable" class="table table-bordered table-striped">
       <thead class="table-dark">
         <tr>
@@ -17,7 +19,7 @@ content %}
         </tr>
       </thead>
       <tbody>
-        {% if items %} {% for item in items %}
+        {% for item in items %}
         <tr>
           <td>{{ loop.index }}</td>
           <td>
@@ -32,32 +34,33 @@ content %}
           <td>{{ item.size }}</td>
           <td>₱{{ item.price }}</td>
           <td>
+            <!-- Minus -->
             <form
               action="{{ url_for('editCart.editCart', cart_id=item.id, action='minus') }}"
               method="POST"
-              style="display: inline"
+              class="d-inline"
             >
               <button class="btn btn-sm btn-outline-dark">-</button>
             </form>
 
             {{ item.quantity }}
 
-            <!-- Add Button -->
+            <!-- Plus -->
             <form
               action="{{ url_for('editCart.editCart', cart_id=item.id, action='add') }}"
               method="POST"
-              style="display: inline"
+              class="d-inline"
             >
               <button class="btn btn-sm btn-outline-dark">+</button>
             </form>
           </td>
           <td>₱{{ item.total }}</td>
           <td>
-            <!-- Delete Button -->
+            <!-- Delete -->
             <form
               action="{{ url_for('deleteCart.deleteCart', cart_id=item.id) }}"
               method="POST"
-              style="display: inline"
+              class="d-inline"
             >
               <button class="btn btn-sm btn-danger">❌ Remove</button>
             </form>
@@ -66,9 +69,11 @@ content %}
         {% endfor %}
       </tbody>
     </table>
+
+    <!-- Checkout Button -->
     <div class="text-end">
       <button
-        type="submit"
+        type="button"
         class="btn btn-dark mt-2"
         data-bs-toggle="modal"
         data-bs-target="#checkoutModal"
@@ -82,78 +87,8 @@ content %}
   </div>
 </div>
 
-<!-- Checkout Modal -->
-<div class="modal fade" id="checkoutModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content">
-      <div class="modal-header d-block">
-        <div class="w-100 text-center">
-          <img
-            src="/static/images/logo2.png"
-            width="130"
-            height="50"
-            alt="Logo"
-          />
-        </div>
-        <button
-          type="button"
-          class="btn-close position-absolute top-0 end-0 m-2"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-        <h5 class="modal-title">Checkout</h5>
-      </div>
-
-      <form action="{{ url_for('checkout.checkout') }}" method="post">
-        <div class="modal-body">
-          {% if items %}
-          <ul class="list-group mb-3">
-            {% for item in items %}
-            <li
-              class="list-group-item d-flex justify-content-between align-items-center"
-            >
-              <div>
-                <strong>{{ item.name }}</strong> <br />
-                <small
-                  >Size: {{ item.size }} | ₱{{ item.price }} x {{ item.quantity
-                  }}</small
-                >
-              </div>
-              <span>₱{{ item.price * item.quantity }}</span>
-            </li>
-            {% endfor %}
-          </ul>
-
-          <!-- Total -->
-          <div class="d-flex justify-content-between">
-            <h5>Total</h5>
-            <h5>₱{{ items | sum(attribute='total') }}</h5>
-          </div>
-          {% else %}
-          <p>Your cart is empty.</p>
-          {% endif %}
-        </div>
-
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-dark">
-            Proceed to Checkout
-          </button>
-          <button
-            type="button"
-            class="btn btn-secondary"
-            data-bs-dismiss="modal"
-          >
-            Cancel
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
 {% endblock %} {% block extra_script %}
-
 <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
-
 <script src="{{ url_for('static', filename='js/jquery-3.7.1.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/dataTables.bootstrap5.min.js') }}"></script>
@@ -162,13 +97,13 @@ content %}
 
 <script>
   // Init DataTable
-  $(document).ready(function () {
+  $(document).ready(() => {
     $("#cartTable").DataTable({
       pageLength: 10,
       lengthMenu: [5, 10, 25, 50],
       ordering: true,
       searching: true,
-      responsive: true, // makes table adapt on mobile
+      responsive: true,
       language: {
         search: '<i class="bi bi-search"></i>',
         searchPlaceholder: "Search items...",
@@ -176,33 +111,26 @@ content %}
     });
   });
 
-  // Auto-dismiss flash messages after 4 seconds
+  // Auto-dismiss flash messages after 4s
   setTimeout(() => {
-    const alerts = document.querySelectorAll(".alert");
-    alerts.forEach((alert) => {
-      let bsAlert = new bootstrap.Alert(alert);
-      bsAlert.close();
+    document.querySelectorAll(".alert").forEach((alert) => {
+      new bootstrap.Alert(alert).close();
     });
-  }, 4000); // 4000ms = 4 seconds
-  const loginModal = new URLSearchParams(window.location.search);
-  if (loginModal.get("login") === "1") {
-    const loginModal = new bootstrap.Modal(
-      document.getElementById("loginModal")
-    );
-    loginModal.show();
+  }, 4000);
+
+  // Handle login/register modals from URL
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("login") === "1") {
+    new bootstrap.Modal(document.getElementById("loginModal")).show();
   }
-  const registerModal = new URLSearchParams(window.location.search);
-  if (registerModal.get("register") === "1") {
-    const registerModal = new bootstrap.Modal(
-      document.getElementById("registerModal")
-    );
-    registerModal.show();
+  if (params.get("register") === "1") {
+    new bootstrap.Modal(document.getElementById("registerModal")).show();
   }
+
+  // Auto-show Bootstrap toasts
   document.addEventListener("DOMContentLoaded", () => {
-    const toastElList = [].slice.call(document.querySelectorAll(".toast"));
-    toastElList.forEach((toastEl) => {
-      const toast = new bootstrap.Toast(toastEl, { delay: 3000 }); // auto-hide after 3s
-      toast.show();
+    document.querySelectorAll(".toast").forEach((toastEl) => {
+      new bootstrap.Toast(toastEl, { delay: 3000 }).show();
     });
   });
 </script>

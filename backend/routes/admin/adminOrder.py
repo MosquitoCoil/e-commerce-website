@@ -11,39 +11,51 @@ adminOrders_bp = Blueprint(
 
 @adminOrders_bp.route("/admin/orders")
 @role_required("admin")
-def adminOrders():
+def admin_orders():
     user_id = session.get("user_id")
     if not user_id:
-        flash("You must be logged in to checkout.", "error")
+        flash("You must be logged in to view orders.", "danger")
         return redirect(url_for("login.login"))
 
-    db = get_db_connection()
-    cursor = db.cursor(dictionary=True)
+    conn = None
+    orders = []
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute(
+            """
+            SELECT o.id, o.status, u.firstname, o.created_at
+            FROM orders o
+            JOIN users u ON o.user_id = u.id
+            ORDER BY o.created_at DESC
+            """
+        )
+        orders = cursor.fetchall()
+        cursor.close()
+    except Exception as e:
+        flash(f"Error fetching orders: {e}", "danger")
+    finally:
+        if conn:
+            conn.close()
 
-    cursor.execute(
-        """
-        SELECT o.id, o.status, u.firstname, o.created_at
-        FROM orders o
-        JOIN users u ON o.user_id = u.id
-        ORDER BY o.created_at DESC
-    """
-    )
-    orders = cursor.fetchall()
-
-    cursor.close()
-    db.close()
     return render_template("adminOrder.html", orders=orders)
 
 
 @adminOrders_bp.route("/admin/orders/update/<int:order_id>/<string:status>")
 @role_required("admin")
 def update_order_status(order_id, status):
-    db = get_db_connection()
-    cursor = db.cursor()
-    cursor.execute("UPDATE orders SET status=%s WHERE id=%s", (status, order_id))
-    db.commit()
-    cursor.close()
-    db.close()
+    conn = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("UPDATE orders SET status=%s WHERE id=%s", (status, order_id))
+        conn.commit()
+        cursor.close()
+        flash(f"Order #{order_id} updated to {status}.", "success")
+    except Exception as e:
+        flash(f"Error updating order: {e}", "danger")
+    finally:
+        if conn:
+            conn.close()
 
-    flash(f"Order #{order_id} updated to {status}", "success")
-    return redirect(url_for("adminOrders.adminOrders"))
+    return redirect(url_for("adminOrders.admin_orders"))

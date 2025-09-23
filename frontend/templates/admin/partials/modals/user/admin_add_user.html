@@ -1,0 +1,86 @@
+<!-- Add User Modal -->
+<div
+  class="modal fade"
+  id="addUser"
+  tabindex="-1"
+  aria-labelledby="addUserLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-dark text-white">
+      <div class="modal-header d-block bg-dark">
+        <div class="w-100 text-center">
+          <img
+            src="/static/images/logo.png"
+            width="130"
+            height="50"
+            alt="Logo"
+          />
+        </div>
+        <button
+          type="button"
+          class="btn-close btn-close-white position-absolute top-0 end-0 m-2"
+          data-bs-dismiss="modal"
+        ></button>
+        <h5 class="modal-title fw-bold mt-2" id="addUserLabel">Add User</h5>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="{{ url_for('addUser.add_user') }}">
+          <div class="mb-3">
+            <label for="firstname" class="form-label">Firstname</label>
+            <input
+              type="text"
+              class="form-control"
+              id="firstname"
+              name="firstname"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="lastname" class="form-label">Lastname</label>
+            <input
+              type="text"
+              class="form-control"
+              id="lastname"
+              name="lastname"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="username" class="form-label">Email / Username</label>
+            <input
+              type="email"
+              class="form-control"
+              id="username"
+              name="username"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              name="password"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="is_admin" class="form-label">User Type</label>
+            <select class="form-select" id="is_admin" name="is_admin">
+              <option value="user" selected>User</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">Add User</button>
+            <button class="btn btn-secondary" data-bs-dismiss="modal">
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

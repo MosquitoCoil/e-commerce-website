@@ -3,7 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{% block title %} Base HTML {% endblock %}</title>
+    <title>{% block title %}Base HTML{% endblock %}</title>
+
+    <!-- Stylesheets -->
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
@@ -27,8 +29,11 @@
   </head>
 
   <body>
-    {% include "partials/header.html" %} {% with messages =
-    get_flashed_messages(with_categories=true) %} {% if messages %}
+    {% include "partials/header.html" %}
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %} {% if
+    messages %}
     <div
       class="toast-container position-fixed top-30 start-50 translate-middle-x p-3"
       style="z-index: 1100"
@@ -48,221 +53,34 @@
     </div>
     {% endif %} {% endwith %}
 
-    <main>
-      {% block content %} {% endblock %}
-      <!-- Login Modal -->
-      <div
-        class="modal fade"
-        id="loginModal"
-        tabindex="-1"
-        aria-labelledby="loginModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content shadow-lg">
-            <div class="modal-header d-block">
-              <div class="w-100 text-center">
-                <img
-                  src="/static/images/logo2.png"
-                  width="130"
-                  height="50"
-                  alt="Logo"
-                />
-              </div>
-              <h5 class="modal-title ms-2" id="loginModalLabel">Login</h5>
-              <button
-                type="button"
-                class="btn-close position-absolute top-0 end-0 m-2"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div class="modal-body">
-              <form method="POST" action="/login">
-                <div class="mb-3">
-                  <label for="username" class="form-label"
-                    >Username or Email</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="username"
-                    name="username"
-                    placeholder="Email"
-                    required
-                  />
-                </div>
+    <main>{% block content %}{% endblock %}</main>
 
-                <div class="mb-3">
-                  <label for="password" class="form-label">Password</label>
-                  <input
-                    type="password"
-                    class="form-control"
-                    id="password"
-                    name="password"
-                    placeholder="Password"
-                    required
-                  />
-                </div>
-
-                <div class="mb-3 form-check">
-                  <input
-                    type="checkbox"
-                    class="form-check-input"
-                    id="remember"
-                    name="remember"
-                  />
-                  <label class="form-check-label" for="remember"
-                    >Remember me</label
-                  >
-                </div>
-
-                <button type="submit" class="btn btn-dark w-100">Login</button>
-
-                <p class="text-center mt-3">
-                  Don’t have an account?
-                  <a
-                    href="#"
-                    data-bs-toggle="modal"
-                    data-bs-target="#registerModal"
-                    >Sign Up</a
-                  >
-                </p>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Register Modal -->
-      <div
-        class="modal fade"
-        id="registerModal"
-        tabindex="-1"
-        aria-labelledby="registerModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content shadow-lg">
-            <div class="modal-header d-block">
-              <div class="w-100 text-center">
-                <img
-                  src="/static/images/logo2.png"
-                  width="130"
-                  height="50"
-                  alt="Logo"
-                />
-              </div>
-              <h5 class="modal-title ms-2" id="registerModalLabel">Sign Up</h5>
-              <button
-                type="button"
-                class="btn-close position-absolute top-0 end-0 m-2"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div class="modal-body">
-              <form method="POST" action="/register">
-                <div class="mb-3">
-                  <label class="form-label">Firstname</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    name="firstname"
-                    required
-                  />
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">Lastname</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    name="lastname"
-                    required
-                  />
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">Address</label>
-                  <input type="text" class="form-control" name="address" />
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">Username</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    name="username"
-                    required
-                  />
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">Password</label>
-                  <input
-                    type="password"
-                    class="form-control"
-                    name="password"
-                    required
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="is_admin" class="form-label">Role</label>
-                  <select
-                    class="form-select form-select-sm"
-                    id="is_admin"
-                    name="is_admin"
-                  >
-                    <option value="user" selected>User</option>
-                    <option value="admin">Admin</option>
-                  </select>
-                </div>
-                <button type="submit" class="btn btn-dark w-100">
-                  Register
-                </button>
-                <p class="mt-3 text-center">
-                  Already have an account?
-                  <a
-                    href="#"
-                    data-bs-toggle="modal"
-                    data-bs-target="#loginModal"
-                    >Login here</a
-                  >
-                </p>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </main>
     {% include "partials/footer.html" %} {% block extra_script %}
     <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/dataTables.bootstrap5.min.js') }}"></script>
     <script src="{{ url_for('static', filename='profileModal.js') }}"></script>
     <script>
-      // Auto-dismiss flash messages after 4 seconds
+      // Auto-dismiss flash messages after 4s
       setTimeout(() => {
-        const alerts = document.querySelectorAll(".alert");
-        alerts.forEach((alert) => {
+        document.querySelectorAll(".alert").forEach((alert) => {
           let bsAlert = new bootstrap.Alert(alert);
           bsAlert.close();
         });
-      }, 4000); // 4000ms = 4 seconds
-      const loginModal = new URLSearchParams(window.location.search);
-      if (loginModal.get("login") === "1") {
-        const loginModal = new bootstrap.Modal(
-          document.getElementById("loginModal")
-        );
-        loginModal.show();
+      }, 4000);
+
+      // Show modals if triggered from query params
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("login") === "1") {
+        new bootstrap.Modal(document.getElementById("loginModal")).show();
       }
-      const registerModal = new URLSearchParams(window.location.search);
-      if (registerModal.get("register") === "1") {
-        const registerModal = new bootstrap.Modal(
-          document.getElementById("registerModal")
-        );
-        registerModal.show();
+      if (params.get("register") === "1") {
+        new bootstrap.Modal(document.getElementById("registerModal")).show();
       }
+
+      // Initialize Bootstrap toasts
       document.addEventListener("DOMContentLoaded", () => {
-        const toastElList = [].slice.call(document.querySelectorAll(".toast"));
-        toastElList.forEach((toastEl) => {
-          const toast = new bootstrap.Toast(toastEl, { delay: 3000 }); // auto-hide after 3s
-          toast.show();
+        document.querySelectorAll(".toast").forEach((toastEl) => {
+          new bootstrap.Toast(toastEl, { delay: 3000 }).show();
         });
       });
     </script>

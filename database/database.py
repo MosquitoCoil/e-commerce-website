@@ -10,7 +10,5 @@ db_config = {
 
 
 def get_db_connection():
-    conn = mysql.connector.connect(**db_config)
-    # Always return dictionary-style results
-    conn.cursor_factory = lambda: conn.cursor(dictionary=True)
-    return conn
+    """Return a MySQL connection."""
+    return mysql.connector.connect(**db_config)

@@ -3,13 +3,11 @@ from ...utils.decorators import role_required
 from database.database import get_db_connection
 from datetime import datetime
 
-
 clientOrders_bp = Blueprint(
     "clientOrders", __name__, template_folder="../../../frontend/templates/client"
 )
 
 
-# Show ALL orders of the client
 @clientOrders_bp.route("/client/clientOrders")
 @role_required("user")
 def clientOrders():
@@ -21,14 +19,17 @@ def clientOrders():
     db = get_db_connection()
     cursor = db.cursor(dictionary=True)
 
-    # Get all orders for this user
     cursor.execute(
-        "SELECT id, total, created_at, status FROM orders WHERE user_id = %s ORDER BY created_at DESC",
+        """
+        SELECT id, total, created_at, status
+        FROM orders
+        WHERE user_id = %s
+        ORDER BY created_at DESC
+        """,
         (user_id,),
     )
     orders = cursor.fetchall()
 
-    # Get order items for each order
     order_items = {}
     for order in orders:
         cursor.execute(
@@ -42,7 +43,6 @@ def clientOrders():
         )
         order_items[order["id"]] = cursor.fetchall()
 
-    # ✅ Get purchase history
     cursor.execute(
         """
         SELECT id, order_id, product_name, quantity, price, total, received_at
@@ -65,7 +65,6 @@ def clientOrders():
     )
 
 
-# Show ONE specific order
 @clientOrders_bp.route("/clientOrders/<int:order_id>")
 @role_required("user")
 def view_order(order_id):
@@ -75,8 +74,8 @@ def view_order(order_id):
     cursor.execute(
         """
         SELECT o.id, o.total, o.created_at,
-        oi.product_id, oi.quantity, oi.price,
-        p.name
+               oi.product_id, oi.quantity, oi.price,
+               p.name
         FROM orders o
         JOIN order_items oi ON o.id = oi.order_id
         JOIN products p ON oi.product_id = p.id
@@ -98,11 +97,11 @@ def undo_checkout(order_id):
     user_id = session.get("user_id")
     if not user_id:
         flash("You must be logged in to undo checkout.", "error")
-        return redirect(url_for("login.login"))  # who owns the cart
+        return redirect(url_for("login.login"))
+
     db = get_db_connection()
     cursor = db.cursor(dictionary=True)
 
-    # ✅ Check if order exists and is still Pending
     cursor.execute(
         "SELECT id, status FROM orders WHERE id=%s AND user_id=%s",
         (order_id, user_id),
@@ -121,18 +120,12 @@ def undo_checkout(order_id):
         db.close()
         return redirect(url_for("clientOrders.clientOrders"))
 
-    # 1. Get all items from this order
     cursor.execute(
-        """
-        SELECT product_id, quantity
-        FROM order_items
-        WHERE order_id = %s
-        """,
+        "SELECT product_id, quantity FROM order_items WHERE order_id = %s",
         (order_id,),
     )
     items = cursor.fetchall()
 
-    # 2. Insert back into cart
     for item in items:
         cursor.execute(
             "SELECT id, quantity FROM cart WHERE user_id=%s AND product_id=%s",
@@ -141,10 +134,9 @@ def undo_checkout(order_id):
         existing = cursor.fetchone()
 
         if existing:
-            new_qty = existing["quantity"] + item["quantity"]
             cursor.execute(
                 "UPDATE cart SET quantity=%s WHERE id=%s",
-                (new_qty, existing["id"]),
+                (existing["quantity"] + item["quantity"], existing["id"]),
             )
         else:
             cursor.execute(
@@ -152,7 +144,6 @@ def undo_checkout(order_id):
                 (user_id, item["product_id"], item["quantity"]),
             )
 
-    # 3. Delete order + order_items
     cursor.execute("DELETE FROM order_items WHERE order_id=%s", (order_id,))
     cursor.execute("DELETE FROM orders WHERE id=%s", (order_id,))
 
@@ -168,10 +159,10 @@ def undo_checkout(order_id):
 @role_required("user")
 def mark_as_received(order_id):
     user_id = session.get("user_id")
+
     db = get_db_connection()
     cursor = db.cursor(dictionary=True)
 
-    # 1. Get all order items
     cursor.execute(
         """
         SELECT oi.product_id, oi.quantity, oi.price, p.name
@@ -183,11 +174,9 @@ def mark_as_received(order_id):
     )
     order_items = cursor.fetchall()
 
-    # 2. Insert each item into purchase_history
     for item in order_items:
         total = item["price"] * item["quantity"]
 
-        # Check if product still exists (to avoid FK error)
         cursor.execute("SELECT id FROM products WHERE id = %s", (item["product_id"],))
         exists = cursor.fetchone()
 
@@ -210,7 +199,6 @@ def mark_as_received(order_id):
                 ),
             )
         else:
-            # fallback: insert without product_id
             cursor.execute(
                 """
                 INSERT INTO purchase_history 
@@ -228,7 +216,6 @@ def mark_as_received(order_id):
                 ),
             )
 
-    # 3. Update order status
     cursor.execute("UPDATE orders SET status = 'Received' WHERE id = %s", (order_id,))
 
     db.commit()

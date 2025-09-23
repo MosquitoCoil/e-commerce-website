@@ -3,10 +3,11 @@ block content %}
 <div class="container-fluid mt-4">
   <div class="container-sm">
     <h2 class="mb-4"><i class="bi bi-bar-chart"></i> Sales Reports</h2>
+
     <!-- Daily Sales Table -->
     <h4 class="mt-4">Daily Sales</h4>
-    <table class="table table-bordered text-center">
-      <thead>
+    <table class="table table-bordered text-center align-middle">
+      <thead class="table-dark">
         <tr>
           <th>Date</th>
           <th>Total Sales</th>
@@ -20,14 +21,18 @@ block content %}
           <td>₱{{ row.total_sales }}</td>
           <td>{{ row.total_products_sold }}</td>
         </tr>
+        {% else %}
+        <tr>
+          <td colspan="3" class="text-muted">No daily sales data available</td>
+        </tr>
         {% endfor %}
       </tbody>
     </table>
 
     <!-- Monthly Sales Table -->
     <h4 class="mt-5">Monthly Sales</h4>
-    <table class="table table-bordered text-center">
-      <thead>
+    <table class="table table-bordered text-center align-middle">
+      <thead class="table-dark">
         <tr>
           <th>Month</th>
           <th>Total Sales</th>
@@ -41,24 +46,29 @@ block content %}
           <td>₱{{ row.total_sales }}</td>
           <td>{{ row.total_products_sold }}</td>
         </tr>
+        {% else %}
+        <tr>
+          <td colspan="3" class="text-muted">
+            No monthly sales data available
+          </td>
+        </tr>
         {% endfor %}
       </tbody>
     </table>
-    <!-- Daily Sales Chart -->
+
+    <!-- Sales Charts -->
     <h4 class="mt-4">Daily Sales Chart</h4>
     <canvas id="dailySalesChart" height="50"></canvas>
 
-    <!-- Monthly Sales Chart -->
     <h4 class="mt-5">Monthly Sales Chart</h4>
     <canvas id="monthlySalesChart" height="50"></canvas>
   </div>
 </div>
 {% endblock %} {% block extra_script %}
-<!-- Chart.js -->
 <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/chart.min.js') }}"></script>
 
-<!-- Embed JSON safely -->
+<!-- Embed JSON data safely -->
 <script id="daily-labels" type="application/json">
   {{ daily_sales_labels|tojson }}
 </script>
@@ -73,22 +83,22 @@ block content %}
 </script>
 
 <script>
-  // Parse JSON safely
+  // Parse embedded JSON safely
   const dailyLabels = JSON.parse(
-    document.getElementById("daily-labels").textContent
+    document.getElementById("daily-labels").textContent || "[]"
   );
   const dailyData = JSON.parse(
-    document.getElementById("daily-data").textContent
+    document.getElementById("daily-data").textContent || "[]"
   );
   const monthlyLabels = JSON.parse(
-    document.getElementById("monthly-labels").textContent
+    document.getElementById("monthly-labels").textContent || "[]"
   );
   const monthlyData = JSON.parse(
-    document.getElementById("monthly-data").textContent
+    document.getElementById("monthly-data").textContent || "[]"
   );
 
   // Daily Sales Chart
-  new Chart(document.getElementById("dailySalesChart").getContext("2d"), {
+  new Chart(document.getElementById("dailySalesChart"), {
     type: "line",
     data: {
       labels: dailyLabels,
@@ -107,7 +117,7 @@ block content %}
   });
 
   // Monthly Sales Chart
-  new Chart(document.getElementById("monthlySalesChart").getContext("2d"), {
+  new Chart(document.getElementById("monthlySalesChart"), {
     type: "bar",
     data: {
       labels: monthlyLabels,

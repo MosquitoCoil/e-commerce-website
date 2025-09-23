@@ -1,0 +1,64 @@
+<!-- Login Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow-lg">
+      <div class="modal-header d-block text-center">
+        <img
+          src="{{ url_for('static', filename='images/logo2.png') }}"
+          width="130"
+          height="50"
+          alt="Logo"
+        />
+        <h5 class="modal-title mt-2">Login</h5>
+        <button
+          type="button"
+          class="btn-close position-absolute top-0 end-0 m-2"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="{{ url_for('login.login') }}">
+          <div class="mb-3">
+            <label for="username" class="form-label">Username or Email</label>
+            <input
+              type="text"
+              class="form-control"
+              id="username"
+              name="username"
+              placeholder="Email"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              name="password"
+              placeholder="Password"
+              required
+            />
+          </div>
+          <div class="mb-3 form-check">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="remember"
+              name="remember"
+            />
+            <label class="form-check-label" for="remember">Remember me</label>
+          </div>
+          <button type="submit" class="btn btn-dark w-100">Login</button>
+          <p class="text-center mt-3">
+            Don’t have an account?
+            <a href="#" data-bs-toggle="modal" data-bs-target="#registerModal"
+              >Sign Up</a
+            >
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

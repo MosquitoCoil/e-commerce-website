@@ -10,8 +10,8 @@ editCart_bp = Blueprint(
 @editCart_bp.route("/clientCart/update/<int:cart_id>/<action>", methods=["POST"])
 @role_required("user")
 def editCart(cart_id, action):
+    user_id = session.get("user_id")
 
-    user_id = session["user_id"]
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
 
@@ -21,7 +21,6 @@ def editCart(cart_id, action):
             (cart_id, user_id),
         )
     elif action == "minus":
-        # prevent quantity from going below 1
         cursor.execute(
             "UPDATE cart SET quantity = GREATEST(quantity - 1, 1) WHERE id=%s AND user_id=%s",
             (cart_id, user_id),

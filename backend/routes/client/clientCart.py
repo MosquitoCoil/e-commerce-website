@@ -17,14 +17,14 @@ def clientCart():
 
     cursor.execute(
         """
-        SELECT c.id, p.name, p.price, p.image, c.quantity, (p.price * c.quantity) AS total
+        SELECT c.id, p.name, p.price, p.image, c.quantity,
+               (p.price * c.quantity) AS total
         FROM cart c
         JOIN products p ON c.product_id = p.id
-        WHERE c.user_id=%s
+        WHERE c.user_id = %s
         """,
         (user_id,),
     )
-
     items = cursor.fetchall()
 
     cursor.close()

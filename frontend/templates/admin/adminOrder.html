@@ -1,11 +1,14 @@
-{% extends "adminBase.html" %} {% block title %}Admin Transaction{% endblock %}
-{% block content %}
+{% extends "adminBase.html" %} {% block title %}Admin Orders{% endblock %} {%
+block content %}
 <div class="container-fluid mt-4">
   <div class="container-sm">
     <h2><i class="bi bi-receipt"></i> Orders</h2>
 
-    <table id="orderTable" class="table table-bordered table-striped">
-      <thead class="table-dark">
+    <table
+      id="orderTable"
+      class="table table-bordered table-striped align-middle"
+    >
+      <thead class="table-dark text-center">
         <tr>
           <th>ID</th>
           <th>Firstname</th>
@@ -21,32 +24,30 @@
           <td>{{ order.firstname }}</td>
           <td>
             {% if order.status == "Pending" %}
-            <span class="btn btn-sm btn-warning">{{ order.status }}</span>
+            <span class="badge bg-warning">{{ order.status }}</span>
             {% elif order.status == "Processing" %}
-            <span class="btn btn-sm btn-primary">{{ order.status }}</span>
+            <span class="badge bg-primary">{{ order.status }}</span>
             {% elif order.status == "Delivered" %}
-            <span class="btn btn-sm btn-dark">{{ order.status }}</span>
+            <span class="badge bg-dark">{{ order.status }}</span>
             {% elif order.status == "Completed" %}
-            <span class="btn btn-sm btn-success">{{ order.status }}</span>
+            <span class="badge bg-success">{{ order.status }}</span>
             {% elif order.status == "Cancelled" %}
-            <span class="btn btn-sm btn-danger">{{ order.status }}</span>
+            <span class="badge bg-danger">{{ order.status }}</span>
             {% elif order.status == "Received" %}
-            <span class="btn btn-sm btn-success"
+            <span class="badge bg-success"
               ><i class="bi bi-check"></i> {{ order.status }}</span
             >
             {% else %}
-            <span class="btn btn-sm btn-secondary">{{ order.status }}</span>
+            <span class="badge bg-secondary">{{ order.status }}</span>
             {% endif %}
           </td>
-          <td>{{ order.created_at }}</td>
+          <td>{{ order.created_at.strftime("%Y-%m-%d %H:%M") }}</td>
           <td>
             {% if order.status == "Received" %}
-            <!-- Show only Received button -->
-            <button class="btn btn-sm btn-success">
+            <button class="btn btn-sm btn-success" disabled>
               <i class="bi bi-check"></i> Received
             </button>
             {% else %}
-            <!-- Show all status update buttons -->
             <a
               href="{{ url_for('adminOrders.update_order_status', order_id=order.id, status='Pending') }}"
               class="btn btn-sm btn-warning"
@@ -70,8 +71,10 @@
             <a
               href="{{ url_for('adminOrders.update_order_status', order_id=order.id, status='Cancelled') }}"
               class="btn btn-sm btn-danger"
-              >Cancel</a
+              onclick="return confirm('Are you sure you want to cancel this order?');"
             >
+              Cancel
+            </a>
             {% endif %}
           </td>
         </tr>
@@ -81,23 +84,21 @@
   </div>
 </div>
 {% endblock %} {% block extra_script %}
-
 <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
-
 <script src="{{ url_for('static', filename='js/jquery-3.7.1.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/dataTables.bootstrap5.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/dataTables.responsive.min.js') }}"></script>
 
 <script>
-  // Init DataTable
   $(document).ready(function () {
     $("#orderTable").DataTable({
       pageLength: 10,
       lengthMenu: [5, 10, 25, 50],
       ordering: true,
+      columnDefs: [{ orderable: false, targets: [4] }], // disable sorting on Action
       searching: true,
-      responsive: true, // makes table adapt on mobile
+      responsive: true,
       language: {
         search: '<i class="bi bi-search"></i>',
         searchPlaceholder: "Search orders...",

@@ -8,30 +8,34 @@ home_bp = Blueprint("home", __name__, template_folder="../../frontend/templates/
 def home():
     user_id = session.get("user_id")
     view_all = request.args.get("view_all", default=0, type=int)
+
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
+
     cursor.execute(
         """
         SELECT id, username, firstname, lastname, address, is_admin, created_at
         FROM users
         WHERE id = %s
-    """,
+        """,
         (user_id,),
     )
-    users = cursor.fetchone()
+    user = cursor.fetchone()
+
     cursor.execute("SELECT * FROM products")
     products = cursor.fetchall()
+
     cursor.close()
     conn.close()
-    return render_template(
-        "home.html", products=products, user=users, view_all=view_all
-    )
+
+    return render_template("home.html", products=products, user=user, view_all=view_all)
 
 
 @home_bp.route("/product/<int:product_id>")
-def productDetail(product_id):
+def product_detail(product_id):
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
+
     cursor.execute("SELECT * FROM products WHERE id = %s", (product_id,))
     product = cursor.fetchone()
 
@@ -40,6 +44,7 @@ def productDetail(product_id):
     )
     variants = cursor.fetchall()
 
+    cursor.close()
     conn.close()
 
     if not product:

@@ -1,8 +1,8 @@
 from flask import Blueprint, request, redirect, flash, url_for, current_app
-from database.database import get_db_connection
-from ....utils.decorators import role_required
 import os
 from werkzeug.utils import secure_filename
+from database.database import get_db_connection
+from ....utils.decorators import role_required
 
 editProduct_bp = Blueprint(
     "editProduct", __name__, template_folder="../../../../frontend/templates/admin"
@@ -15,15 +15,14 @@ def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-@editProduct_bp.route("/edit-product/<int:product_id>", methods=["GET", "POST"])
+@editProduct_bp.route("/edit-product/<int:product_id>", methods=["POST"])
 @role_required("admin")
-def editProduct(product_id):
+def edit_product(product_id):
     name = request.form.get("name")
     description = request.form.get("description")
     price = request.form.get("price")
     stock = request.form.get("stock")
 
-    # check for uploaded file
     image_file = request.files.get("image")
     image_filename = None
 
@@ -33,29 +32,37 @@ def editProduct(product_id):
         image_file.save(upload_path)
         image_filename = filename
 
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
+    conn = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
 
-    if image_filename:
-        # update including new image
-        cursor.execute(
-            """UPDATE products 
-               SET name=%s, description=%s, price=%s, stock=%s, image=%s 
-               WHERE id=%s""",
-            (name, description, price, stock, image_filename, product_id),
-        )
-    else:
-        # update without changing image
-        cursor.execute(
-            """UPDATE products 
-               SET name=%s, description=%s, price=%s, stock=%s 
-               WHERE id=%s""",
-            (name, description, price, stock, product_id),
-        )
+        if image_filename:
+            cursor.execute(
+                """
+                UPDATE products 
+                SET name=%s, description=%s, price=%s, stock=%s, image=%s 
+                WHERE id=%s
+                """,
+                (name, description, price, stock, image_filename, product_id),
+            )
+        else:
+            cursor.execute(
+                """
+                UPDATE products 
+                SET name=%s, description=%s, price=%s, stock=%s 
+                WHERE id=%s
+                """,
+                (name, description, price, stock, product_id),
+            )
 
-    conn.commit()
-    cursor.close()
-    conn.close()
+        conn.commit()
+        cursor.close()
+        flash("Product updated successfully.", "success")
+    except Exception as e:
+        flash(f"Error updating product: {e}", "error")
+    finally:
+        if conn:
+            conn.close()
 
-    flash("Product updated successfully.", "success")
-    return redirect(url_for("addProduct.addProduct"))
+    return redirect(url_for("adminProductlist.adminProductlist"))

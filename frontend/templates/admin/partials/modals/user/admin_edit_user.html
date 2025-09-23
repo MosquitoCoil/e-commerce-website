@@ -1,0 +1,47 @@
+{% for u in users %}
+<!-- Edit User Modal -->
+<div class="modal fade" id="editUser{{ u.id }}" tabindex="-1" aria-labelledby="editUserLabel{{ u.id }}" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-dark text-white">
+      <div class="modal-header d-block bg-dark">
+        <div class="w-100 text-center">
+          <img src="/static/images/logo.png" width="130" height="50" alt="Logo" />
+        </div>
+        <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-2" data-bs-dismiss="modal"></button>
+        <h5 class="modal-title" id="editUserLabel{{ u.id }}">Edit User: {{ u.firstname.capitalize() }}</h5>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="{{ url_for('editUser.edit_user', user_id=u.id) }}">
+          <div class="mb-3">
+            <label for="firstname{{ u.id }}" class="form-label">Firstname</label>
+            <input type="text" class="form-control" id="firstname{{ u.id }}" name="firstname" value="{{ u.firstname }}" required>
+          </div>
+          <div class="mb-3">
+            <label for="lastname{{ u.id }}" class="form-label">Lastname</label>
+            <input type="text" class="form-control" id="lastname{{ u.id }}" name="lastname" value="{{ u.lastname }}" required>
+          </div>
+          <div class="mb-3">
+            <label for="username{{ u.id }}" class="form-label">Email / Username</label>
+            <input type="email" class="form-control" id="username{{ u.id }}" name="username" value="{{ u.username }}" required>
+          </div>
+          <div class="mb-3">
+            <label for="password{{ u.id }}" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password{{ u.id }}" name="password" placeholder="Enter new password (leave blank to keep current)">
+          </div>
+          <div class="mb-3">
+            <label for="is_admin{{ u.id }}" class="form-label">User Type</label>
+            <select class="form-control" id="is_admin{{ u.id }}" name="is_admin">
+              <option value="user" {% if u.is_admin=='user' %}selected{% endif %}>User</option>
+              <option value="admin" {% if u.is_admin=='admin' %}selected{% endif %}>Admin</option>
+            </select>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success"><i class="bi bi-save"></i> Save changes</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}

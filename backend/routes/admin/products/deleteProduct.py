@@ -7,21 +7,22 @@ deleteProduct_bp = Blueprint("deleteProduct", __name__)
 
 @deleteProduct_bp.route("/delete-product/<int:product_id>", methods=["POST"])
 @role_required("admin")
-def deleteProduct(product_id):
+def delete_product(product_id):
+    conn = None
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
 
-        # First, remove references from cart
         cursor.execute("DELETE FROM cart WHERE product_id = %s", (product_id,))
-
-        # Then, delete the product
         cursor.execute("DELETE FROM products WHERE id = %s", (product_id,))
 
         conn.commit()
         cursor.close()
-        flash(f"Product deleted successfully.", "success")
+        flash("Product deleted successfully.", "success")
     except Exception as e:
-        flash(f"Error deleting Product: {str(e)}", "error")
+        flash(f"Error deleting product: {e}", "error")
+    finally:
+        if conn:
+            conn.close()
 
     return redirect(url_for("adminProductlist.adminProductlist"))

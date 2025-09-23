@@ -1,0 +1,81 @@
+<!-- View Details Modals -->
+{% for order in orders %}
+<div
+  class="modal fade"
+  id="orderModal{{ order.id }}"
+  tabindex="-1"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header d-block text-center">
+        <img
+          src="/static/images/logo2.png"
+          width="130"
+          height="50"
+          alt="Logo"
+        />
+        <h5 class="modal-title mt-2">Order #{{ order.id }} Details</h5>
+        <button
+          type="button"
+          class="btn-close position-absolute top-0 end-0 m-2"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <ul class="list-group mb-3">
+          {% for item in order_items[order.id] %}
+          <li
+            class="list-group-item d-flex justify-content-between align-items-center"
+          >
+            <div>
+              <strong
+                >{{ item.name }}{% if item.size %} | {{ item.size }}{% endif
+                %}</strong
+              ><br />
+              <small
+                >₱{{ "%.2f"|format(item.price) }} × {{ item.quantity }}</small
+              >
+            </div>
+            <span>₱{{ "%.2f"|format(item.price * item.quantity) }}</span>
+          </li>
+          {% endfor %}
+        </ul>
+        <div class="d-flex justify-content-between">
+          <h5>Total</h5>
+          <h5>₱{{ "%.2f"|format(order.total) }}</h5>
+        </div>
+      </div>
+      <div class="modal-footer">
+        {% if order.status == "Pending" %}
+        <form
+          action="{{ url_for('clientOrders.undo_checkout', order_id=order.id) }}"
+          method="POST"
+          class="d-inline"
+        >
+          <button type="submit" class="btn btn-warning">
+            <i class="bi bi-arrow-counterclockwise"></i> Undo Checkout
+          </button>
+        </form>
+        {% elif order.status == "Completed" %}
+        <form
+          action="{{ url_for('clientOrders.mark_as_received', order_id=order.id) }}"
+          method="POST"
+          class="d-inline"
+        >
+          <button type="submit" class="btn btn-warning">
+            <i class="bi bi-check2-circle"></i> Received
+          </button>
+        </form>
+        {% else %}
+        <span class="text-success m-4"
+          ><i class="bi bi-check"></i> {{ order.status }}</span
+        >
+        {% endif %}
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}

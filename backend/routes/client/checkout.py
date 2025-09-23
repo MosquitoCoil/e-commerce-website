@@ -8,58 +8,62 @@ checkout_bp = Blueprint(
 
 
 @checkout_bp.route("/client/checkout", methods=["POST"])
-@role_required("user")  # if you also want admins allowed, remove this line
+@role_required("user")
 def checkout():
     user_id = session.get("user_id")
     if not user_id:
-        flash("You must be logged in to checkout.", "error")
+        flash("You must be logged in to checkout.", "danger")
         return redirect(url_for("login.login"))
 
-    db = get_db_connection()
-    cursor = db.cursor(dictionary=True)
+    conn = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
 
-    # Fetch all cart items for the user
-    cursor.execute(
-        """
-        SELECT c.id as cart_id, c.product_id, p.image, p.name, c.quantity, p.price
-        FROM cart c
-        JOIN products p ON c.product_id = p.id
-        WHERE c.user_id = %s
-    """,
-        (user_id,),
-    )
-    cart_items = cursor.fetchall()
-
-    if not cart_items:
-        flash("Your cart is empty!", "error")
-        return redirect(url_for("clientCart.clientCart"))
-
-    # Calculate total
-    total = sum(item["price"] * item["quantity"] for item in cart_items)
-
-    # Insert into orders
-    cursor.execute(
-        "INSERT INTO orders (user_id, total, status) VALUES (%s, %s, %s)",
-        (user_id, total, "Pending"),
-    )
-    order_id = cursor.lastrowid
-
-    # Insert order items
-    for item in cart_items:
         cursor.execute(
             """
-            INSERT INTO order_items (order_id, product_id, quantity, price) 
-            VALUES (%s, %s, %s, %s)
-        """,
-            (order_id, item["product_id"], item["quantity"], item["price"]),
+            SELECT c.id AS cart_id, c.product_id, p.image, p.name,
+                   c.quantity, p.price
+            FROM cart c
+            JOIN products p ON c.product_id = p.id
+            WHERE c.user_id = %s
+            """,
+            (user_id,),
         )
+        cart_items = cursor.fetchall()
 
-    # Clear cart
-    cursor.execute("DELETE FROM cart WHERE user_id = %s", (user_id,))
+        if not cart_items:
+            flash("Your cart is empty.", "danger")
+            return redirect(url_for("addToCart.cart_page"))
 
-    db.commit()
-    cursor.close()
-    db.close()
+        total = sum(item["price"] * item["quantity"] for item in cart_items)
 
-    flash("Order placed successfully! Waiting for admin approval.", "success")
+        cursor.execute(
+            "INSERT INTO orders (user_id, total, status) VALUES (%s, %s, %s)",
+            (user_id, total, "Pending"),
+        )
+        order_id = cursor.lastrowid
+
+        for item in cart_items:
+            cursor.execute(
+                """
+                INSERT INTO order_items (order_id, product_id, quantity, price)
+                VALUES (%s, %s, %s, %s)
+                """,
+                (order_id, item["product_id"], item["quantity"], item["price"]),
+            )
+
+        cursor.execute("DELETE FROM cart WHERE user_id = %s", (user_id,))
+        conn.commit()
+
+        flash("Order placed successfully. Waiting for admin approval.", "success")
+    except Exception as e:
+        if conn:
+            conn.rollback()
+        flash(f"Error during checkout: {e}", "danger")
+    finally:
+        if conn:
+            cursor.close()
+            conn.close()
+
     return redirect(url_for("clientOrders.clientOrders"))

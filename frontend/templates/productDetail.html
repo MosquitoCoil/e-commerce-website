@@ -3,7 +3,7 @@ endblock %} {% block content %}
 <div class="container py-5">
   <div class="row">
     <!-- Product Image -->
-    <div class="col-md-6">
+    <div class="col-md-6 mb-4 mb-md-0">
       <img
         src="{{ url_for('static', filename='uploads/' ~ product.image) }}"
         alt="{{ product.name }}"
@@ -15,26 +15,38 @@ endblock %} {% block content %}
     <div class="col-md-6">
       <h2>{{ product.name }}</h2>
       <p>{{ product.description }}</p>
-      <p><strong>₱{{ product.price }}</strong></p>
+      <p><strong>₱{{ "%.2f"|format(product.price) }}</strong></p>
 
+      <!-- Size Selection -->
       <form
         method="POST"
-        action="{{ url_for('addToCart.addToCart', product_id=product.id) }}"
+        action="{{ url_for('addToCart.add_to_cart', product_id=product.id) }}"
       >
-        <label for="size">Select Size:</label>
+        <label class="form-label">Select Size:</label>
         <div class="mb-3">
           {% for v in variants %} <input type="radio" class="btn-check"
           name="size" id="size-{{ v.size }}" value="{{ v.size }}" {% if v.stock
-          == 0 %}disabled{% endif %}>
+          == 0 %}disabled{% endif %} required >
           <label class="btn btn-outline-dark m-1" for="size-{{ v.size }}">
             {{ v.size }} {% if v.stock == 0 %}(Out of Stock){% endif %}
           </label>
           {% endfor %}
         </div>
 
-        <!-- Add to Cart -->
-        <button type="submit" class="btn btn-dark btn-lg">
-          <i class="bi bi-cart-plus"></i> Add to Cart
+        {% set all_out_of_stock = variants|selectattr('stock', 'equalto',
+        0)|list|length == variants|length %}
+        <button
+          type="submit"
+          class="btn btn-dark btn-lg"
+          {%
+          if
+          all_out_of_stock
+          %}disabled{%
+          endif
+          %}
+        >
+          <i class="bi bi-cart-plus"></i> Add to Cart {% if all_out_of_stock %}
+          (Out of Stock) {% endif %}
         </button>
       </form>
 
@@ -46,31 +58,7 @@ endblock %} {% block content %}
       </div>
     </div>
   </div>
+
   <hr class="my-5" />
-  <h4>Related Products</h4>
-  <div class="row g-3">
-    {% for related in related_products %}
-    <div class="col-md-3">
-      <a
-        href="{{ url_for('home.productDetail', product_id=related.id) }}"
-        class="text-decoration-none text-dark"
-      >
-        <div class="card h-100 border-0 shadow-sm">
-          <img
-            src="{{ url_for('static', filename='uploads/' ~ related.image) }}"
-            class="card-img-top"
-            style="height: 200px; object-fit: cover"
-          />
-          <div class="card-body text-center">
-            <h6 class="fw-semibold">{{ related.name }}</h6>
-            <p class="fw-bold text-danger">
-              ₱{{ "%.2f"|format(related.price) }}
-            </p>
-          </div>
-        </div>
-      </a>
-    </div>
-    {% endfor %}
-  </div>
 </div>
 {% endblock %}

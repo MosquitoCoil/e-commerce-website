@@ -21,29 +21,26 @@ def login():
         conn.close()
 
         if user and check_password_hash(user["password"], password):
-            session["user_id"] = user["id"]
-            session["username"] = user["username"]
-            session["firstname"] = user["firstname"]
-            session["is_admin"] = user["is_admin"]
+            session.update(
+                {
+                    "user_id": user["id"],
+                    "username": user["username"],
+                    "firstname": user["firstname"],
+                    "is_admin": user["is_admin"],
+                }
+            )
             login_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
             flash(f"Welcome, {user['firstname']}! Logged in at {login_time}", "success")
-
-            # Redirect based on user role
-            if user["is_admin"] == "admin":
-                return redirect("/")
-            else:
-                return redirect("/")
-        else:
-            flash(f"Access denied. Incorrect username or password.", "error")
             return redirect("/")
+
+        flash("Access denied. Incorrect username or password.", "error")
+        return redirect("/")
 
     return redirect("/")
 
 
-# logout
 @login_bp.route("/logout")
 def logout():
     session.clear()
-    flash(f"Successfully logged out!.", "success")
+    flash("Successfully logged out!", "success")
     return redirect("/")

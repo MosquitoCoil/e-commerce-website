@@ -1,29 +1,30 @@
 from flask import Blueprint, request, flash, redirect, url_for
-from ....utils.decorators import role_required
-from database.database import get_db_connection
 from werkzeug.security import generate_password_hash
+from database.database import get_db_connection
+from ....utils.decorators import role_required
 
 addUser_bp = Blueprint(
     "addUser", __name__, template_folder="../../../../frontend/templates/admin"
 )
 
 
-@addUser_bp.route("/add-user", methods=["GET", "POST"])
+@addUser_bp.route("/add-user", methods=["POST"])
 @role_required("admin")
-def addUser():
-    if request.method == "POST":
-        firstname = request.form.get("firstname")
-        lastname = request.form.get("lastname")
-        username = request.form.get("username")
-        password = request.form.get("password")
-        is_admin = request.form.get("is_admin")
+def add_user():
+    firstname = request.form.get("firstname")
+    lastname = request.form.get("lastname")
+    username = request.form.get("username")
+    password = request.form.get("password")
+    is_admin = request.form.get("is_admin")
 
-        if not firstname or not lastname or not username or not password:
-            flash(f"All fields are required!", "danger")
-            return redirect(url_for("adminUserList.adminUserList"))
+    if not firstname or not lastname or not username or not password:
+        flash("All fields are required!", "danger")
+        return redirect(url_for("adminUserList.adminUserList"))
 
-        hashed_password = generate_password_hash(password)
+    hashed_password = generate_password_hash(password)
 
+    conn = None
+    try:
         conn = get_db_connection()
         cursor = conn.cursor()
         cursor.execute(
@@ -35,10 +36,11 @@ def addUser():
         )
         conn.commit()
         cursor.close()
-        conn.close()
+        flash("User successfully added!", "success")
+    except Exception as e:
+        flash(f"Error adding user: {e}", "danger")
+    finally:
+        if conn:
+            conn.close()
 
-        flash(f"User successfully added!", "success")
-        return redirect(url_for("adminUserList.adminUserList"))
-
-    # If GET request → just redirect back to users list
     return redirect(url_for("adminUserList.adminUserList"))

@@ -8,22 +8,20 @@ register_bp = Blueprint(
 )
 
 
-# register
 @register_bp.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
-        firstname: str = request.form["firstname"]
-        lastname: str = request.form["lastname"]
-        address = request.form["address"]
-        username: str = request.form["username"]
-        password = request.form["password"]
-        is_admin = request.form["is_admin"]
+        firstname = request.form.get("firstname")
+        lastname = request.form.get("lastname")
+        address = request.form.get("address")
+        username = request.form.get("username")
+        password = request.form.get("password")
+        is_admin = request.form.get("is_admin")
 
         hashed_pw = generate_password_hash(password)
 
         conn = get_db_connection()
         cursor = conn.cursor()
-
         try:
             cursor.execute(
                 """
@@ -33,10 +31,12 @@ def register():
                 (username, firstname, lastname, hashed_pw, is_admin, address),
             )
             conn.commit()
-            flash("Registered Successfully!", "success")
+            flash("Registered successfully!", "success")
         except mysql.connector.Error as err:
-            flash(f"Error: {err}")
+            flash(f"Registration error: {err}", "error")
         finally:
             conn.close()
+
         return redirect(url_for("home.home"))
+
     return redirect(url_for("home.home"))
