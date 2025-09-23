@@ -70,7 +70,7 @@ It allows users to browse products, manage carts, and checkout, while admins can
 
 1. **Clone the repo**
 ```bash
-   git clone https://github.com/your-username/e-commerce-website.git
+   git clone https://github.com/MosquitoCoil/e-commerce-website.git
    cd e-commerce-website
 ```
 2. **Set up virtual environment & install dependencies**
