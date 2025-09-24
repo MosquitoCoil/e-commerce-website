@@ -15,12 +15,12 @@ def admin_dashboard():
         flash("You must be logged in to access the dashboard.", "danger")
         return redirect(url_for("login.login"))
 
-    db = None
+    conn = None
     user, daily_sales, monthly_sales = None, [], []
 
     try:
-        db = get_db_connection()
-        cursor = db.cursor(dictionary=True)
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
 
         cursor.execute(
             """
@@ -60,8 +60,8 @@ def admin_dashboard():
     except Exception as e:
         flash(f"Error loading dashboard data: {e}", "danger")
     finally:
-        if db:
-            db.close()
+        if conn:
+            conn.close()
 
     daily_sales_labels = [
         (

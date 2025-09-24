@@ -15,11 +15,21 @@ def admin_reports():
         flash("You must be logged in to view reports.", "danger")
         return redirect(url_for("login.login"))
 
-    db = None
+    conn = None
     daily_sales, monthly_sales = [], []
     try:
-        db = get_db_connection()
-        cursor = db.cursor(dictionary=True)
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+
+        cursor.execute(
+            """
+            SELECT id, username, firstname, lastname, address, is_admin, created_at
+            FROM users
+            WHERE id = %s
+            """,
+            (user_id,),
+        )
+        user = cursor.fetchone()
 
         cursor.execute(
             """
@@ -49,8 +59,8 @@ def admin_reports():
     except Exception as e:
         flash(f"Error fetching reports: {e}", "danger")
     finally:
-        if db:
-            db.close()
+        if conn:
+            conn.close()
 
     daily_sales_labels = [
         (
@@ -67,6 +77,7 @@ def admin_reports():
 
     return render_template(
         "adminReports.html",
+        user=user,
         daily_sales=daily_sales,
         monthly_sales=monthly_sales,
         daily_sales_labels=daily_sales_labels,

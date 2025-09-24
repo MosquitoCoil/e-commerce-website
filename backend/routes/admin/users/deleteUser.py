@@ -22,4 +22,4 @@ def delete_user(user_id):
         if conn:
             conn.close()
 
-    return redirect(url_for("adminUserList.adminUserList"))
+    return redirect(url_for("adminUserList.admin_user_list"))

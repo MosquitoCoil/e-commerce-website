@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, url_for, flash, request, session, render_template
+from flask import Blueprint, redirect, url_for, flash, request, session
 from ...utils.decorators import role_required
 from database.database import get_db_connection
 
@@ -11,7 +11,16 @@ addToCart_bp = Blueprint(
 @role_required("user")
 def add_to_cart(product_id):
     user_id = session.get("user_id")
-    quantity = int(request.form.get("quantity", 1))
+    if not user_id:
+        flash("You must be logged in to add to cart.", "danger")
+        return redirect(url_for("login.login"))
+
+    try:
+        quantity = int(request.form.get("quantity", 1))
+    except ValueError:
+        flash("Invalid quantity.", "danger")
+        return redirect(url_for("home.product_detail", product_id=product_id))
+
     size = request.form.get("size")
 
     if not size:
@@ -66,6 +75,7 @@ def add_to_cart(product_id):
 
         conn.commit()
         flash("Item added to cart.", "success")
+
     except Exception as e:
         flash(f"Error adding to cart: {e}", "danger")
         if conn:
@@ -76,34 +86,3 @@ def add_to_cart(product_id):
             conn.close()
 
     return redirect(url_for("home.home"))
-
-
-@addToCart_bp.route("/clientCart")
-@role_required("user")
-def cart_page():
-    user_id = session.get("user_id")
-    items = []
-
-    conn = None
-    try:
-        conn = get_db_connection()
-        cursor = conn.cursor(dictionary=True)
-        cursor.execute(
-            """
-            SELECT c.id, p.image, p.name, p.price, c.size, c.quantity,
-                   (p.price * c.quantity) AS total
-            FROM cart c
-            JOIN products p ON c.product_id = p.id
-            WHERE c.user_id=%s
-            """,
-            (user_id,),
-        )
-        items = cursor.fetchall()
-        cursor.close()
-    except Exception as e:
-        flash(f"Error loading cart: {e}", "danger")
-    finally:
-        if conn:
-            conn.close()
-
-    return render_template("clientCart.html", items=items)

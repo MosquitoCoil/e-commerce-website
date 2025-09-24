@@ -5,7 +5,7 @@
     <div class="modal-content bg-dark text-white">
       <div class="modal-header d-block bg-dark">
         <div class="w-100 text-center">
-          <img src="/static/images/logo.png" width="130" height="50" alt="Logo" />
+          <img src="{{ url_for('static', filename='images/logo.png') }}" width="130" height="50" alt="Logo" />
         </div>
         <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-2" data-bs-dismiss="modal"></button>
         <h5 class="modal-title" id="editUserLabel{{ u.id }}">Edit User: {{ u.firstname.capitalize() }}</h5>
@@ -23,6 +23,10 @@
           <div class="mb-3">
             <label for="username{{ u.id }}" class="form-label">Email / Username</label>
             <input type="email" class="form-control" id="username{{ u.id }}" name="username" value="{{ u.username }}" required>
+          </div>
+          <div class="mb-3">
+            <label for="address{{ u.id }}" class="form-label">Address</label>
+            <input type="text" class="form-control" id="address{{ u.id }}" name="address" value="{{ u.address }}" required>
           </div>
           <div class="mb-3">
             <label for="password{{ u.id }}" class="form-label">Password</label>

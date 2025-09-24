@@ -25,6 +25,8 @@ from backend.routes.client.editCart import editCart_bp
 from backend.routes.client.deleteCart import deleteCart_bp
 from backend.routes.client.checkout import checkout_bp
 from backend.routes.client.clientOrders import clientOrders_bp
+from backend.routes.client.deletePurchase import deletePurchase_bp
+
 
 # Profile
 from backend.routes.profile import profile_bp
@@ -62,6 +64,7 @@ app.register_blueprint(editCart_bp)
 app.register_blueprint(deleteCart_bp)
 app.register_blueprint(checkout_bp)
 app.register_blueprint(clientOrders_bp)
+app.register_blueprint(deletePurchase_bp)
 
 # Profile
 app.register_blueprint(profile_bp)

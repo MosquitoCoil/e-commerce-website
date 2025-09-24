@@ -8,15 +8,24 @@
 >
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content bg-dark text-white">
-      <div class="modal-header">
+      <div class="modal-header d-block text-center">
+        <div class="w-100 text-center">
+          <img
+            src="{{ url_for('static', filename='images/logo.png') }}"
+            width="130"
+            height="50"
+            alt="Logo"
+          />
+        </div>
+        <button
+          type="button"
+          class="btn-close btn-close-white position-absolute top-0 end-0 m-2"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
         <h5 class="modal-title">
           <i class="bi bi-pencil"></i> Edit {{ p.name }}
         </h5>
-        <button
-          type="button"
-          class="btn-close btn-close-white"
-          data-bs-dismiss="modal"
-        ></button>
       </div>
       <form
         method="POST"
@@ -52,22 +61,13 @@
             />
           </div>
           <div class="mb-3">
-            <label class="form-label">Stock</label>
-            <input
-              type="number"
-              class="form-control"
-              name="stock"
-              value="{{ p.stock }}"
-              required
-            />
-          </div>
-          <div class="mb-3">
             <label class="form-label">Image</label>
             <input
               type="file"
               class="form-control"
               name="image"
               accept="image/*"
+              required
             />
           </div>
         </div>

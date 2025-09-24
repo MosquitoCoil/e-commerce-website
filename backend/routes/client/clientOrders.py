@@ -16,8 +16,17 @@ def clientOrders():
         flash("Please log in to view your orders.", "error")
         return redirect(url_for("login.login"))
 
-    db = get_db_connection()
-    cursor = db.cursor(dictionary=True)
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(
+        """
+            SELECT id, username, firstname, lastname, address, is_admin, created_at
+            FROM users
+            WHERE id = %s
+            """,
+        (user_id,),
+    )
+    user = cursor.fetchone()
 
     cursor.execute(
         """
@@ -34,7 +43,7 @@ def clientOrders():
     for order in orders:
         cursor.execute(
             """
-            SELECT oi.product_id, oi.quantity, oi.price, p.name
+            SELECT oi.product_id, oi.size, oi.quantity, oi.price, p.name
             FROM order_items oi
             JOIN products p ON oi.product_id = p.id
             WHERE oi.order_id = %s
@@ -55,10 +64,11 @@ def clientOrders():
     purchases = cursor.fetchall()
 
     cursor.close()
-    db.close()
+    conn.close()
 
     return render_template(
         "clientOrders.html",
+        user=user,
         orders=orders,
         order_items=order_items,
         purchases=purchases,
@@ -68,14 +78,14 @@ def clientOrders():
 @clientOrders_bp.route("/clientOrders/<int:order_id>")
 @role_required("user")
 def view_order(order_id):
-    db = get_db_connection()
-    cursor = db.cursor(dictionary=True)
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
 
     cursor.execute(
         """
         SELECT o.id, o.total, o.created_at,
-               oi.product_id, oi.quantity, oi.price,
-               p.name
+           oi.product_id, oi.size, oi.quantity, oi.price,
+           p.name
         FROM orders o
         JOIN order_items oi ON o.id = oi.order_id
         JOIN products p ON oi.product_id = p.id
@@ -86,7 +96,7 @@ def view_order(order_id):
     order_details = cursor.fetchall()
 
     cursor.close()
-    db.close()
+    conn.close()
 
     return render_template("clientOrderDetails.html", order=order_details)
 
@@ -99,8 +109,8 @@ def undo_checkout(order_id):
         flash("You must be logged in to undo checkout.", "error")
         return redirect(url_for("login.login"))
 
-    db = get_db_connection()
-    cursor = db.cursor(dictionary=True)
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
 
     cursor.execute(
         "SELECT id, status FROM orders WHERE id=%s AND user_id=%s",
@@ -111,25 +121,25 @@ def undo_checkout(order_id):
     if not order:
         flash("Order not found.", "error")
         cursor.close()
-        db.close()
-        return redirect(url_for("clientCart.clientCart"))
+        conn.close()
+        return redirect(url_for("clientCart.cart_page"))
 
     if order["status"] != "Pending":
         flash("You can only undo orders that are still pending.", "error")
         cursor.close()
-        db.close()
+        conn.close()
         return redirect(url_for("clientOrders.clientOrders"))
 
     cursor.execute(
-        "SELECT product_id, quantity FROM order_items WHERE order_id = %s",
+        "SELECT product_id, size, quantity FROM order_items WHERE order_id = %s",
         (order_id,),
     )
     items = cursor.fetchall()
 
     for item in items:
         cursor.execute(
-            "SELECT id, quantity FROM cart WHERE user_id=%s AND product_id=%s",
-            (user_id, item["product_id"]),
+            "SELECT id, quantity FROM cart WHERE user_id=%s AND product_id=%s AND size=%s",
+            (user_id, item["product_id"], item["size"]),
         )
         existing = cursor.fetchone()
 
@@ -140,19 +150,19 @@ def undo_checkout(order_id):
             )
         else:
             cursor.execute(
-                "INSERT INTO cart (user_id, product_id, quantity) VALUES (%s, %s, %s)",
-                (user_id, item["product_id"], item["quantity"]),
+                "INSERT INTO cart (user_id, product_id, size, quantity) VALUES (%s, %s, %s, %s)",
+                (user_id, item["product_id"], item["size"], item["quantity"]),
             )
 
     cursor.execute("DELETE FROM order_items WHERE order_id=%s", (order_id,))
     cursor.execute("DELETE FROM orders WHERE id=%s", (order_id,))
 
-    db.commit()
+    conn.commit()
     cursor.close()
-    db.close()
+    conn.close()
 
     flash("Order has been undone and items restored to your cart.", "success")
-    return redirect(url_for("clientCart.clientCart"))
+    return redirect(url_for("clientCart.cart_page"))
 
 
 @clientOrders_bp.route("/mark_as_received/<int:order_id>", methods=["POST"])
@@ -160,12 +170,12 @@ def undo_checkout(order_id):
 def mark_as_received(order_id):
     user_id = session.get("user_id")
 
-    db = get_db_connection()
-    cursor = db.cursor(dictionary=True)
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
 
     cursor.execute(
         """
-        SELECT oi.product_id, oi.quantity, oi.price, p.name
+        SELECT oi.product_id, p.name, oi.size, oi.quantity, oi.price
         FROM order_items oi
         JOIN products p ON oi.product_id = p.id
         WHERE oi.order_id = %s
@@ -218,9 +228,9 @@ def mark_as_received(order_id):
 
     cursor.execute("UPDATE orders SET status = 'Received' WHERE id = %s", (order_id,))
 
-    db.commit()
+    conn.commit()
     cursor.close()
-    db.close()
+    conn.close()
 
     flash("Order marked as received and added to purchase history!", "success")
     return redirect(url_for("clientOrders.clientOrders"))

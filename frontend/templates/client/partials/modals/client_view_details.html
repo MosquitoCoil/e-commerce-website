@@ -9,12 +9,14 @@
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header d-block text-center">
-        <img
-          src="/static/images/logo2.png"
-          width="130"
-          height="50"
-          alt="Logo"
-        />
+        <div class="w-100 text-center">
+          <img
+            src="{{ url_for('static', filename='images/logo2.png') }}"
+            width="130"
+            height="50"
+            alt="Logo"
+          />
+        </div>
         <h5 class="modal-title mt-2">Order #{{ order.id }} Details</h5>
         <button
           type="button"
@@ -35,7 +37,8 @@
                 %}</strong
               ><br />
               <small
-                >₱{{ "%.2f"|format(item.price) }} × {{ item.quantity }}</small
+                >₱{{ "%.2f"|format(item.price) }} × {{ item.quantity }} {{
+                item.size }}</small
               >
             </div>
             <span>₱{{ "%.2f"|format(item.price * item.quantity) }}</span>

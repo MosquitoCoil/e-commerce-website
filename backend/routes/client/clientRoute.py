@@ -19,7 +19,7 @@ def client():
     cursor = conn.cursor(dictionary=True)
     cursor.execute(
         """
-        SELECT id, username, firstname, address, is_admin, created_at
+        SELECT id, firstname, lastname, username, address, is_admin, created_at
         FROM users
         WHERE id = %s
         """,

@@ -20,6 +20,15 @@ def admin_product_list():
     try:
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
+        cursor.execute(
+            """
+            SELECT id, username, firstname, lastname, address, is_admin, created_at
+            FROM users
+            WHERE id = %s
+            """,
+            (user_id,),
+        )
+        user = cursor.fetchone()
 
         cursor.execute("SELECT * FROM products")
         products = cursor.fetchall()
@@ -37,4 +46,4 @@ def admin_product_list():
         if conn:
             conn.close()
 
-    return render_template("adminProductList.html", products=products)
+    return render_template("adminProductList.html", products=products, user=user)

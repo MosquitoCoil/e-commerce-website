@@ -54,9 +54,9 @@ def add_product():
         conn.close()
 
         flash("Product added successfully with size variants!", "success")
-        return redirect(url_for("adminProductlist.adminProductlist"))
+        return redirect(url_for("adminProductlist.admin_product_list"))
 
-    return redirect(url_for("adminProductlist.adminProductlist"))
+    return redirect(url_for("adminProductlist.admin_product_list"))
 
 
 @addProduct_bp.route("/admin/update-stock/<int:variant_id>", methods=["POST"])
@@ -66,7 +66,7 @@ def update_stock(variant_id):
 
     if not new_stock or not new_stock.isdigit():
         flash("Invalid stock value!", "danger")
-        return redirect(url_for("adminProductlist.adminProductlist"))
+        return redirect(url_for("adminProductlist.admin_product_list"))
 
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -78,4 +78,4 @@ def update_stock(variant_id):
     conn.close()
 
     flash("Stock updated successfully!", "success")
-    return redirect(url_for("adminProductlist.adminProductlist"))
+    return redirect(url_for("adminProductlist.admin_product_list"))

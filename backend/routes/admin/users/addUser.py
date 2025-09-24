@@ -19,7 +19,7 @@ def add_user():
 
     if not firstname or not lastname or not username or not password:
         flash("All fields are required!", "danger")
-        return redirect(url_for("adminUserList.adminUserList"))
+        return redirect(url_for("adminUserList.admin_user_list"))
 
     hashed_password = generate_password_hash(password)
 
@@ -43,4 +43,4 @@ def add_user():
         if conn:
             conn.close()
 
-    return redirect(url_for("adminUserList.adminUserList"))
+    return redirect(url_for("adminUserList.admin_user_list"))

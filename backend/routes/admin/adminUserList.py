@@ -21,7 +21,16 @@ def admin_user_list():
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
         cursor.execute(
-            "SELECT id, firstname, lastname, username, is_admin, created_at FROM users"
+            """
+            SELECT id, username, firstname, lastname, address, is_admin, created_at
+            FROM users
+            WHERE id = %s
+            """,
+            (user_id,),
+        )
+        user = cursor.fetchone()
+        cursor.execute(
+            "SELECT id, firstname, lastname, address, username, is_admin, created_at FROM users"
         )
         users = cursor.fetchall()
         cursor.close()
@@ -31,4 +40,4 @@ def admin_user_list():
         if conn:
             conn.close()
 
-    return render_template("adminUserList.html", users=users)
+    return render_template("adminUserList.html", users=users, user=user)

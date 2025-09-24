@@ -54,8 +54,8 @@ block content %}
 
     <!-- Daily Sales Table -->
     <h4 class="mt-4">Daily Sales</h4>
-    <table class="table table-bordered text-center">
-      <thead>
+    <table class="table table-bordered table-striped align-middle">
+      <thead class="table-dark text-center">
         <tr>
           <th scope="col">Date</th>
           <th scope="col">Total Sales</th>
@@ -75,8 +75,8 @@ block content %}
 
     <!-- Monthly Sales Table -->
     <h4 class="mt-5">Monthly Sales</h4>
-    <table class="table table-bordered text-center">
-      <thead>
+    <table class="table table-bordered table-striped align-middle">
+      <thead class="table-dark text-center">
         <tr>
           <th scope="col">Month</th>
           <th scope="col">Total Sales</th>
@@ -100,6 +100,7 @@ block content %}
 </div>
 {% endblock %} {% block extra_script %}
 <script src="{{ url_for('static', filename='js/chart.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
 
 <script id="daily-labels" type="application/json">
   {{ daily_sales_labels|tojson }}

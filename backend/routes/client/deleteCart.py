@@ -11,6 +11,9 @@ deleteCart_bp = Blueprint(
 @role_required("user")
 def deleteCart(cart_id):
     user_id = session.get("user_id")
+    if not user_id:
+        flash("You must be logged in to delete cart.", "error")
+        return redirect(url_for("login.login"))
 
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
@@ -20,4 +23,4 @@ def deleteCart(cart_id):
     conn.close()
 
     flash("Item removed from cart.", "success")
-    return redirect(url_for("clientCart.clientCart"))
+    return redirect(url_for("clientCart.cart_page"))

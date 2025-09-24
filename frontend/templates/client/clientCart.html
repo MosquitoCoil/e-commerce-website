@@ -5,8 +5,11 @@ content %}
     <h2>🛒 My Cart</h2>
 
     {% if items %}
-    <table id="cartTable" class="table table-bordered table-striped">
-      <thead class="table-dark">
+    <table
+      id="cartTable"
+      class="table table-bordered table-striped align-middle"
+    >
+      <thead class="table-light text-center">
         <tr>
           <th>No.</th>
           <th>Image</th>
@@ -62,7 +65,9 @@ content %}
               method="POST"
               class="d-inline"
             >
-              <button class="btn btn-sm btn-danger">❌ Remove</button>
+              <button class="btn btn-sm btn-danger">
+                <i class="bi bi-trash"></i> Delete
+              </button>
             </form>
           </td>
         </tr>

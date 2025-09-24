@@ -24,6 +24,15 @@ def admin_orders():
         cursor = conn.cursor(dictionary=True)
         cursor.execute(
             """
+            SELECT id, username, firstname, lastname, address, is_admin, created_at
+            FROM users
+            WHERE id = %s
+            """,
+            (user_id,),
+        )
+        user = cursor.fetchone()
+        cursor.execute(
+            """
             SELECT o.id, o.status, u.firstname, o.created_at
             FROM orders o
             JOIN users u ON o.user_id = u.id
@@ -38,12 +47,16 @@ def admin_orders():
         if conn:
             conn.close()
 
-    return render_template("adminOrder.html", orders=orders)
+    return render_template("adminOrder.html", orders=orders, user=user)
 
 
 @adminOrders_bp.route("/admin/orders/update/<int:order_id>/<string:status>")
 @role_required("admin")
 def update_order_status(order_id, status):
+    user_id = session.get("user_id")
+    if not user_id:
+        flash("You must be logged in to view orders.", "danger")
+        return redirect(url_for("login.login"))
     conn = None
     try:
         conn = get_db_connection()

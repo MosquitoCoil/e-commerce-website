@@ -22,7 +22,7 @@ def checkout():
 
         cursor.execute(
             """
-            SELECT c.id AS cart_id, c.product_id, p.image, p.name,
+            SELECT c.id AS cart_id, c.product_id, c.size, p.image, p.name,
                    c.quantity, p.price
             FROM cart c
             JOIN products p ON c.product_id = p.id
@@ -47,16 +47,23 @@ def checkout():
         for item in cart_items:
             cursor.execute(
                 """
-                INSERT INTO order_items (order_id, product_id, quantity, price)
-                VALUES (%s, %s, %s, %s)
+                INSERT INTO order_items (order_id, product_id, size, quantity, price)
+                VALUES (%s, %s, %s, %s, %s)
                 """,
-                (order_id, item["product_id"], item["quantity"], item["price"]),
+                (
+                    order_id,
+                    item["product_id"],
+                    item["size"],
+                    item["quantity"],
+                    item["price"],
+                ),
             )
 
         cursor.execute("DELETE FROM cart WHERE user_id = %s", (user_id,))
         conn.commit()
 
         flash("Order placed successfully. Waiting for admin approval.", "success")
+
     except Exception as e:
         if conn:
             conn.rollback()

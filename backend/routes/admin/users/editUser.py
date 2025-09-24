@@ -20,7 +20,7 @@ def edit_user(user_id):
 
     if not firstname or not lastname or not username:
         flash("Firstname, Lastname, and Username are required.", "danger")
-        return redirect(url_for("adminUserList.adminUserList"))
+        return redirect(url_for("adminUserList.admin_user_list"))
 
     conn = None
     try:
@@ -64,4 +64,4 @@ def edit_user(user_id):
         if conn:
             conn.close()
 
-    return redirect(url_for("adminUserList.adminUserList"))
+    return redirect(url_for("adminUserList.admin_user_list"))

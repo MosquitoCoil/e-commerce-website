@@ -8,7 +8,7 @@
 >
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content bg-dark text-white">
-      <div class="modal-header d-block bg-dark">
+      <div class="modal-header d-block text-center">
         <div class="w-100 text-center">
           <img
             src="/static/images/logo.png"
@@ -37,28 +37,29 @@
           </thead>
           <tbody>
             {% for v in p.variants %}
-            <tr>
-              <td>{{ v.size }}</td>
-              <td>
-                <form
-                  method="POST"
-                  action="{{ url_for('addProduct.update_stock', variant_id=v.id) }}"
-                  class="d-flex"
-                >
+            <form
+              method="POST"
+              action="{{ url_for('addProduct.update_stock', variant_id=v.id) }}"
+            >
+              <tr>
+                <td>{{ v.size }}</td>
+                <td>
                   <input
                     type="number"
                     name="stock"
                     value="{{ v.stock }}"
                     min="0"
-                    class="form-control me-2"
+                    class="form-control"
                     style="width: 100px"
                   />
+                </td>
+                <td>
                   <button type="submit" class="btn btn-sm btn-primary">
                     Save
                   </button>
-                </form>
-              </td>
-            </tr>
+                </td>
+              </tr>
+            </form>
             {% endfor %}
           </tbody>
         </table>

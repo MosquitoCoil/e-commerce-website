@@ -21,7 +21,6 @@ def edit_product(product_id):
     name = request.form.get("name")
     description = request.form.get("description")
     price = request.form.get("price")
-    stock = request.form.get("stock")
 
     image_file = request.files.get("image")
     image_filename = None
@@ -41,19 +40,19 @@ def edit_product(product_id):
             cursor.execute(
                 """
                 UPDATE products 
-                SET name=%s, description=%s, price=%s, stock=%s, image=%s 
+                SET name=%s, description=%s, price=%s, image=%s 
                 WHERE id=%s
                 """,
-                (name, description, price, stock, image_filename, product_id),
+                (name, description, price, image_filename, product_id),
             )
         else:
             cursor.execute(
                 """
                 UPDATE products 
-                SET name=%s, description=%s, price=%s, stock=%s 
+                SET name=%s, description=%s, price=%s, 
                 WHERE id=%s
                 """,
-                (name, description, price, stock, product_id),
+                (name, description, price, product_id),
             )
 
         conn.commit()
@@ -65,4 +64,4 @@ def edit_product(product_id):
         if conn:
             conn.close()
 
-    return redirect(url_for("adminProductlist.adminProductlist"))
+    return redirect(url_for("adminProductlist.admin_product_list"))

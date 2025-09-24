@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, url_for, session
+from flask import Blueprint, redirect, url_for, session, flash
 from ...utils.decorators import role_required
 from database.database import get_db_connection
 
@@ -11,6 +11,9 @@ editCart_bp = Blueprint(
 @role_required("user")
 def editCart(cart_id, action):
     user_id = session.get("user_id")
+    if not user_id:
+        flash("You must be logged in to edit cart.", "error")
+        return redirect(url_for("login.login"))
 
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
@@ -30,4 +33,4 @@ def editCart(cart_id, action):
     cursor.close()
     conn.close()
 
-    return redirect(url_for("clientCart.clientCart"))
+    return redirect(url_for("clientCart.cart_page"))

@@ -25,4 +25,4 @@ def delete_product(product_id):
         if conn:
             conn.close()
 
-    return redirect(url_for("adminProductlist.adminProductlist"))
+    return redirect(url_for("adminProductlist.admin_product_list"))

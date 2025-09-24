@@ -6,7 +6,6 @@ import os
 
 email_bp = Blueprint("email", __name__)
 
-# Store counters in memory
 daily_email_count = {"date": date.today(), "count": 0}
 
 
@@ -14,11 +13,9 @@ daily_email_count = {"date": date.today(), "count": 0}
 def send_email():
     global daily_email_count
 
-    # Reset counter if new day
     if daily_email_count["date"] != date.today():
         daily_email_count = {"date": date.today(), "count": 0}
 
-    # Limit check
     if daily_email_count["count"] >= 10:
         flash("Email limit reached. Please try again tomorrow.", "danger")
         return redirect(url_for("home.home"))

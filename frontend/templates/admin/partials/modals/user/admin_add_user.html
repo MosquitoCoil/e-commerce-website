@@ -11,7 +11,7 @@
       <div class="modal-header d-block bg-dark">
         <div class="w-100 text-center">
           <img
-            src="/static/images/logo.png"
+            src="{{ url_for('static', filename='images/logo.png') }}"
             width="130"
             height="50"
             alt="Logo"
@@ -21,6 +21,7 @@
           type="button"
           class="btn-close btn-close-white position-absolute top-0 end-0 m-2"
           data-bs-dismiss="modal"
+          aria-label="Close"
         ></button>
         <h5 class="modal-title fw-bold mt-2" id="addUserLabel">Add User</h5>
       </div>
